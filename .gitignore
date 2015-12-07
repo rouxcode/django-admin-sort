@@ -1,0 +1,15 @@
+*.log
+*.pot
+*.pyc
+*.egg-info
+*.sqlite
+*.coverage
+*~
+.DS_Store
+.tmp*
+local_settings.py
+build
+docs/_build
+dist
+htmlcov
+.idea
