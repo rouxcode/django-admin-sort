@@ -10,7 +10,7 @@ except ImportError:
         with open(filename) as fd:
             return fd.read()
 
-DESCRIPTION = 'Generic drag-and-drop sorting for the List, the Stacked- and the Tabular-Inlines Views in the Django Admin'
+DESCRIPTION = 'Generic sorting for the List, the Stacked- and the Tabular-Inlines Views in the Django Admin'
 
 CLASSIFIERS = [
     'Environment :: Web Environment',
@@ -28,10 +28,10 @@ setup(
     name='django-admin-sortable2',
     version=__version__,
     author='Alaric Mägerle',
-    author_email='jacob.rief@gmail.com',
+    author_email='info@rouxcode.ch',
     description=DESCRIPTION,
     long_description=convert('README.md', 'rst'),
-    url='https://github.com/jrief/django-admin-sortable2',
+    url='https://github.com/rouxcode/django-admin-sort',
     license='MIT',
     keywords=['django'],
     platforms=['OS Independent'],

@@ -29,10 +29,10 @@ class SortableAdminBase(object):
     @property
     def media(self):
         css = {
-            'all': ('sortable/css/sortable.css',)
+            'all': ('admin_sort/css/sortable.css',)
         }
         js = (
-            'sortable/js/sortable.js',
+            'admin_sort/js/sortable.js',
         )
         original_media = super(SortableAdminBase, self).media
         return original_media + widgets.Media(css=css, js=js)
@@ -42,7 +42,7 @@ class SortableAdminMixin(SortableAdminBase):
     BACK, FORWARD, FIRST, LAST, EXACT = range(5)
     enable_sorting = False
     action_form = MovePageActionForm
-    change_list_template = 'sortable/change_list.html'
+    change_list_template = 'admin_sort/change_list.html'
 
     def __init__(self, model, admin_site):
         try:
@@ -116,7 +116,7 @@ class SortableAdminMixin(SortableAdminBase):
     def media(self):
         m = super(SortableAdminMixin, self).media
         if self.enable_sorting:
-            m = m + widgets.Media(js=('sortable/js/sortable.list.js',))
+            m = m + widgets.Media(js=('admin_sort/js/sortable.list.js',))
         return m
 
     def _add_reorder_method(self):
@@ -358,7 +358,7 @@ class SortableInlineAdminMixin(SortableAdminBase):
     def media(self):
         original_media = super(SortableInlineAdminMixin, self).media
         js = (
-            'sortable/js/sortable.inline.js',
+            'admin_sort/js/sortable.inline.js',
         )
         new_media = widgets.Media(js=js)
         return original_media + new_media
@@ -366,9 +366,9 @@ class SortableInlineAdminMixin(SortableAdminBase):
     @property
     def template(self):
         if isinstance(self, admin.StackedInline):
-            return 'sortable/stacked.html'
+            return 'admin_sort/stacked.html'
         if isinstance(self, admin.TabularInline):
-            return 'sortable/tabular.html'
+            return 'admin_sort/tabular.html'
         raise ImproperlyConfigured('Class {0}.{1} must also derive from'
                                    ' admin.TabularInline or'
                                    ' admin.StackedInline'
