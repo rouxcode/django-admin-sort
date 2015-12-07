@@ -36,6 +36,10 @@ class Chapter(models.Model):
 class Notes(models.Model):
     note = models.CharField('Note', null=True, blank=True, max_length=255)
     book = models.ForeignKey(SortableBook, null=True)
+    my_order = models.PositiveIntegerField(blank=False, null=False)
+
+    class Meta(object):
+        ordering = ('my_order',)
 
     def __unicode__(self):
         return 'Note: {0}'.format(self.note)
