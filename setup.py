@@ -25,7 +25,7 @@ CLASSIFIERS = [
 
 
 setup(
-    name='django-admin-sortable2',
+    name='django-admin-sort',
     version=__version__,
     author='Alaric Mägerle',
     author_email='info@rouxcode.ch',
