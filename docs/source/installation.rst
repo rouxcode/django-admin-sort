@@ -4,27 +4,27 @@
 Installation
 ============
 
-Install **django-admin-sortable2**. The latest stable release can be found on PyPI
+Install **django-admin-sort**. The latest stable release can be found on PyPI (not found)
 
 .. code-block:: bash
 
-	pip install django-admin-sortable2
+	pip install django-admin-sort
 
 or the newest development version from GitHub
 
 .. code-block:: bash
 
-	pip install -e git+https://github.com/jrief/django-admin-sortable2#egg=django-admin-sortable2
+	pip install -e git+https://github.com/rouxcode/django-admin-sort@develop#egg=django-admin-sort
 
 Configuration
 =============
 
-Add ``'adminsortable2'`` to the list of ``INSTALLED_APPS`` in your project's ``settings.py`` file
+Add ``'admin_sort'`` to the list of ``INSTALLED_APPS`` in your project's ``settings.py`` file
 
 .. code-block:: python
 
 	INSTALLED_APPS = (
 	    ...
-	    'adminsortable2',
+	    'admin_sort',
 	    ...
 	)

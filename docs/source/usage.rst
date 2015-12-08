@@ -1,7 +1,7 @@
 .. _usage:
 
 ====================
-Using Admin Sortable
+Using Admin Sort
 ====================
 
 This Django module offers three mixin classes to be added to the existing classes of your model
@@ -87,7 +87,7 @@ mixin class before model.ModelAdmin):
 .. code:: python
 
 	from django.contrib import admin
-	from adminsortable2.admin import SortableAdminMixin
+	from admin_sort.admin import SortableAdminMixin
 	from models import MyModel
 	
 	class MyModelAdmin(SortableAdminMixin, admin.ModelAdmin):
@@ -125,7 +125,7 @@ Integrate into a detail view
 .. code:: python
 
 	from django.contrib import admin
-	from adminsortable2.admin import SortableInlineAdminMixin
+	from admin_sort.admin import SortableInlineAdminMixin
 	from models import MySubModel, MyModel
 	
 	class MySubModelInline(SortableInlineAdminMixin, admin.TabularInline):  # or admin.StackedInline

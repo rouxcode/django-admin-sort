@@ -9,10 +9,10 @@ from GitHub and run an example webserver:
 
 .. code:: bash
 
-	git clone https://github.com/jrief/django-admin-sortable2.git
-	cd django-admin-sortable2/example/
+	git clone https://github.com/rouxcode/django-admin-sort.git
+	cd django-admin-sort/example/
 	./manage.py syncdb
-	# add an admin user
+	./manage.py createsuperuser
 	./manage.py loaddata testapp/fixtures/data.json
 	./manage.py runserver
 
