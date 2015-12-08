@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 import os
 from setuptools import setup, find_packages
-from adminsortable2 import __version__
+from admin_sort import __version__
+
 try:
     from pypandoc import convert
 except ImportError:
