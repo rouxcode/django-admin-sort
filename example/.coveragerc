@@ -1,6 +1,6 @@
 [run]
 branch = True
 source =
-    adminsortable2
+    admin_sort
 [report]
 precision = 2
