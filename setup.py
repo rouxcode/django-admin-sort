@@ -11,7 +11,8 @@ except ImportError:
         with open(filename) as fd:
             return fd.read()
 
-DESCRIPTION = 'Generic sorting for the List, the Stacked- and the Tabular-Inlines Views in the Django Admin'
+
+DESCRIPTION = 'Sortable changelist, tabular and stacked inlines, drag-and-drop and dropdowns'
 
 CLASSIFIERS = [
     'Environment :: Web Environment',
