@@ -4,6 +4,7 @@ from types import MethodType
 from django import VERSION, forms
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.conf.urls import url
 from django.core.exceptions import ImproperlyConfigured
 from django.core.paginator import EmptyPage
@@ -65,12 +66,16 @@ class SortableAdminMixin(SortableAdminBase):
         self._add_reorder_method()
         self.list_display = ['_reorder'] + list(self.list_display)
 
+    def _get_update_url_name(self):
+        return '{0}_{1}_sortable_update'.format(self.model._meta.app_label,
+                                                self.model._meta.model_name)
+
     def get_urls(self):
         my_urls = [
             url(
                 r'^sortable_update/$',
                 self.admin_site.admin_view(self.update),
-                name='sortable_update'
+                name=self._get_update_url_name()
             ),
         ]
         return my_urls + super(SortableAdminMixin, self).get_urls()
@@ -305,6 +310,14 @@ class SortableAdminMixin(SortableAdminBase):
             startorder = getattr(obj, self.default_order_field)
             self._move_item(request, startorder, endorder, obj.pk)
             endorder += direction
+
+    def changelist_view(self, request, extra_context=None):
+        if extra_context is None:
+            extra_context = {}
+        name = self._get_update_url_name()
+        extra_context['sort_update_url'] = reverse('admin:{0}'.format(name))
+        return super(SortableAdminMixin, self).changelist_view(request,
+                                                               extra_context)
 
 
 class CustomInlineFormSet(BaseInlineFormSet):
