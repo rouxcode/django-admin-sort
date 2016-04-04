@@ -52,6 +52,11 @@ class SortableBookTestCase(TestCase):
         else:
             self.assertEqual(len(out_data), 0)
 
+    def testFilledBookShelf(self):
+        self.assertEqual(SortableBook.objects.count(), 20,
+                         'Check fixtures/data.json: Book shelf shall have 20 items')
+        self.assertUniqueOrderValues()
+
     def test_moveUp(self):
         six_pk = SortableBook.objects.get(my_order=6).pk
         seven_pk = SortableBook.objects.get(my_order=7).pk
@@ -119,13 +124,13 @@ class SortableBookTestCase(TestCase):
     """
 
     def test_moveFirst(self):
-        self.assertEqual(SortableBook.objects.get(pk=2).my_order, 2)
+        second_pk = SortableBook.objects.get(my_order=2).pk
         in_data = {'startorder': 2, 'endorder': 1}
         response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
         self.assertEqual(response.status_code, 200)
         self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
-        self.assertEqual(SortableBook.objects.get(pk=2).my_order, 1)
+        self.assertEqual(SortableBook.objects.get(pk=second_pk).my_order, 1)
 
     def test_bulkMovePrevFromFirstPage(self):
         self.assertEqual(SortableBook.objects.get(pk=14).my_order, 14)
@@ -216,8 +221,3 @@ class SortableBookTestCase(TestCase):
         self.client.post(self.bulk_update_url, post_data)
         self.assertEqual(SortableBook.objects.get(pk=1).my_order, 1)
         self.assertEqual(SortableBook.objects.get(pk=6).my_order, 6)
-
-    def testFilledBookShelf(self):
-        self.assertEqual(SortableBook.objects.count(), 20,
-                         'Check fixtures/data.json: Book shelf shall have 20 items')
-        self.assertUniqueOrderValues()
