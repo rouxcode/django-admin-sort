@@ -83,6 +83,9 @@ class SortableBookTestCase(TestCase):
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=seven_pk).my_order, 7)
 
+    """
+    obsolete??!
+    """
     def test_reverseMoveUp(self):
         self.assertEqual(SortableBook.objects.get(pk=12).my_order, 12)
         in_data = {'startorder': 12, 'endorder': 16}
@@ -111,6 +114,9 @@ class SortableBookTestCase(TestCase):
         self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=14).my_order, 14)
+    """
+    end obsolete
+    """
 
     def test_moveFirst(self):
         self.assertEqual(SortableBook.objects.get(pk=2).my_order, 2)
