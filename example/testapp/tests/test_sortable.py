@@ -132,23 +132,26 @@ class SortableBookTestCase(TestCase):
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=second_pk).my_order, 1)
 
-    def test_bulkMovePrevFromFirstPage(self):
-        self.assertEqual(SortableBook.objects.get(pk=14).my_order, 14)
-        self.assertEqual(SortableBook.objects.get(pk=15).my_order, 15)
+    def test_bulkMovePrevFromFirstPageDoesNothing(self):
+        """
+        not sure if intended like this
+        """
+        fourteen_pk = SortableBook.objects.get(my_order=14).pk
+        fifteen_pk = SortableBook.objects.get(my_order=15).pk
         post_data = {'action': ['move_to_back_page'], 'step': 1, '_selected_action': [14, 15]}
         self.client.post(self.bulk_update_url, post_data)
-        self.assertEqual(SortableBook.objects.get(pk=14).my_order, 14)
-        self.assertEqual(SortableBook.objects.get(pk=15).my_order, 15)
+        self.assertEqual(SortableBook.objects.get(pk=fourteen_pk).my_order, 14)
+        self.assertEqual(SortableBook.objects.get(pk=fifteen_pk).my_order, 15)
 
     def test_bulkMovePreviousPage(self):
-        self.assertEqual(SortableBook.objects.get(pk=17).my_order, 17)
-        self.assertEqual(SortableBook.objects.get(pk=18).my_order, 18)
-        self.assertEqual(SortableBook.objects.get(pk=19).my_order, 19)
-        post_data = {'action': ['move_to_back_page'], 'step': 1, '_selected_action': [17, 18, 19]}
+        seventeen_pk = SortableBook.objects.get(my_order=17).pk
+        eighteen_pk = SortableBook.objects.get(my_order=18).pk
+        nineteen_pk = SortableBook.objects.get(my_order=19).pk
+        post_data = {'action': ['move_to_back_page'], 'step': 1, '_selected_action': [seventeen_pk, eighteen_pk, nineteen_pk]}
         self.client.post(self.bulk_update_url + '?p=1', post_data)
-        self.assertEqual(SortableBook.objects.get(pk=17).my_order, 1)
-        self.assertEqual(SortableBook.objects.get(pk=18).my_order, 2)
-        self.assertEqual(SortableBook.objects.get(pk=19).my_order, 3)
+        self.assertEqual(SortableBook.objects.get(pk=seventeen_pk).my_order, 1)
+        self.assertEqual(SortableBook.objects.get(pk=eighteen_pk).my_order, 2)
+        self.assertEqual(SortableBook.objects.get(pk=nineteen_pk).my_order, 3)
 
     def test_bulkMoveForwardFromLastPage(self):
         self.assertEqual(SortableBook.objects.get(pk=19).my_order, 19)
