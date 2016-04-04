@@ -41,7 +41,7 @@ class SortableBookTestCase(TestCase):
             val += 1
             self.assertEqual(obj.my_order, val, 'Inconsistent order value on SortableBook')
 
-    def assertOrderSequence(self, in_data, raw_out_data):
+    def assertResponseSequenceLength(self, in_data, raw_out_data):
         out_data = json.loads(raw_out_data)
         startorder = in_data['startorder']
         endorder = in_data.get('endorder', 0)
@@ -53,40 +53,42 @@ class SortableBookTestCase(TestCase):
             self.assertEqual(len(out_data), 0)
 
     def test_moveUp(self):
-        self.assertEqual(SortableBook.objects.get(pk=7).my_order, 7)
+        six_pk = SortableBook.objects.get(my_order=6).pk
+        seven_pk = SortableBook.objects.get(my_order=7).pk
         in_data = {'startorder': 7, 'endorder': 3}
         response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
         self.assertEqual(response.status_code, 200)
-        self.assertOrderSequence(in_data, response.content.decode('utf-8'))
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
-        self.assertEqual(SortableBook.objects.get(pk=7).my_order, 3)
-        self.assertEqual(SortableBook.objects.get(pk=6).my_order, 7)
+        self.assertEqual(SortableBook.objects.get(pk=seven_pk).my_order, 3)
+        self.assertEqual(SortableBook.objects.get(pk=six_pk).my_order, 7)
 
     def test_moveDown(self):
-        self.assertEqual(SortableBook.objects.get(pk=7).my_order, 7)
+        seven_pk = SortableBook.objects.get(my_order=7).pk
+        eight_pk = SortableBook.objects.get(my_order=8).pk
         in_data = {'startorder': 7, 'endorder': 12}
         response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
         self.assertEqual(response.status_code, 200)
-        self.assertOrderSequence(in_data, response.content.decode('utf-8'))
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
-        self.assertEqual(SortableBook.objects.get(pk=7).my_order, 12)
-        self.assertEqual(SortableBook.objects.get(pk=8).my_order, 7)
+        self.assertEqual(SortableBook.objects.get(pk=seven_pk).my_order, 12)
+        self.assertEqual(SortableBook.objects.get(pk=eight_pk).my_order, 7)
 
     def test_dontMove(self):
-        self.assertEqual(SortableBook.objects.get(pk=7).my_order, 7)
+        seven_pk = SortableBook.objects.get(my_order=7).pk
         in_data = {'startorder': 7, 'endorder': 7}
         response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
         self.assertEqual(response.status_code, 200)
-        self.assertOrderSequence(in_data, response.content.decode('utf-8'))
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
-        self.assertEqual(SortableBook.objects.get(pk=7).my_order, 7)
+        self.assertEqual(SortableBook.objects.get(pk=seven_pk).my_order, 7)
 
     def test_reverseMoveUp(self):
         self.assertEqual(SortableBook.objects.get(pk=12).my_order, 12)
         in_data = {'startorder': 12, 'endorder': 16}
         response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
         self.assertEqual(response.status_code, 200)
-        self.assertOrderSequence(in_data, response.content.decode('utf-8'))
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=12).my_order, 16)
         self.assertEqual(SortableBook.objects.get(pk=13).my_order, 12)
@@ -96,7 +98,7 @@ class SortableBookTestCase(TestCase):
         in_data = {'startorder': 12, 'endorder': 7}
         response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
         self.assertEqual(response.status_code, 200)
-        self.assertOrderSequence(in_data, response.content.decode('utf-8'))
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=12).my_order, 7)
         self.assertEqual(SortableBook.objects.get(pk=11).my_order, 12)
@@ -106,7 +108,7 @@ class SortableBookTestCase(TestCase):
         in_data = {'startorder': 14, 'endorder': 14}
         response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
         self.assertEqual(response.status_code, 200)
-        self.assertOrderSequence(in_data, response.content.decode('utf-8'))
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=14).my_order, 14)
 
@@ -115,7 +117,7 @@ class SortableBookTestCase(TestCase):
         in_data = {'startorder': 2, 'endorder': 1}
         response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
         self.assertEqual(response.status_code, 200)
-        self.assertOrderSequence(in_data, response.content.decode('utf-8'))
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=2).my_order, 1)
 
