@@ -88,6 +88,24 @@ class SortableBookTestCase(TestCase):
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=seven_pk).my_order, 7)
 
+    def test_move_first_last_of_page(self):
+        one_pk = SortableBook.objects.get(my_order=1).pk
+        in_data = {'startorder': 1, 'endorder': 8}
+        response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
+        self.assertUniqueOrderValues()
+        self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 8)
+
+    def test_move_last_first_of_page(self):
+        one_pk = SortableBook.objects.get(my_order=8).pk
+        in_data = {'startorder': 8, 'endorder': 1}
+        response = self.client.post(self.ajax_update_url, in_data, **self.http_headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
+        self.assertUniqueOrderValues()
+        self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 1)
+
     """
     obsolete??!
     """
