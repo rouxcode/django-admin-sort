@@ -237,7 +237,7 @@ class SortableBookTestCase(TestCase):
         six_pk = SortableBook.objects.get(my_order=6).pk
         post_data = {'action': ['move_to_exact_page'], 'page': 3, '_selected_action': [one_pk, two_pk]}
         self.client.post(self.bulk_update_url, post_data)
-        # assuming one could start at 17 is wrong!
+        # assuming one could start at 17 is wrong
         # maybe even renaming the action to "move to end of list?"
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 15)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 16)
