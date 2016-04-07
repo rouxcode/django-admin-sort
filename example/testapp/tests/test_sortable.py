@@ -253,7 +253,11 @@ class SortableBookTestCase(TestCase):
         four_pk = SortableBook.objects.get(my_order=4).pk
         five_pk = SortableBook.objects.get(my_order=5).pk
         six_pk = SortableBook.objects.get(my_order=6).pk
-        post_data = {'action': ['move_to_exact_page'], 'page': 3, '_selected_action': [one_pk, two_pk]}
+        post_data = {
+            'action': ['move_to_exact_page'],
+            'page': 3,
+            '_selected_action': [one_pk, two_pk, three_pk, four_pk, five_pk, six_pk, ]
+        }
         self.client.post(self.bulk_update_url, post_data)
         # assuming one could start at 17 is wrong
         # maybe even renaming the action to "move to end of list?"
