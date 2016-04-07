@@ -242,3 +242,24 @@ class SortableBookTestCase(TestCase):
         self.client.post(self.bulk_update_url, post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 1)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 6)
+
+    def test_bulkMoveTooManyToLastPage(self):
+        """
+        if last page contains less items that are moved to it
+        """
+        one_pk = SortableBook.objects.get(my_order=1).pk
+        two_pk = SortableBook.objects.get(my_order=2).pk
+        three_pk = SortableBook.objects.get(my_order=3).pk
+        four_pk = SortableBook.objects.get(my_order=4).pk
+        five_pk = SortableBook.objects.get(my_order=5).pk
+        six_pk = SortableBook.objects.get(my_order=6).pk
+        post_data = {'action': ['move_to_exact_page'], 'page': 3, '_selected_action': [one_pk, two_pk]}
+        self.client.post(self.bulk_update_url, post_data)
+        # assuming one could start at 17 is wrong
+        # maybe even renaming the action to "move to end of list?"
+        self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 15)
+        self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 16)
+        self.assertEqual(SortableBook.objects.get(pk=three_pk).my_order, 17)
+        self.assertEqual(SortableBook.objects.get(pk=four_pk).my_order, 18)
+        self.assertEqual(SortableBook.objects.get(pk=five_pk).my_order, 19)
+        self.assertEqual(SortableBook.objects.get(pk=six_pk).my_order, 20)
