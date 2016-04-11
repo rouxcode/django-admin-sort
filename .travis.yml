@@ -14,4 +14,4 @@ install:
   - python setup.py -q install
 
 script:
-  - ./manage.py test --settings=testapp.settings
+  - ./manage.py test --settings=admin_sort.tests.settings
