@@ -9,7 +9,7 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'admin_sort.tests.database.sqlite',
+        'NAME': 'admin_sort/tests/database.sqlite',
     },
 }
 
