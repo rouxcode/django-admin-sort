@@ -1,4 +1,7 @@
 # Django settings for unit test project.
+import os
+import sys
+
 import django
 
 DEBUG = True
@@ -6,15 +9,19 @@ DEBUG = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'database.sqlite',
+        'NAME': 'admin_sort/tests/database.sqlite',
     },
 }
 
 SITE_ID = 1
 
-ROOT_URLCONF = 'testapp.urls'
+ROOT_URLCONF = 'admin_sort.tests.testapp.urls'
 
 SECRET_KEY = 'secret'
+
+APP_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+sys.path.insert(0, APP_ROOT + "/../")
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -69,7 +76,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.staticfiles',
     'admin_sort',
-    'testapp',
+    'admin_sort.tests.testapp',
 )
 
 MIDDLEWARE_CLASSES = (

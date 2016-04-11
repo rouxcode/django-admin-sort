@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 
-from testapp.models import SortableBook
+from .testapp.models import SortableBook
 
 # Django 1.8 dropped the name column on contenttypes...
 if django.VERSION[:2] >= (1, 8):
