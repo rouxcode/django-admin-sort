@@ -4,16 +4,13 @@
 django-admin-sort
 ======================
 
-TODO: write!
-
 This Django module is as a replacement for `django-admin-sortable` / `django-admin-sortable2`, using
 almost the same approach as django-admin-sortable2.
 
 It is a generic drag-and-drop/dropdown ordering module for sorting objects in the list view of the Django
-admin interface. This plugin offers simple mixin classes which enrich the functionality of *any*
+admin interface. This plugin offers simple mixin classes which enrich the functionality of almost *any*
 existing class derived from ``admin.ModelAdmin``, ``admin.StackedInline`` or
-``admin.TabluarInline``. It thus makes it very easy to integrate with existing models and their
-model admin interfaces.
+``admin.TabluarInline``.
 
 Project home: https://github.com/rouxcode/django-admin-sort
 
@@ -25,9 +22,11 @@ Why yet another adminsortable plugin?
 All available plugins which add functionality to make list views for the Django admin interface
 sortable, offer a base class to be used instead of ``models.Model``. This abstract base class then
 contains a hard coded position field, additional methods, and meta directives.
-django-admin-sortable2 solved this issue, using a Mixin approach. django-admin-sort adds a more
-robust test suite, and some things, as ordering with a select/dropdown (planned for 1.0).
+django-admin-sort solves this issue, using a Mixin approach.
 
+Planned Features
+================
+* Dropdown for sorting
 
 
 Contents:
