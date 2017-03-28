@@ -113,9 +113,9 @@ its sorting order.
 
 In case you just changed your model to contain an additional sorting
 field (e.g. ``my_order``), which does not yet contain any values, then
-you **must** set initial ordering values.
+you must set initial ordering values.
 
-**django-admin-sortable2** is shipping with a management command which can be used to prepopulate
+**django-admin-sort** is shipping with a management command which can be used to prepopulate
 the ordering field:
 
 	shell> ./manage.py reorder my_app.models.MyModel
@@ -146,7 +146,6 @@ See https://code.djangoproject.com/ticket/20708 for details.
 
 Therefore we strongly advise against setting ``unique=True`` on the position field, unless you want
 unportable code, which only works with Postgres databases.
-
 
 
 ## License
