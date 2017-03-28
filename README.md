@@ -65,7 +65,7 @@ Django. Use one of these models fields:
 Additionally you may use ``models.DecimalField`` or ``models.FloatField``, but these model fields
 are not recommended.
 
-** WARNING: Do not make this field unique! See below why. **
+**WARNING: Do not make this field unique! See below why.**
 
 
 ### Sortable list view
@@ -123,7 +123,7 @@ the ordering field:
 If you prefer to do a one-time database migration, just after having added the ordering field
 to the model, then create a datamigration, more advanced fiddling is possible there.
 
-** NOTE: If you omit to prepopulate the ordering field with unique values, after adding this field
+**NOTE: If you omit to prepopulate the ordering field with unique values, after adding this field
           to an existing model, then attempting to reorder field manually will fail.**
 
 
