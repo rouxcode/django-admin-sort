@@ -68,7 +68,7 @@ are not recommended.
 WARNING: Do not make this field unique! See below why.
 
 
-### In Django's Admin, make the list view sortable
+### Sortable list view
 
 In ``admin.py``, add a mixin class to augment the functionality for sorting (be sure to put the
 mixin class before model.ModelAdmin):
@@ -86,7 +86,7 @@ By clicking on that area, the user can move that row up or down. If he wants to 
 page, he can do that as a bulk operation, using the admin actions.
 
 
-### Make a stacked or tabular inline view sortable
+### Sortable stacked or tabular inline
 
 	from django.contrib import admin
 	from admin_sort.admin import SortableInlineAdminMixin
@@ -115,7 +115,7 @@ In case you just changed your model to contain an additional sorting
 field (e.g. ``my_order``), which does not yet contain any values, then
 you must set initial ordering values.
 
-**django-admin-sort** is shipping with a management command which can be used to prepopulate
+django-admin-sort is shipping with a management command which can be used to prepopulate
 the ordering field:
 
 	shell> ./manage.py reorder my_app.models.MyModel
