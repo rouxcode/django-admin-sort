@@ -1,8 +1,11 @@
 === (ongoing) ===
 - whatever new
 
+=== 0.2.0 ===
+- initial stable release, also on pypi
+
 === 0.1.1 ===
-- initial stable release on pypi
+- initial release
 
 
 # Suggested file syntax:
