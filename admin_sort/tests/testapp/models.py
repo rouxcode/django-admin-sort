@@ -35,6 +35,8 @@ class Chapter(models.Model):
 
 class Notes(models.Model):
     note = models.CharField('Note', null=True, blank=True, max_length=255)
+    another_field = models.CharField('Note2', null=True, blank=True, max_length=255)
+    one_more = models.CharField('Note3 (simulating tabular inlines)', null=True, blank=True, max_length=255)
     book = models.ForeignKey(SortableBook, null=True)
     my_order = models.PositiveIntegerField(blank=False, null=False)
 

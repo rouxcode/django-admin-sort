@@ -12,6 +12,8 @@ class ChapterInline(SortableInlineAdminMixin, admin.StackedInline):
 class NotesInline(SortableInlineAdminMixin, admin.TabularInline):
     model = models.Notes
     extra = 1
+    fields = ['note', 'another_field', 'one_more', 'my_order']
+
 
 class SortableBookAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_per_page = 8
