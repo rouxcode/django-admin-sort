@@ -22,7 +22,10 @@ var SortableInline = (function ( $ ) {
 
     function init_stacked( $group ) {
         var $wrap = $('.inline-group', $group);
-        // var $inlines = $('.inline-related.has_original', $wrap);
+        if ($wrap.find('fieldset.module').size()) {
+            // django > 1.9
+            $wrap = $wrap.find('fieldset.module')
+        }
         var $inlines = $('.inline-related', $wrap);
         var $sortable_inlines = $inlines;
         if ($group.hasClass('has-extra')) {
@@ -38,12 +41,20 @@ var SortableInline = (function ( $ ) {
         update({'from': $wrap[0]});
     };
 
-    function init_tabular( $group ) {
+    function init_tabular($group) {
         var $wrap = $('.module tbody', $group);
         var $inlines = $('tr', $wrap);
         var $sortable_inlines = $inlines;
         var $head = $('.module thead tr', $group);
         var $first_label = $head.find('th:first');
+        var cols_spanned = parseInt($first_label.attr('colspan'));
+        if (cols_spanned > 1) {
+            // django <= 1.9
+            $first_label.attr({colspan: cols_spanned - 1});
+        } else {
+            // django > 1.9
+            $head.find('.original').remove();
+        }
         $first_label.attr({colspan: parseInt($first_label.attr('colspan')) - 1});
         $head.prepend('<th class="drag-label">&nbsp;</th>');
         if ($group.hasClass('has-extra')) {
@@ -78,13 +89,12 @@ var SortableInline = (function ( $ ) {
             chosenClass: "inline-chosen",
             onUpdate: update
         }
-        if ( is_tabular ) {
+        if (is_tabular) {
             options.forceFallback = true;
             options.fallbackTolerance = 5;
             options.fallbackClass = 'inline-fallback';
         }
         var sortable = new Sortable($wrap[0], options);
-        console.log(sortable);
     };
 
     function add_row_handler(e) {
