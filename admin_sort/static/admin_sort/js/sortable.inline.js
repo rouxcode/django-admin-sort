@@ -33,7 +33,7 @@ var SortableInline = (function ( $ ) {
         }
         $sortable_inlines.append('<div class="drag"></div>');
         if (1) { // } $inlines.length > 1 ) {
-            init_sortable( $wrap, $inlines, '.drag', false );
+            init_sortable($wrap, $inlines, '.drag', false);
         }
         update({'from': $wrap[0]});
     };
@@ -84,6 +84,7 @@ var SortableInline = (function ( $ ) {
             options.fallbackClass = 'inline-fallback';
         }
         var sortable = new Sortable($wrap[0], options);
+        console.log(sortable);
     };
 
     function add_row_handler(e) {
@@ -94,7 +95,6 @@ var SortableInline = (function ( $ ) {
 
     function update(e) {
         var $wrap = $(e.from);
-        console.log($wrap);
         var $inlines = $wrap.find('.is_sortable');
         var index = 0;  // TODO: enable reverse sorting: calculate first reverse index by counting elements!
         var direction = $wrap.data('direction');
