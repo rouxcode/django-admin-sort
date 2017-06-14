@@ -1,8 +1,13 @@
 === (ongoing) ===
 - whatever new
 
+=== 0.2.1 ===
+- inlines with extra=0 can have there elements sortable immediatly after adding
+- bugfixes
+- django 1.10 and 1.11 compatibility
+
 === 0.2.0 ===
-- initial stable release, also on pypi
+- initial stable release, also not on pypi
 
 === 0.1.1 ===
 - initial release

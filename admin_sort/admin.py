@@ -342,15 +342,13 @@ class CustomInlineFormSet(BaseInlineFormSet):
 
     def save_new(self, form, commit=True):
         """
-        New objects do not have a valid value in their ordering field.
-        On object save, add an order bigger than all other order fields for
+        New objects do not always have a valid value in their ordering field.
+        If not, add an order bigger than all other order fields for
         the current parent_model.
-        Strange behaviour when field has a default, this might be evaluated on
-        new object and the value will be not None, but the default value.
         """
         obj = super(CustomInlineFormSet, self).save_new(form, commit=False)
         default_order_field = getattr(obj, self.default_order_field, None)
-        if default_order_field is None or default_order_field >= 0:
+        if default_order_field is None:  # legacy! or default_order_field >= 0
             kwargs = {self.fk.get_attname(): self.instance.pk}
             query_set = self.model.objects.filter(**kwargs)
             kwargs = {'max_order': Max(self.default_order_field)}
