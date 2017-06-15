@@ -1,10 +1,10 @@
 
 
-git flow release start 0.0.3
+git flow release start xxxx
 version bump in admin_sort/__init__.py
 last chance to update CHANGELOG!
 git commit -am'version bump / changelog'
-git flow release finish 0.xxx
+git flow release finish xxxx
 git push --all; git push --tags
 # upstream: depends
 git push upstream --all; git push upstream --tags
