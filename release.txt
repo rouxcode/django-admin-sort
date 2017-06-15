@@ -1,4 +1,5 @@
 
+# dont change any files during procedure.
 
 git flow release start xxxx
 version bump in admin_sort/__init__.py
@@ -14,4 +15,3 @@ python setup.py register -r pypitest
 twine upload dist/* -r pypitest
 python setup.py register -r pypi
 twine upload dist/* -r pypi
-

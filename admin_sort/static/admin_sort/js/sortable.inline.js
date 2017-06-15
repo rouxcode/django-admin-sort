@@ -22,9 +22,9 @@ var SortableInline = (function ( $ ) {
 
     function init_stacked( $group ) {
         var $wrap = $('.inline-group', $group);
-        if ($wrap.find('fieldset.module').size()) {
+        if ($wrap.find('fieldset.module:not(.aligned)').size()) {
             // django > 1.9
-            $wrap = $wrap.find('fieldset.module')
+            $wrap = $wrap.find('fieldset.module:not(.aligned)')
         }
         var $inlines = $('.inline-related', $wrap);
         var $sortable_inlines = $inlines;

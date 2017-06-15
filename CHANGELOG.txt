@@ -1,6 +1,9 @@
 === (ongoing) ===
 - whatever
 
+=== 0.2.2 ===
+- fixing regression for django 1.8
+
 === 0.2.1 ===
 - first release on pypi
 - django 1.10 and 1.11 compatibility not yet
