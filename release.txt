@@ -9,9 +9,6 @@ git flow release finish xxxx
 git push --all; git push --tags
 # upstream: depends
 git push upstream --all; git push upstream --tags
-python setup.py sdist
-python setup.py bdist_wheel --universal
-python setup.py register -r pypitest
-twine upload dist/* -r pypitest
-python setup.py register -r pypi
-twine upload dist/* -r pypi
+python setup.py sdist && python setup.py bdist_wheel --universal
+python setup.py register -r pypitest && twine upload dist/* -r pypitest
+python setup.py register -r pypi && twine upload dist/* -r pypi
