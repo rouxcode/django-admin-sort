@@ -1,8 +1,15 @@
 === (ongoing) ===
-- whatever new
+- whatever
+
+=== 0.2.1 ===
+- first release on pypi
+- django 1.10 and 1.11 compatibility not yet
+- inlines with extra=0 can have them elements sortable immediatly after adding
+- better djangocms-admin-style support (still some room to improve)
+- many small bugfixes
 
 === 0.2.0 ===
-- initial stable release, also on pypi
+- initial stable release, also not on pypi
 
 === 0.1.1 ===
 - initial release
