@@ -146,7 +146,7 @@ class SortableAdminMixin(SortableAdminBase):
                             self.default_order_field
                         )
                     )
-                html = '<div class="drag"{0}>&nbsp;</div>'.format(
+                html = '<div class="admin-sort-drag"{0}>&nbsp;</div>'.format(
                     ' '.join(data_attrs)
                 )
             return html

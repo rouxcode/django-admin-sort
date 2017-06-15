@@ -37,12 +37,12 @@ var SortableList = (function( $ ) {
             // set sortable env
             $('.row1, .row2').addClass(draggable_class);
             direction = get_direction();
-            first_position = parseInt($('.' + draggable_class + ':first .drag').data('order'));
+            first_position = parseInt($('.' + draggable_class + ':first .admin-sort-drag').data('order'));
             sortable = new Sortable(wrap, {
                 draggable: "." + draggable_class,
                 forceFallback: true,
                 fallbackTolerance: 5,
-                handle: '.drag',
+                handle: '.admin-sort-drag',
                 ghostClass: "sortable-ghost",
                 chosenClass: "sortable-chosen",
                 onUpdate: update
@@ -59,7 +59,7 @@ var SortableList = (function( $ ) {
     function update(e) {
         if ( e.oldIndex != e.newIndex ) {
             var $item = $( e.item );
-            var original_position = parseInt( $item.find('.drag').data('order') );
+            var original_position = parseInt( $item.find('.admin-sort-drag').data('order') );
             var new_position = original_position + ( (e.newIndex - e.oldIndex) * direction );
             $.ajax({
                 url: update_url,
@@ -78,7 +78,7 @@ var SortableList = (function( $ ) {
 
     function updated_successful(data) {
         var $rows = $('.' + draggable_class);
-        var $items = $('.' + draggable_class + ' .drag');
+        var $items = $('.' + draggable_class + ' .admin-sort-drag');
         var index = first_position;
         for ( var i = 0; i < $rows.length; i++ ) {
             var $item = $( $items[ i ] );
@@ -98,7 +98,7 @@ var SortableList = (function( $ ) {
     };
 
     function get_direction() {
-        var $items = $('.' + draggable_class + ' .drag');
+        var $items = $('.' + draggable_class + ' .admin-sort-drag');
         if ( $items.length > 1 ) {
             if ( parseInt( $items[0].getAttribute('data-order') ) > parseInt( $items[1].getAttribute('data-order') ) ) {
                 return -1;

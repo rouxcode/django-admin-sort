@@ -30,14 +30,22 @@
     padding: 0 16px;
 }
 
-#result_list div.drag {
+#result_list div.admin-sort-drag {
     position: absolute;
     top: 50%;
     width: 70%;
     height: 20px;
     display: inline-block;
     vertical-align: top;
-    background: transparent url("../imgs/drag.png") repeat scroll 0% 0% / 5px auto;
+    background: linear-gradient(
+      to bottom,
+      #ccc,
+      #ccc 50%,
+      #fff 50%,
+      #fff
+    );
+    background-size: 100% 5px;
+    cursor: move;
     transform: translateY(-50%);
 }
 
@@ -230,7 +238,7 @@
     padding: 0 68px 0 8px !important;
 }
 
-.djangocms-admin-style #result_list tbody td.field-_reorder div.drag {
+.djangocms-admin-style #result_list tbody td.field-_reorder div.admin-sort-drag  {
     position: relative;
     top: auto;
     width: 100%;
@@ -244,8 +252,8 @@
     border: 1px solid #ddd;
     border-collapse: collapse !important;
 }
-
-.djangocms-admin-style .change-list #changelist #result_list tbody div.drag {
+/* adapt drag */
+.djangocms-admin-style .change-list #changelist #result_list tbody div.admin-sort-drag  {
     max-width: 100%;
     height: 75%;
     margin: 0;
