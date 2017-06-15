@@ -93,29 +93,59 @@
     bottom: 1px;
     display: block;
     box-sizing: border-box;
-    border: 4px solid white;
+    /*border: 5px solid #fff;*/
     width: 40px;
-    background-image: url("../imgs/drag.png");
-    background-size: 5px auto;
+    /*background-image: url("../imgs/drag.png");*/
+    /*background-size: 5px auto;*/
+    background: linear-gradient(
+      to bottom,
+      #ccc,
+      #ccc 50%,
+      #fff 50%,
+      #fff
+    );
+    background-size: 5px 5px;
     cursor: move;
 }
 
-.sortable-stacked .drag::before {
-    content: '';
-    position: absolute;
-    right: -4px;
-    top: -4px;
-    bottom: -4px;
-    width: 1px;
-    background-color: #eee;
-}
+/*.filer-gui-inline-related .field-position {*/
+    /*position: absolute;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*display: block;*/
+    /*box-sizing: border-box;*/
+    /*width: 26px;*/
+    /*height: 100%;*/
+    /*padding: 0;*/
+    /*border: 6px solid #fff;*/
+    /*background: linear-gradient(*/
+      /*to bottom,*/
+      /*#ccc,*/
+      /*#ccc 50%,*/
+      /*#fff 50%,*/
+      /*#fff*/
+    /*);*/
+    /*background-size: 100% 6px;*/
+    /*cursor: grab;*/
+/*}*/
+
+
+/*.sortable-stacked .drag::before {*/
+    /*content: '';*/
+    /*position: absolute;*/
+    /*right: 0px;*/
+    /*top: 0px;*/
+    /*bottom: 0px;*/
+    /*width: 1px;*/
+    /*background-color: #eee;*/
+/*}*/
 
 .sortable-stacked .drag::after {
     content: '';
     position: absolute;
-    left: -4px;
-    bottom: -5px;
-    width: 28px;
+    left: 0px;
+    bottom: -1px;
+    width: 40px;
     height: 1px;
     background-color: #eee;
 }
@@ -143,8 +173,16 @@
     cursor: move;
     padding: 0 !important;
     width: 20px;
-    background-image: url("../imgs/drag.png");
-    background-size: 5px auto;
+    /*background-image: url("../imgs/drag.png");*/
+    /*background-size: 5px auto;*/
+    background: linear-gradient(
+      to bottom,
+      #ccc,
+      #ccc 50%,
+      #fff 50%,
+      #fff
+    );
+    background-size: 100% 5px;
 }
 .sortable-tabular .is_sortable .original p {
     display: none

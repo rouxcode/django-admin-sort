@@ -69,7 +69,7 @@ else:
         },
     ]
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -77,7 +77,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'admin_sort',
     'admin_sort.tests.testapp',
-)
+]
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
