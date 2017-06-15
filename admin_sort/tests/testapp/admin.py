@@ -26,10 +26,27 @@ class NotesExtraZeroInline(SortableInlineAdminMixin, admin.TabularInline):
     fields = ['another_field', 'my_order']
 
 
+class AnotherInline(admin.StackedInline):
+    model = models.Another
+    extra = 1
+
+
+class AnotherOneInline(admin.TabularInline):
+    model = models.AnotherOne
+    extra = 1
+
+
 class SortableBookAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_per_page = 8
     list_display = ('title', 'my_order',)
-    inlines = (ChapterInline, NotesInline, ChapterExtraZeroInline, NotesExtraZeroInline)
+    inlines = (
+        ChapterInline,
+        NotesInline,
+        ChapterExtraZeroInline,
+        NotesExtraZeroInline,
+        AnotherInline,
+        AnotherOneInline,
+    )
 admin.site.register(models.SortableBook, SortableBookAdmin)
 
 
