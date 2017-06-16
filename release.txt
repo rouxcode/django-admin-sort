@@ -1,5 +1,5 @@
 
-# dont change any files during procedure.
+# dont change any files besides CHANGELOG.txt and __init__.py during procedure.
 
 git flow release start xxxx
 version bump in admin_sort/__init__.py
