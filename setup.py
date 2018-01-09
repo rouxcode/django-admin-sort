@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import os
 from setuptools import setup, find_packages
 from admin_sort import __version__
 
@@ -12,7 +11,10 @@ except ImportError:
             return fd.read()
 
 
-DESCRIPTION = 'Sortable changelist, tabular and stacked inlines, drag-and-drop and dropdowns'
+DESCRIPTION = (
+    'Sortable changelist, tabular and stacked inlines,'
+    'drag-and-drop and dropdowns'
+)
 
 CLASSIFIERS = [
     'Environment :: Web Environment',

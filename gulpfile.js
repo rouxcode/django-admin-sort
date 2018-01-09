@@ -10,12 +10,12 @@ var sass_conf = {
 };
 
 gulp.task('sass', function () {
-    return gulp.src('treebeard_admin/static/admin/treebeard_admin/scss/**/*.scss')
+    return gulp.src('admin_sort/static/admin_sort/scss/**/*.scss')
         .pipe(sass(sass_conf).on('error', sass.logError))
-        .pipe(gulp.dest('treebeard_admin/static/admin/treebeard_admin/css/'));
+        .pipe(gulp.dest('admin_sort/static/admin_sort/css/'));
 });
 
 
 gulp.task('watch', function () {
-    gulp.watch('treebeard_admin/static/admin/treebeard_admin/scss/**/*.scss', ['sass']);
+    gulp.watch('admin_sort/static/admin_sort/scss/**/*.scss', ['sass']);
 });

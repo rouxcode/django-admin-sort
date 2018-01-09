@@ -12,5 +12,6 @@ build
 docs/_build
 dist
 htmlcov
+node_modules
 .idea
 .tox

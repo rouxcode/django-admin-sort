@@ -1,6 +1,0 @@
-[run]
-branch = True
-source =
-    admin_sort
-[report]
-precision = 2

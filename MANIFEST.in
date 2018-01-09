@@ -1,8 +1,0 @@
-include README.md
-include CHANGELOG.txt
-recursive-include admin_sort *.py
-recursive-include admin_sort/locale *
-recursive-include admin_sort/static *
-recursive-include admin_sort/templates *
-recursive-include admin_sort/management *
-recursive-exclude * *.pyc
