@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django import forms
+from django.conf import settings
 from django.conf.urls import url
 from django.core.exceptions import ImproperlyConfigured
 from django.db import transaction
@@ -39,6 +40,8 @@ class SortableAdminMixin(object):
                 'admin_sort/css/sortable.css',
             ]
         }
+        if 'djangocms_admin_style' in settings.INSTALLED_APPS:
+            css['all'].append('admin_sort/css/sortable.cms.css')
         js = [
             'admin_sort/js/sortable.js',
             'admin_sort/js/sortable.list.js',
@@ -86,6 +89,11 @@ class SortableAdminMixin(object):
                 self.admin_site.admin_view(self.update_view),
                 name='{}_{}_update'.format(*info)
             ),
+            url(
+                r'^reorder/$',
+                self.admin_site.admin_view(self.reorder_view),
+                name='{}_{}_reorder'.format(*info)
+            ),
         ]
         urls += super(SortableAdminMixin, self).get_urls()
         return urls
@@ -94,11 +102,19 @@ class SortableAdminMixin(object):
         extra_context = extra_context or {}
         extra_context.update({
             'update_url': self.get_update_url(),
+            'reorder_url': self.get_reorder_url(),
         })
         return super(SortableAdminMixin, self).changelist_view(
             request,
             extra_context,
         )
+
+    def reorder_view(self, request):
+        error_response = self.check_update_request(request)
+        if error_response:
+            return error_response
+        data = self._reorder_all()
+        return JsonResponse(data)
 
     def update_view(self, request):
         error_response = self.check_update_request(request)
@@ -147,6 +163,13 @@ class SortableAdminMixin(object):
                 queryset=self.model._default_manager.get_queryset()
             )
         return UpdateForm
+
+    def get_reorder_url(self):
+        info = [self.model._meta.app_label, self.model._meta.model_name]
+        return reverse(
+            'admin:{}_{}_reorder'.format(*info),
+            current_app=self.admin_site.name
+        )
 
     def get_update_url(self):
         info = [self.model._meta.app_label, self.model._meta.model_name]
@@ -201,13 +224,24 @@ class SortableAdminMixin(object):
             'end': end,
             'object_list': [
                 o for o in base_qs.filter(**kwargs).values('pk', self._field)
-            ],
+            ]
         }
         return return_data
 
     def _reorder_all(self):
         # TODO implement
-        return
+        object_list = []
+        with transaction.atomic():
+            pos = 1
+            for o in self.model._default_manager.get_queryset():
+                setattr(o, self._field, pos)
+                o.save()
+                object_list.append([pos, o.pk, '{}'.format(o)])
+                pos += 1
+        return {
+            'message': 'ok',
+            'objects': object_list,
+        }
 
     # CHANGE LIST AUXILIARY COLUMNS
     def _col_move_node(self, obj):

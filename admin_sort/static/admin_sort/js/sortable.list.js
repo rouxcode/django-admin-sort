@@ -3,34 +3,49 @@ var SortableList = ( function( $ ) {
 
     var csrftoken;
     var current_page;
+    var messages;
     var sortable;
     var total_pages;
+    var reorder_url;
     var update_url;
     var wrap;
     var $items;
+    var $reorder;
+    var $results;
     var $wrap;
 
     var handle_class = 'admin-sort-drag';
     var draggable_class = 'draggable-item';
+    var reorder_id = 'admin-sort-reorder-link';
     var $doc = $( document );
+    var $message = $( '<div id="admin-sort-state" class="admin-sort-state">' + messages + '</div>');
 
     $doc.ready( init );
 
     function init() {
         $( '#result_list' ).addClass( 'sortable-tree' );
+        $results = $( '.results' );
         $wrap = $( '#result_list tbody' );
+        $reorder = $( '#' + reorder_id );
         if( $wrap.length > 0 ) {
+            // set sortablejs
             wrap = $wrap[ 0 ];
             $items = $( '.row1, .row2', $wrap ).each( init_item );
             sortable = new Sortable( wrap, {
                 draggable: "." + draggable_class,
                 handle: '.' + handle_class,
-                ghostClass: "sortable-ghost",
-                chosenClass: "sortable-chosen",
+                ghostClass: "admin-sort-ghost",
+                chosenClass: "admin-sort-chosen",
                 onUpdate: update
             } );
+
+            // set reorder link
+            $reorder.off().on( 'click', request_reorder)
         }
     };
+
+
+    // Sortable --------------------------------------------------------------
 
     function init_item( i ) {
         var item = this;
@@ -45,7 +60,10 @@ var SortableList = ( function( $ ) {
     };
 
     function set_item_index( i ) {
+        var css_class = i % 2 == 0 ? 'row1' : 'row2';
         this._opts.index = i;
+        this.$.removeClass( 'row1 row2' );
+        this.$.addClass( css_class );
         return this
     };
 
@@ -65,7 +83,7 @@ var SortableList = ( function( $ ) {
                 data.position = 'right';
                 data.target = $list[ index - 1 ]._opts.pk;
             }
-            $wrap.css( { opacity: '0.25' } );
+            set_loading( messages.sorting );
             $.ajax( {
                 url: update_url,
                 type: 'POST',
@@ -78,10 +96,52 @@ var SortableList = ( function( $ ) {
                 if( data.message === 'error' ) {
                     show_error( data.error );
                 }
-                console.log( data )
-                $wrap.css( { opacity: '1' } );
+                unset_loading();
             } );
         }
+    };
+
+
+    // Reorder ---------------------------------------------------------------
+
+    function request_reorder( e ) {
+        if( e ) {
+            e.preventDefault();
+        }
+        var data = {
+            csrfmiddlewaretoken: csrftoken
+        };
+        set_loading( messages.reordering );
+        $.ajax( {
+            url: reorder_url,
+            type: 'POST',
+            data: data
+        } ).fail( function() {
+            show_error( 'there has been a problem reordering the items' );
+        } ).done( function( data ) {$results
+            if( data.message === 'error' ) {
+                show_error( data.error );
+            }
+            unset_loading();
+            window.location.reload(false);
+        } );
+    };
+
+
+    // States ----------------------------------------------------------------
+
+    function set_loading( message ) {
+        $message.html(
+            '<span class="msg">' + message + '</span>'
+            + '<span class="admin-sort-loader">'
+            + '<span class="admin-sort-loader-inner"></span>'
+            + '</span>'
+        );
+        $results.append( $message );
+    };
+
+    function unset_loading() {
+        $message.remove();
     };
 
 
@@ -90,10 +150,10 @@ var SortableList = ( function( $ ) {
     function show_error( msg ) {
         // TODO implement nice html message
         console.error( msg );
-    }
+    };
 
 
-    // Utilities --------------------------------------------------------------
+    // Utilities -------------------------------------------------------------
 
     function set_options( options ) {
         // TODO check if option has value & do proper init or error handling
@@ -101,6 +161,8 @@ var SortableList = ( function( $ ) {
         current_page = options.current_page;
         total_pages = options.total_pages;
         update_url = options.update_url;
+        reorder_url = options.reorder_url;
+        messages = options.messages;
     };
 
     return {
