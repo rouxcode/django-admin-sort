@@ -1,0 +1,34 @@
+.admin-sort-row {
+    position: relative;
+    box-sizing: border-box;
+    padding-left: 20px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: auto;
+        bottom: 0;
+        display: block;
+        width: 20px;
+        border: 1px solid #eee;
+    }
+
+    .admin-sort-drag {
+        left: 7px;
+        top: 6px;
+        right: auto;
+        bottom: 6px;
+        width: 10px;
+    }
+
+    &.sortable-ghost {
+        background-color: #c4dce8;
+
+        h3,
+        fieldset {
+            background-color: transparent;
+        }
+    }
+}

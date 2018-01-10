@@ -1,8 +1,10 @@
 from __future__ import unicode_literals
 
-from .admin import SortableAdminMixin
+from .inlines import SortableInlineAdminMixin
+from .model import SortableAdminMixin
 
 
 __all__ = [
-    SortableAdminMixin
+    SortableAdminMixin,
+    SortableInlineAdminMixin,
 ]

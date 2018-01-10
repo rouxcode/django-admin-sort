@@ -18,29 +18,37 @@ var SortableList = ( function( $ ) {
     var draggable_class = 'draggable-item';
     var reorder_id = 'admin-sort-reorder-link';
     var $doc = $( document );
-    var $message = $( '<div id="admin-sort-state" class="admin-sort-state">' + messages + '</div>');
+    var $message = $(
+        '<div id="admin-sort-state" class="admin-sort-state">'
+        + messages
+        + '</div>'
+    );
 
     $doc.ready( init );
 
     function init() {
-        $( '#result_list' ).addClass( 'sortable-tree' );
+        $( '#result_list' ).addClass( 'sortable-list' );
         $results = $( '.results' );
         $wrap = $( '#result_list tbody' );
         $reorder = $( '#' + reorder_id );
+
         if( $wrap.length > 0 ) {
+
             // set sortablejs
             wrap = $wrap[ 0 ];
             $items = $( '.row1, .row2', $wrap ).each( init_item );
             sortable = new Sortable( wrap, {
                 draggable: "." + draggable_class,
                 handle: '.' + handle_class,
+                forceFallback: true,
+                fallbackTolerance: 5,
                 ghostClass: "admin-sort-ghost",
                 chosenClass: "admin-sort-chosen",
                 onUpdate: update
             } );
 
             // set reorder link
-            $reorder.off().on( 'click', request_reorder)
+            $reorder.off().on( 'click', send_reorder_request)
         }
     };
 
@@ -104,7 +112,7 @@ var SortableList = ( function( $ ) {
 
     // Reorder ---------------------------------------------------------------
 
-    function request_reorder( e ) {
+    function send_reorder_request( e ) {
         if( e ) {
             e.preventDefault();
         }

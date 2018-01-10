@@ -5,7 +5,8 @@ from django.conf import settings
 from django.conf.urls import url
 from django.core.exceptions import ImproperlyConfigured
 from django.db import transaction
-from django.db.models import F
+from django.db.models import F, Max
+from django.forms import widgets
 from django.http import (
     HttpResponseBadRequest,
     HttpResponseForbidden,
@@ -30,11 +31,20 @@ MOVE_CHOICES = (
 
 class SortableAdminMixin(object):
 
+    """
+    _field<required>: which is the positioning field
+    _insert_position<default:'last'>: defines where a new object is inserted
+        last: at the end
+        first: at the start
+    """
+
     _field = None
+    _insert_position = None
 
     change_list_template = 'admin/admin_sort/change_list.html'
 
-    class Media:
+    @property
+    def media(self):
         css = {
             'all': [
                 'admin_sort/css/sortable.css',
@@ -46,15 +56,37 @@ class SortableAdminMixin(object):
             'admin_sort/js/sortable.js',
             'admin_sort/js/sortable.list.js',
         ]
+        original_media = super(SortableAdminMixin, self).media
+        return original_media + widgets.Media(css=css, js=js)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, model, admin_site):
         self._field = getattr(self, 'position_field', None)
+        self._insert_position = getattr(self, 'insert_position', 'last')
         if not self._field:
             msg = _('You have to define a position field on your {}').format(
                 self.__class__.__name__
             )
             raise ImproperlyConfigured(msg)
-        super(SortableAdminMixin, self).__init__(*args, **kwargs)
+        if '-{}'.format(self._field) in model._meta.ordering:
+            msg = _(
+                '{0} can nott be in reverse order (-{0}).'
+                'Use {1}.insert_position instead'
+            ).format(self._field, self.__class__.__name__)
+            raise ImproperlyConfigured(msg)
+        if self._field not in model._meta.ordering:
+            msg = _(
+                '{} has to be in MetaClass.ordering of your Model'
+            ).format(self._field)
+            raise ImproperlyConfigured(msg)
+        # Force ordering by position
+        self.ordering = [self._field]
+        super(SortableAdminMixin, self).__init__(model, admin_site)
+
+    def get_exclude(self, request, obj=None):
+        exclude = self.exclude or []
+        if self._field not in exclude:
+            exclude.append(self._field)
+        return exclude
 
     def get_list_display(self, request):
         list_display = ['_col_move_node'] + [
@@ -109,22 +141,40 @@ class SortableAdminMixin(object):
             extra_context,
         )
 
+    def save_form(self, request, form, change):
+        """
+        Given a ModelForm return an unsaved instance. ``change`` is True if
+        the object is being changed, and False if it's being added.
+        """
+        return form.save(commit=False)
+
+    def save_model(self, request, obj, form, change):
+        if not obj.pk:
+            if self._insert_position == 'last':
+                pos = self._get_last_position() + 1
+            else:
+                qs = self.model._default_manager.get_queryset()
+                qs.update(**{self._field: F(self._field) + 1})
+                pos = 1
+            setattr(obj, self._field, pos)
+        obj.save()
+
     def reorder_view(self, request):
-        error_response = self.check_update_request(request)
+        error_response = self.check_ajax_request(request)
         if error_response:
             return error_response
         data = self._reorder_all()
         return JsonResponse(data)
 
     def update_view(self, request):
-        error_response = self.check_update_request(request)
+        error_response = self.check_ajax_request(request)
         if error_response:
             return error_response
         data = {}
         Form = self.get_update_form_class()
         form = Form(request.POST)
         if form.is_valid():
-            data = self._try_move_obj(
+            data = self._move_obj(
                 form.cleaned_data.get('obj'),
                 form.cleaned_data.get('target'),
                 form.cleaned_data.get('position'),
@@ -140,11 +190,15 @@ class SortableAdminMixin(object):
             self._reorder_all()
         return JsonResponse(data)
 
-    def check_update_request(self, request):
-        if not request.is_ajax() or request.method != 'POST':
-            return HttpResponseBadRequest('Not an XMLHttpRequest')
+    def check_ajax_request(self, request):
+        if not request.is_ajax():
+            return HttpResponseBadRequest(
+                'Not an XMLHttpRequest'
+            )
         if request.method != 'POST':
-            return HttpResponseNotAllowed('Must be a POST request')
+            return HttpResponseNotAllowed(
+                'Must be a POST request'
+            )
         if not self.has_change_permission(request):
             return HttpResponseForbidden(
                 'Missing permissions to perform this request'
@@ -178,24 +232,57 @@ class SortableAdminMixin(object):
             current_app=self.admin_site.name
         )
 
-    def _try_move_obj(self, obj, target, position):
+    def _get_last_position(self):
+        objects = self.model._default_manager.get_queryset()
+        result = objects.aggregate(last_position=Max(self._field))
+        return result['last_position'] or 0
+
+    def _move_obj(self, obj, target, position):
         base_qs = self.model._default_manager.get_queryset()
         obj_start = getattr(obj, self._field, None)
         target_start = getattr(target, self._field, None)
+
+        # EDGE Cases
+        if obj_start == target_start:
+            # TODO this is an ugly hack try to find a better way
+            self._reorder_all()
+            obj = base_qs.get(pk=obj.pk)
+            target = base_qs.get(pk=target.pk)
+            obj_start = getattr(obj, self._field, None)
+            target_start = getattr(target, self._field, None)
+            direction = 'down'
+            start, end = obj_start, target_start
+
+        # set Direction
         if obj_start < target_start:
             direction = 'down'
             start, end = obj_start, target_start
         if obj_start > target_start:
             direction = 'up'
             start, end = target_start, obj_start
+
+        # set the range for the objects
         kwargs = {'position__gte': start, 'position__lte': end}
-        if direction == 'down' and position == 'right':
+
+        # build queryset kwargs
+        if direction == 'down':
+            if position == 'left':
+                # Nasty exception this should not happen
+                # TODO find a better way to deal with this
+                exclude = [obj.pk]
+                # bulk move up by one
+                update_kwargs = {self._field: F(self._field)}
+                # set the obj position to the targets position
+                obj_position = getattr(obj, self._field)
+            elif position == 'right':
+                # remove the obj from bulk move
+                exclude = [obj.pk]
+                # bulk move up by one
+                update_kwargs = {self._field: F(self._field) - 1}
+                # set the obj position to the targets position
+                obj_position = getattr(target, self._field)
             # remove the selected obj from the bulk move
-            qs = base_qs.filter(**kwargs).exclude(pk=obj.pk)
-            # bulk move up by one
-            update_kwargs = {self._field: F(self._field) - 1}
-            # set the obj position to the targets position
-            obj_position = getattr(target, self._field)
+            qs = base_qs.filter(**kwargs).exclude(pk__in=exclude)
         elif direction == 'up':
             if position == 'right':
                 # remove the obj and the target from bulk move as the target
