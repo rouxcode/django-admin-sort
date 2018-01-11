@@ -54,8 +54,8 @@ var SortableInline = ( function( $ ) {
                 draggable: '.' + row_class,
                 handle: '.' + drag_class,
                 onUpdate: set_positions,
-                ghostClass: 'sortable-ghost',
-                chosenClass: 'sortable-chosen',
+                ghostClass: 'admin-sort-ghost',
+                chosenClass: 'admin-sort-chosen',
             } );
         };
 

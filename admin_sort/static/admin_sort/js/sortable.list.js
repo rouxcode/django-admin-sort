@@ -40,8 +40,6 @@ var SortableList = ( function( $ ) {
             sortable = new Sortable( wrap, {
                 draggable: "." + draggable_class,
                 handle: '.' + handle_class,
-                forceFallback: true,
-                fallbackTolerance: 5,
                 ghostClass: "admin-sort-ghost",
                 chosenClass: "admin-sort-chosen",
                 onUpdate: update
