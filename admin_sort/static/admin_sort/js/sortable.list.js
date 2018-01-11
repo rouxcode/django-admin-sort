@@ -68,10 +68,9 @@ var SortableList = ( function( $ ) {
     };
 
     function set_item_index( i ) {
-        var css_class = i % 2 == 0 ? 'row1' : 'row2';
         this._opts.index = i;
         this.$.removeClass( 'row1 row2' );
-        this.$.addClass( css_class );
+        this.$.addClass( i % 2 == 0 ? 'row1' : 'row2' );
         return this
     };
 

@@ -21,6 +21,10 @@
     cursor: move;
 }
 
+.admin-sort-ghost {
+    background-color: #79aec8;
+}
+
 .admin-sort-state {
     position: absolute;
     left: 0;
@@ -65,10 +69,6 @@
         background-color: #fff;
         animation: admin-sort-loader-inner 2.3s infinite ease-in;
     }
-
-
-
-
 
     @keyframes admin-sort-loader {
         0% {
@@ -289,8 +289,4 @@
             height: 0%;
         }
     }
-}
-
-.admin-sort-ghost {
-    background-color: #79aec8;
 }
