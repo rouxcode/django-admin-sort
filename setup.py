@@ -11,10 +11,6 @@ except ImportError:
             return fd.read()
 
 
-DESCRIPTION = (
-    'Sortable changelist, tabular and stacked inlines,'
-    'drag-and-drop and dropdowns'
-)
 
 CLASSIFIERS = [
     'Environment :: Web Environment',

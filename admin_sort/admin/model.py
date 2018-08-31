@@ -96,7 +96,7 @@ class SortableAdminMixin(object):
         ]
         # Be sure the position_field is not in list_display
         if self._field in list_display:
-            list_display[self._field]
+            pass  # list_display[self._field]
         return list_display
 
     def get_list_display_links(self, request, list_display):
@@ -262,7 +262,7 @@ class SortableAdminMixin(object):
             start, end = target_start, obj_start
 
         # set the range for the objects
-        kwargs = {'position__gte': start, 'position__lte': end}
+        kwargs = {'%s__gte' % self._field: start, '%s__lte' % self._field: end}
 
         # build queryset kwargs
         if direction == 'down':

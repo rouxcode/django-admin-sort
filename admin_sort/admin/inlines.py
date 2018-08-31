@@ -40,7 +40,7 @@ class SortableInlineAdminMixin(object):
         if isinstance(self, admin.StackedInline):
             return 'admin/admin_sort/edit_inline/stacked.html'
         if isinstance(self, admin.TabularInline):
-            return 'admin/admin_sort/edit/_inline/tabular.html'
+            return 'admin/admin_sort/edit_inline/tabular.html'
         msg = (
             'Class {0}.{1} must also derive from'
             ' admin.TabularInline or admin.StackedInline'
