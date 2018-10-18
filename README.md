@@ -159,8 +159,6 @@ Licensed under the MIT license.
 To get a quick first impression of this plugin, clone this repositoty
 from GitHub and run an example webserver:
 
-.. code:: bash
-
 	git clone https://github.com/rouxcode/django-admin-sort.git
 	cd django-admin-sort/example/
 	./manage.py syncdb
