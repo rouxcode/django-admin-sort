@@ -47,7 +47,7 @@ var SortableInline = ( function( $ ) {
             inl.$rows.addClass( row_class );
             inl.$rows.data( { field: inl.$.data( 'field' ) } );
             inl.$rows.each( init_row );
-            inl.$rows.append( '<div class="' + drag_class + '" />' );
+            inl.$rows.find('.original').append( '<div class="' + drag_class + '" />' );
             init_sortable( inl );
         };
 

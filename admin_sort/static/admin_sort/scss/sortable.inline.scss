@@ -1,5 +1,19 @@
 
-. admin-sort-stacked .admin-sort-row  {
+/* general visual apperance of the drag */
+.admin-sort-drag {
+    background-image: url(../imgs/drag.svg);
+    background-repeat: repeat;
+    background-size: 5px 5px;
+    cursor: move;
+    position: absolute;
+    width: 10px;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    right: auto;
+}
+
+.admin-sort-stacked .admin-sort-row  {
     position: relative;
     box-sizing: border-box;
     padding-left: 20px;
@@ -17,19 +31,9 @@
     }
 
     .admin-sort-drag {
-        position: absolute;
-        left: 7px;
-        top: 6px;
-        right: auto;
-        bottom: 6px;
         display: inline-block;
         box-sizing: border-box;
-        width: 10px;
         height: auto;
-        background-image: url(../imgs/drag.svg);
-        background-repeat: repeat;
-        background-size: 5px 5px;
-        cursor: move;
     }
 
     &.admin-sort-ghost {
@@ -43,20 +47,20 @@
 }
 
 /* the drag */
-.admin-sort-tabular .is_sortable .original,
-.admin-sort-tabular .tabular tr.is_sortable.inline-fallback .original {
-    position: relative;
-    cursor: move;
-    padding: 0 !important;
-    width: 30px;
-    /*border-top: 3px solid #fff;*/
-    background: linear-gradient(
-      to bottom,
-      #ccc,
-      #ccc 50%,
-      #fff 50%,
-      #fff
-    ) !important;
-    background-size: 100% 5px !important;
-    border-bottom: 1px solid #eee;
+.admin-sort-tabular {
+    .original {
+        position: relative;
+    }
+    .admin-sort-drag {
+        height: calc(100% - 13px);
+    }
+}
+
+/* optics for label */
+.inline-group .tabular tr.admin-sort-row td.original {
+    width: 17px;
+    p {
+        white-space: nowrap;
+        left: 18px
+    }
 }

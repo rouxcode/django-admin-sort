@@ -14,7 +14,7 @@ class NotesInline(SortableInlineAdminMixin, admin.TabularInline):
     model = models.Notes
     position_field = 'my_order'
     extra = 2
-    fields = ['note', 'another_field', 'one_more', 'my_order']
+    fields = ['note', 'another_field', 'my_order']
 
 
 class ChapterExtraZeroInline(SortableInlineAdminMixin, admin.StackedInline):
