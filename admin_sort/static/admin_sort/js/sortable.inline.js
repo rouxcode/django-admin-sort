@@ -42,7 +42,7 @@ var SortableInline = ( function( $ ) {
         };
 
         function init_tabular() {
-            inl.$set = $( 'fieldset.module', inl.$ );
+            inl.$set = $( 'fieldset.module tbody', inl.$ );
             inl.$rows = $( '.form-row', inl.$set );
             inl.$rows.addClass( row_class );
             inl.$rows.data( { field: inl.$.data( 'field' ) } );
@@ -53,10 +53,13 @@ var SortableInline = ( function( $ ) {
 
         function init_row( i ) {
             this.$ = $( this );
-            this.$col = $( '.' + inl._field, this.$ );
-            this.$position = $( 'input',  this.$col );
-            // setting this creates empty records with extra > 0
-            this.$position.val( i + 1 );
+            // this.$col = $( '.' + inl._field, this.$ );
+            // this.$position = $( 'input',  this.$col );
+            this.$position = $( '.admin-sort-position',  this.$ );
+            // only increment for existing
+            if (this.$.hasClass('has_original')) {
+                this.$position.val( i + 1 );
+            }
             return this;
         };
 
