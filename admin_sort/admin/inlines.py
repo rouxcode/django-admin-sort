@@ -54,6 +54,9 @@ class SortableInlineAdminMixin(object):
             obj,
             **kwargs
         )
+        # needed for extra > 0
+        formset.form.base_fields[self._field].required = False
+        # hide it
         formset.form.base_fields[self._field].widget = forms.HiddenInput(
             attrs={'class': 'admin-sort-position'}
         )
