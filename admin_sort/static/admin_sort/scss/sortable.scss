@@ -1,0 +1,292 @@
+.column-_col_move_node,
+.field-_col_move_node {
+    position: relative;
+    width: 10px;
+    text-align: center;
+}
+
+.admin-sort-drag {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    right: 8px;
+    bottom: 8px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: auto;
+    height: auto;
+    background-image: url(../imgs/drag.svg);
+    background-repeat: repeat;
+    background-size: 5px 5px;
+    cursor: move;
+}
+
+.admin-sort-ghost {
+    background-color: #79aec8;
+}
+
+.admin-sort-state {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: rgba(#666, 0.5);
+
+    &:before {
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        width: 1px;
+        height: 100%;
+    }
+
+    .msg {
+        display: inline-block;
+        vertical-align: middle;
+        font-weight: 400;
+        font-size: 20px;
+        color: #fff;
+    }
+
+    .admin-sort-loader {
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        display: block;
+        margin: 0 auto 0 -14px;
+        width: 29px;
+        height: 29px;
+        border: 4px solid #fff;
+        animation: admin-sort-loader 2.3s infinite ease;
+    }
+
+    .admin-sort-loader-inner {
+        vertical-align: top;
+        display: inline-block;
+        width: 100%;
+        background-color: #fff;
+        animation: admin-sort-loader-inner 2.3s infinite ease-in;
+    }
+
+    @keyframes admin-sort-loader {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(180deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        75% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @-o-keyframes admin-sort-loader {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(180deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        75% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @-ms-keyframes admin-sort-loader {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(180deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        75% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes admin-sort-loader {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(180deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        75% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @-moz-keyframes admin-sort-loader {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(180deg);
+        }
+
+        50% {
+            transform: rotate(180deg);
+        }
+
+        75% {
+            transform: rotate(360deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes admin-sort-loader-inner {
+        0% {
+            height: 0%;
+        }
+
+        25% {
+            height: 0%;
+        }
+
+        50% {
+            height: 100%;
+        }
+
+        75% {
+            height: 100%;
+        }
+
+        100% {
+            height: 0%;
+        }
+    }
+
+    @-o-keyframes admin-sort-loader-inner {
+        0% {
+            height: 0%;
+        }
+
+        25% {
+            height: 0%;
+        }
+
+        50% {
+            height: 100%;
+        }
+
+        75% {
+            height: 100%;
+        }
+
+        100% {
+            height: 0%;
+        }
+    }
+
+    @-ms-keyframes admin-sort-loader-inner {
+        0% {
+            height: 0%;
+        }
+
+        25% {
+            height: 0%;
+        }
+
+        50% {
+            height: 100%;
+        }
+
+        75% {
+            height: 100%;
+        }
+
+        100% {
+            height: 0%;
+        }
+    }
+
+    @-webkit-keyframes admin-sort-loader-inner {
+        0% {
+            height: 0%;
+        }
+
+        25% {
+            height: 0%;
+        }
+
+        50% {
+            height: 100%;
+        }
+
+        75% {
+            height: 100%;
+        }
+
+        100% {
+            height: 0%;
+        }
+    }
+
+    @-moz-keyframes admin-sort-loader-inner {
+        0% {
+            height: 0%;
+        }
+
+        25% {
+            height: 0%;
+        }
+
+        50% {
+            height: 100%;
+        }
+
+        75% {
+            height: 100%;
+        }
+
+        100% {
+            height: 0%;
+        }
+    }
+}

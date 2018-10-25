@@ -1,5 +1,6 @@
-=== (ongoing) ===
-- whatever
+=== 0.3.0 (ongoing) ===
+- new `position_field` required for inline and modeladmin
+- complete rewrite, simplified/robustified
 
 === 0.2.2 ===
 - fixing regression for django 1.8

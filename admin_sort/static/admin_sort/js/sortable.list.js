@@ -1,156 +1,164 @@
-// TODO Minify
-var SortableList = (function( $ ) {
+var SortableList = ( function( $ ) {
     'use strict';
 
     var csrftoken;
     var current_page;
-    var direction;
-    var first_position;
+    var messages;
     var sortable;
     var total_pages;
+    var reorder_url;
     var update_url;
     var wrap;
-
-    var $actions;
-    var $page_field;
-    var $step_field;
+    var $items;
+    var $reorder;
+    var $results;
     var $wrap;
 
-    var draggable_class = 'draggable-element';
+    var handle_class = 'admin-sort-drag';
+    var draggable_class = 'draggable-item';
+    var reorder_id = 'admin-sort-reorder-link';
+    var $doc = $( document );
+    var $message = $(
+        '<div id="admin-sort-state" class="admin-sort-state">'
+        + messages
+        + '</div>'
+    );
 
-    $(document).ready( init );
+    $doc.ready( init );
 
     function init() {
-        $wrap = $('#result_list tbody');
-        $actions = $('#changelist-form .actions');
+        $( '#result_list' ).addClass( 'sortable-list' );
+        $results = $( '.results' );
+        $wrap = $( '#result_list tbody' );
+        $reorder = $( '#' + reorder_id );
 
-        // ugly hack to check if djangocms-admin-style is installed
-        if ( $('.toolbar-item').length > 0 ) {
-            $('#result_list').addClass('cms-admin-style');
-            $('body').addClass('cms-admin-style');
-        }
-
-        // if there is a result list create sortable
         if( $wrap.length > 0 ) {
 
-            wrap = $wrap[0];
-            // set sortable env
-            $('.row1, .row2').addClass(draggable_class);
-            direction = get_direction();
-            first_position = parseInt($('.' + draggable_class + ':first .admin-sort-drag').data('order'));
-            sortable = new Sortable(wrap, {
+            // set sortablejs
+            wrap = $wrap[ 0 ];
+            $items = $( '.row1, .row2', $wrap ).each( init_item );
+            sortable = new Sortable( wrap, {
                 draggable: "." + draggable_class,
-                forceFallback: true,
-                fallbackTolerance: 5,
-                handle: '.admin-sort-drag',
-                ghostClass: "sortable-ghost",
-                chosenClass: "sortable-chosen",
+                handle: '.' + handle_class,
+                ghostClass: "admin-sort-ghost",
+                chosenClass: "admin-sort-chosen",
                 onUpdate: update
-            });
+            } );
+
+            // set reorder link
+            $reorder.off().on( 'click', send_reorder_request)
         }
-        // if there are admin actions create the page_move
-        if ( $actions.length > 0 ) {
-            page_move();
-        };
     };
 
-    // Drag Drop --------------------------------------------------------------
 
-    function update(e) {
+    // Sortable --------------------------------------------------------------
+
+    function init_item( i ) {
+        var item = this;
+        item.$ = $( this );
+        item.$drag = $( '.' + handle_class, item.$ );
+        item.$.addClass( draggable_class );
+        item._opts = {
+            index: i,
+            pk: item.$drag.data( 'pk' ),
+        };
+        return item;
+    };
+
+    function set_item_index( i ) {
+        this._opts.index = i;
+        this.$.removeClass( 'row1 row2' );
+        this.$.addClass( i % 2 == 0 ? 'row1' : 'row2' );
+        return this
+    };
+
+    function update( e ) {
         if ( e.oldIndex != e.newIndex ) {
-            var $item = $( e.item );
-            var original_position = parseInt( $item.find('.admin-sort-drag').data('order') );
-            var new_position = original_position + ( (e.newIndex - e.oldIndex) * direction );
-            $.ajax({
+            var item = e.item;
+            var index = e.newIndex;
+            var $list = $( '.' + draggable_class, $wrap );
+            var data = {
+                obj: item._opts.pk,
+                csrfmiddlewaretoken: csrftoken
+            };
+            if( index === 0  ) {
+                data.position = 'left';
+                data.target = $list[1]._opts.pk;
+            } else {
+                data.position = 'right';
+                data.target = $list[ index - 1 ]._opts.pk;
+            }
+            set_loading( messages.sorting );
+            $.ajax( {
                 url: update_url,
                 type: 'POST',
-                data: {
-                    o: direction,
-                    startorder: original_position,
-                    endorder: new_position,
-                    csrfmiddlewaretoken: csrftoken
-                },
-                success: updated_successful,
-                error: updated_error
-            });
+                data: data
+            } ).fail( function() {
+                show_error( 'there has been a problem sorting the items' );
+            } ).done( function( data ) {
+                $items = $( '.' + draggable_class, $wrap );
+                $items.each( set_item_index );
+                if( data.message === 'error' ) {
+                    show_error( data.error );
+                }
+                unset_loading();
+            } );
         }
     };
 
-    function updated_successful(data) {
-        var $rows = $('.' + draggable_class);
-        var $items = $('.' + draggable_class + ' .admin-sort-drag');
-        var index = first_position;
-        for ( var i = 0; i < $rows.length; i++ ) {
-            var $item = $( $items[ i ] );
-            var $row = $( $rows[ i ] );
-            $item.data({ order: index });
-            $row.removeClass('row1 row2')
-                .addClass(i % 2 ? 'row2' : 'row1');
-            if( $item.data('field') ) {
-                $('.' + $item.data('field'), $row ).html(index);
+
+    // Reorder ---------------------------------------------------------------
+
+    function send_reorder_request( e ) {
+        if( e ) {
+            e.preventDefault();
+        }
+        var data = {
+            csrfmiddlewaretoken: csrftoken
+        };
+        set_loading( messages.reordering );
+        $.ajax( {
+            url: reorder_url,
+            type: 'POST',
+            data: data
+        } ).fail( function() {
+            show_error( 'there has been a problem reordering the items' );
+        } ).done( function( data ) {$results
+            if( data.message === 'error' ) {
+                show_error( data.error );
             }
-            index += direction;
-        }
+            unset_loading();
+            window.location.reload(false);
+        } );
     };
 
-    function updated_error(response) {
-        console.error('The server responded: ' + response.responseText);
+
+    // States ----------------------------------------------------------------
+
+    function set_loading( message ) {
+        $message.html(
+            '<span class="msg">' + message + '</span>'
+            + '<span class="admin-sort-loader">'
+            + '<span class="admin-sort-loader-inner"></span>'
+            + '</span>'
+        );
+        $results.append( $message );
     };
 
-    function get_direction() {
-        var $items = $('.' + draggable_class + ' .admin-sort-drag');
-        if ( $items.length > 1 ) {
-            if ( parseInt( $items[0].getAttribute('data-order') ) > parseInt( $items[1].getAttribute('data-order') ) ) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
-        // TODO check if there is a fallback possibility
-        return 0;
+    function unset_loading() {
+        $message.remove();
     };
 
-    // Page Move --------------------------------------------------------------
 
-    function page_move() {
-        // TODO do it the proper way
-        $step_field = $('#changelist-form-step');
-        $page_field = $('#changelist-form-page');
-        if (current_page == total_pages) {
-            $page_field.attr('max', total_pages - 1);
-            $page_field.val(current_page - 1);
-        } else {
-            $page_field.attr('max', total_pages);
-            $page_field.val(current_page + 1)
-        }
-        if(current_page == 1) {
-            $page_field.attr('min', 2);
-        } else {
-            $page_field.attr('min', 1);
-        }
-        $step_field.attr('min', 1);
-        $('#changelist-form select[name="action"]').change(select_action);
+    // Messaging -------------------------------------------------------------
+
+    function show_error( msg ) {
+        // TODO implement nice html message
+        console.error( msg );
     };
 
-    function select_action( e ) {
-        if (['move_to_back_page', 'move_to_forward_page'].indexOf($(this).val()) != -1) {
-            if ($(this).val() == 'move_to_forward_page') {
-                $step_field.attr('max', total_pages - current_page);
-            } else {
-                $step_field.attr('max', current_page - 1);
-            }
-            $step_field.addClass('active');
-        } else {
-            $step_field.removeClass('active');
-        }
-        if ($(this).val() == 'move_to_exact_page') {
-            $page_field.addClass('active');
-        } else {
-            $page_field.removeClass('active');
-        }
-    };
 
-    // Utilities --------------------------------------------------------------
+    // Utilities -------------------------------------------------------------
 
     function set_options( options ) {
         // TODO check if option has value & do proper init or error handling
@@ -158,10 +166,12 @@ var SortableList = (function( $ ) {
         current_page = options.current_page;
         total_pages = options.total_pages;
         update_url = options.update_url;
+        reorder_url = options.reorder_url;
+        messages = options.messages;
     };
 
     return {
         options: set_options
-    }
+    };
 
-})( django.jQuery );
+} )( django.jQuery );
