@@ -49,7 +49,6 @@ def position_object(obj, position_field, new_position):
     obj_start_position = getattr(obj, position_field, None)
     if new_position == obj_start_position:
         return obj
-    print(obj.__class__._default_manager)
     base_qs = obj.__class__._default_manager.get_queryset()
     last_position = get_last_position(obj.__class__, position_field)
     if new_position > last_position + 1:
