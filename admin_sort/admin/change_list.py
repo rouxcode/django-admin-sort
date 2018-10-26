@@ -17,6 +17,7 @@ from django.urls import reverse
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
+from admin_sort.utils.model_sorting import position_object
 
 POSITION_CHOICES = (
     ('', _('Current Position')),
@@ -34,7 +35,7 @@ class SortableAdminMixin(object):
     """
     _field<required>: which is the positioning field
     _insert_position<default:'last'>: defines where a new object is inserted
-        last: at the end
+        last: at the end of the list
         first: at the start
     """
 
@@ -261,48 +262,29 @@ class SortableAdminMixin(object):
             direction = 'up'
             start, end = target_start, obj_start
 
-        # set the range for the objects
+        # the affected objects
         kwargs = {'%s__gte' % self._field: start, '%s__lte' % self._field: end}
 
         # build queryset kwargs
         if direction == 'down':
             if position == 'left':
                 # Nasty exception this should not happen
-                # TODO find a better way to deal with this
-                exclude = [obj.pk]
-                # bulk move up by one
-                update_kwargs = {self._field: F(self._field)}
+                # it happen because js/sortable is not always behaving the same
                 # set the obj position to the targets position
-                obj_position = getattr(obj, self._field)
+                new_position = getattr(obj, self._field)
             elif position == 'right':
-                # remove the obj from bulk move
-                exclude = [obj.pk]
-                # bulk move up by one
-                update_kwargs = {self._field: F(self._field) - 1}
                 # set the obj position to the targets position
-                obj_position = getattr(target, self._field)
-            # remove the selected obj from the bulk move
-            qs = base_qs.filter(**kwargs).exclude(pk__in=exclude)
+                new_position = getattr(target, self._field)
         elif direction == 'up':
             if position == 'right':
-                # remove the obj and the target from bulk move as the target
-                # does not need to be moved
-                exclude = [obj.pk, target.pk]
                 # set the obj position to 1 greater than the targets position
-                obj_position = getattr(target, self._field) + 1
+                new_position = getattr(target, self._field) + 1
             elif position == 'left':
-                # remove the obj from bulk move
-                exclude = [obj.pk]
                 # set the obj position to the targets position
-                obj_position = getattr(target, self._field)
-            # remove the exclude from bulk move
-            qs = base_qs.filter(**kwargs).exclude(pk__in=exclude)
-            # bulk move down by one
-            update_kwargs = {self._field: F(self._field) + 1}
-        with transaction.atomic():
-            setattr(obj, self._field, obj_position)
-            obj.save()
-            qs.update(**update_kwargs)
+                new_position = getattr(target, self._field)
+        # do it, with helper method
+        position_object(obj, self._field, new_position)
+        # return info
         return_data = {
             'message': 'ok',
             'dir': direction,
