@@ -233,11 +233,6 @@ class SortableAdminMixin(object):
             current_app=self.admin_site.name
         )
 
-    def _get_last_position(self):
-        objects = self.model._default_manager.get_queryset()
-        result = objects.aggregate(last_position=Max(self._field))
-        return result['last_position'] or 0
-
     def _move_obj(self, obj, target, position):
         base_qs = self.model._default_manager.get_queryset()
         obj_start = getattr(obj, self._field, None)
