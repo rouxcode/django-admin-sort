@@ -7,7 +7,7 @@ from django.db.models import F, Max
 
 def set_position_for_new_obj(obj, position_field, insert_position='last'):
     """
-    save a new instance, ensure it's positioned correctly (first/last)
+    set a new instance's position field, update other objects if needed
     :param obj:
     :param insert_position:
     :return obj: instance, with position field set, not saved
