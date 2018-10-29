@@ -5,17 +5,25 @@ from admin_sort.models import SortableModelMixin
 
 
 class Author(SortableModelMixin, models.Model):
+    """
+    SortableModelMixin: on save, intercept and first update needed other instances, then save
+    """
     name = models.CharField('Name', null=True, blank=True, max_length=255)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+    position_field = 'my_order'
+    insert_position = 'last'
 
     class Meta:
-        position_field = 'my_order'
-        insert_position = 'first'
+        ordering = ('my_order', )
 
     def __unicode__(self):
         return self.name
 
 
 class SortableBook(models.Model):
+    """
+    the classic sortable change list: dndrop sorting, using SortableAdminMixin
+    """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
     author = models.ForeignKey(Author, null=True)
@@ -28,6 +36,9 @@ class SortableBook(models.Model):
 
 
 class Chapter(models.Model):
+    """
+    various SortableInlineMixon modes
+    """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
     book = models.ForeignKey(SortableBook, null=True)
     my_order = models.PositiveIntegerField(blank=False, null=True)
@@ -40,6 +51,9 @@ class Chapter(models.Model):
 
 
 class Notes(models.Model):
+    """
+    various SortableInlineMixon modes
+    """
     note = models.CharField('Note', null=True, blank=True, max_length=255)
     another_field = models.CharField('Note2', null=True, blank=True, max_length=255)
     one_more = models.CharField('Note3 (simulating tabular inlines)', null=True, blank=True, max_length=255)
@@ -54,6 +68,9 @@ class Notes(models.Model):
 
 
 class ChapterExtraZero(models.Model):
+    """
+    various SortableInlineMixon modes (testing "extra" on admin.Meta)
+    """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
     book = models.ForeignKey(SortableBook, null=True)
     my_order = models.PositiveIntegerField(blank=False, null=True)
@@ -66,6 +83,9 @@ class ChapterExtraZero(models.Model):
 
 
 class NotesExtraZero(models.Model):
+    """
+    various SortableInlineMixon modes (testing "extra" on admin.Meta)
+    """
     another_field = models.CharField('Note2', null=True, blank=True, max_length=255)
     book = models.ForeignKey(SortableBook, null=True)
     my_order = models.PositiveIntegerField(blank=False, null=True)
@@ -78,6 +98,9 @@ class NotesExtraZero(models.Model):
 
 
 class Another(models.Model):
+    """
+    normal inline - affected in any way!?
+    """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
     book = models.ForeignKey(SortableBook, null=True)
     my_order = models.PositiveIntegerField(blank=False, null=True)
@@ -90,6 +113,9 @@ class Another(models.Model):
 
 
 class AnotherOne(models.Model):
+    """
+    normal inline - affected in any way!?
+    """
     another_field = models.CharField('Note2', null=True, blank=True, max_length=255)
     book = models.ForeignKey(SortableBook, null=True)
     my_order = models.PositiveIntegerField(blank=False, null=True)

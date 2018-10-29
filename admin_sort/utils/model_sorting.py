@@ -4,7 +4,6 @@ from django.db import transaction
 from django.db.models import F, Max
 
 
-
 def set_position_for_new_obj(obj, position_field, insert_position='last'):
     """
     set a new instance's position field, update other objects if needed
@@ -24,8 +23,9 @@ def set_position_for_new_obj(obj, position_field, insert_position='last'):
 
 def get_last_position(model_cls, position_field):
     objects = model_cls._default_manager.get_queryset()
-    result = objects.aggregate(last_position=Max(position_field))
-    return result['last_position'] or 0
+    # result = objects.aggregate(last_position=Max(position_field))
+    # return result['last_position'] or 0
+    return objects.all().count()
 
 
 def reorder_all(model_cls, position_field):
@@ -51,8 +51,10 @@ def position_object(obj, position_field, new_position, commit=True):
         return obj
     base_qs = obj.__class__._default_manager.get_queryset()
     last_position = get_last_position(obj.__class__, position_field)
-    if new_position > last_position + 1:
-        new_position = last_position + 1
+    if new_position > last_position:
+        new_position = last_position
+    if new_position == 0:
+        new_position = 1
     # the actual work
     if new_position > obj_start_position:
         # down/right in the list, bigger position value than before

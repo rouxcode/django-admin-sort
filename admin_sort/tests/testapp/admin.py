@@ -57,4 +57,4 @@ class SortableBookAdmin(SortableAdminMixin, admin.ModelAdmin):
 
 @admin.register(models.Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'my_order', )
