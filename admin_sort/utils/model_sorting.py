@@ -37,7 +37,7 @@ def reorder_all(model_cls, position_field):
             pos += 1
 
 
-def position_object(obj, position_field, new_position):
+def position_object(obj, position_field, new_position, commit=True):
     """
     set a new position for an object
     :param obj:
@@ -73,5 +73,6 @@ def position_object(obj, position_field, new_position):
     with transaction.atomic():
         update_qs.update(**update_kwargs)
         setattr(obj, position_field, new_position)
-        obj.save()
+        if commit:
+            obj.save()
     return obj

@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 
+from admin_sort.models import SortableModelMixin
 
-class Author(models.Model):
+
+class Author(SortableModelMixin, models.Model):
     name = models.CharField('Name', null=True, blank=True, max_length=255)
+
+    class Meta:
+        position_field = 'my_order'
+        insert_position = 'first'
 
     def __unicode__(self):
         return self.name

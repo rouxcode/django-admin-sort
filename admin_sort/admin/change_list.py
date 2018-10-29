@@ -17,7 +17,7 @@ from django.urls import reverse
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
-from admin_sort.utils.model_sorting import position_object
+from admin_sort.utils.model_sorting import position_object, set_position_for_new_obj
 
 POSITION_CHOICES = (
     ('', _('Current Position')),
@@ -150,14 +150,7 @@ class SortableAdminMixin(object):
         return form.save(commit=False)
 
     def save_model(self, request, obj, form, change):
-        if not obj.pk:
-            if self._insert_position == 'last':
-                pos = self._get_last_position() + 1
-            else:
-                qs = self.model._default_manager.get_queryset()
-                qs.update(**{self._field: F(self._field) + 1})
-                pos = 1
-            setattr(obj, self._field, pos)
+        set_position_for_new_obj(obj, self._field, self._insert_position)
         obj.save()
 
     def reorder_view(self, request):
