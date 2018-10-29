@@ -26,7 +26,7 @@ class SortableBook(models.Model):
     """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
     my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
-    author = models.ForeignKey(Author, null=True)
+    author = models.ForeignKey(Author, null=True, on_delete=models.SET_NULL)
 
     class Meta(object):
         ordering = ('my_order',)
@@ -40,7 +40,7 @@ class Chapter(models.Model):
     various SortableInlineMixon modes
     """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
-    book = models.ForeignKey(SortableBook, null=True)
+    book = models.ForeignKey(SortableBook, null=True, on_delete=models.SET_NULL)
     my_order = models.PositiveIntegerField(blank=False, null=True)
 
     class Meta(object):
@@ -54,10 +54,10 @@ class Notes(models.Model):
     """
     various SortableInlineMixon modes
     """
+    book = models.ForeignKey(SortableBook, null=True, on_delete=models.SET_NULL)
     note = models.CharField('Note', null=True, blank=True, max_length=255)
     another_field = models.CharField('Note2', null=True, blank=True, max_length=255)
     one_more = models.CharField('Note3 (simulating tabular inlines)', null=True, blank=True, max_length=255)
-    book = models.ForeignKey(SortableBook, null=True)
     my_order = models.PositiveIntegerField(blank=False, null=True)
 
     class Meta(object):
@@ -72,7 +72,7 @@ class ChapterExtraZero(models.Model):
     various SortableInlineMixon modes (testing "extra" on admin.Meta)
     """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
-    book = models.ForeignKey(SortableBook, null=True)
+    book = models.ForeignKey(SortableBook, null=True, on_delete=models.SET_NULL)
     my_order = models.PositiveIntegerField(blank=False, null=True)
 
     class Meta(object):
@@ -87,7 +87,7 @@ class NotesExtraZero(models.Model):
     various SortableInlineMixon modes (testing "extra" on admin.Meta)
     """
     another_field = models.CharField('Note2', null=True, blank=True, max_length=255)
-    book = models.ForeignKey(SortableBook, null=True)
+    book = models.ForeignKey(SortableBook, null=True, on_delete=models.SET_NULL)
     my_order = models.PositiveIntegerField(blank=False, null=True)
 
     class Meta(object):
@@ -102,7 +102,7 @@ class Another(models.Model):
     normal inline - affected in any way!?
     """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
-    book = models.ForeignKey(SortableBook, null=True)
+    book = models.ForeignKey(SortableBook, null=True, on_delete=models.SET_NULL)
     my_order = models.PositiveIntegerField(blank=False, null=True)
 
     class Meta(object):
@@ -117,7 +117,7 @@ class AnotherOne(models.Model):
     normal inline - affected in any way!?
     """
     another_field = models.CharField('Note2', null=True, blank=True, max_length=255)
-    book = models.ForeignKey(SortableBook, null=True)
+    book = models.ForeignKey(SortableBook, null=True, on_delete=models.SET_NULL)
     my_order = models.PositiveIntegerField(blank=False, null=True)
 
     def __unicode__(self):
