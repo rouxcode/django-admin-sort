@@ -1,0 +1,9 @@
+<div class="{{ inline_admin_formset.opts.css_classes }}  admin-sort-inline admin-sort-stacked {% if inline_admin_formset.opts.extra > 0 %}has-extra{% endif %}" data-field="field-{{ inline_admin_formset.opts.position_field }}">
+    {% block django_inline %}
+        {% if inline_admin_formset.opts.is_tabular %}
+            {% include 'admin/edit_inline/tabular.html' %}
+        {% else %}
+            {% include 'admin/edit_inline/stacked.html' %}
+        {% endif %}
+    {% endblock %}
+</div>

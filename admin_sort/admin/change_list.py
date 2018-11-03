@@ -149,7 +149,7 @@ class SortableAdminMixin(object):
         return form.save(commit=False)
 
     def save_model(self, request, obj, form, change):
-        if not self.pk:
+        if not getattr(self, 'pk', None):
             set_position_for_new_obj(obj, self._field, self._insert_position)
         obj.save()
 

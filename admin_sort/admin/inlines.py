@@ -4,6 +4,7 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -18,6 +19,18 @@ class SortableInlineAdminMixin(object):
             msg = _('You have to define a position field on {}').format(
                 self.__class__.__name__
             )
+            raise ImproperlyConfigured(msg)
+        if isinstance(self, admin.StackedInline):
+            self.is_stacked = True
+            self.is_tabular = False
+        elif isinstance(self, admin.TabularInline):
+            self.is_stacked = False
+            self.is_tabular = True
+        else:
+            msg = (
+                'Class {0}.{1} must also derive from'
+                ' admin.TabularInline or admin.StackedInline'
+            ).format(self.__module__, self.__class__)
             raise ImproperlyConfigured(msg)
         super(SortableInlineAdminMixin, self).__init__(*args, **kwargs)
 
@@ -38,15 +51,40 @@ class SortableInlineAdminMixin(object):
 
     @property
     def template(self):
-        if isinstance(self, admin.StackedInline):
-            return 'admin/admin_sort/edit_inline/stacked.html'
-        if isinstance(self, admin.TabularInline):
-            return 'admin/admin_sort/edit_inline/tabular.html'
-        msg = (
-            'Class {0}.{1} must also derive from'
-            ' admin.TabularInline or admin.StackedInline'
-        ).format(self.__module__, self.__class__)
-        raise ImproperlyConfigured(msg)
+        return 'admin/admin_sort/edit_inline/inline.html'
+
+    @property
+    def html_data_fields(self):
+        data_fields = getattr(
+            super(SortableInlineAdminMixin, self),
+            'html_data_fields',
+            ''
+        )
+        my_data_fields = {
+            'admin-sort-position-field': 'field-%s' % self._field
+        }
+        data_fields_out = ''
+        for key, value in my_data_fields.items():
+            data_fields_out += ' data-{}="{}"'.format(key, value)
+        print(data_fields_out)
+        return mark_safe('{} {}'.format(data_fields, data_fields_out))
+
+    @property
+    def css_classes(self):
+        css_classes = getattr(
+            super(SortableInlineAdminMixin, self),
+            'css_classes',
+            ''
+        )
+        my_css_classes = 'admin-sort-inline'
+        if self.is_tabular:
+            my_css_classes += ' admin-sort-tabular'
+        else:
+            my_css_classes += ' admin-sort-stacked'
+        if self.extra > 0:
+            my_css_classes += ' has-extra admin-sort-has-extra'
+        return '{} {}'.format(css_classes, my_css_classes)
+
 
     def get_formset(self, request, obj=None, **kwargs):
         formset = super(SortableInlineAdminMixin, self).get_formset(

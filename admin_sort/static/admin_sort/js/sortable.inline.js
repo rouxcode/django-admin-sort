@@ -21,7 +21,7 @@ var SortableInline = ( function( $ ) {
     function init_inline() {
         var inl = this;
         inl.$ = $( this );
-        inl._field = inl.$.data( 'field' );
+        inl._field = inl.$.data( 'admin-sort-position-field' );
         inl.$add = $( '.add-row' );
         inl.$add.on( 'click', set_positions );
 
