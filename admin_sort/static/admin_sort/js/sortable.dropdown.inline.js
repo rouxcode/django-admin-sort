@@ -47,14 +47,16 @@ var SortableInline = ( function( $ ) {
         };
 
         function init_row( i ) {
-            console.log(inl.$rows.length);
-            $.each(inl.$rows, function(j) {
-                                
-            })
             this.$ = $( this );
             // this.$col = $( '.' + inl._field, this.$ );
             // this.$position = $( 'input',  this.$col );
             this.$position = $( '.admin-sort-position',  this.$ );
+            var $pos = this.$position;
+            // console.log(inl.$rows.length);
+            $.each(inl.$rows.filter('.has_original'), function(j) {
+                var option = new Option(j + 1, j + 1);
+                $pos.append($(option));
+            })
             // only increment for existing
             if (this.$.hasClass('has_original')) {
                 this.$position.val( i + 1 );
