@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 from django.contrib import admin
 from admin_sort.admin import SortableAdminMixin, SortableInlineAdminMixin
+from admin_sort.admin.inlines import DropdownSortableInlineMixin
 from . import models
 
 
@@ -58,3 +59,32 @@ class SortableBookAdmin(SortableAdminMixin, admin.ModelAdmin):
 @admin.register(models.Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('name', 'my_order', )
+
+
+class AnotherChapterInline(DropdownSortableInlineMixin, admin.StackedInline):
+    model = models.Chapter
+    position_field = 'another_order'
+    fields = ['title', 'another_order']
+    extra = 0
+
+
+class AnotherNotesInline(DropdownSortableInlineMixin, admin.TabularInline):
+    model = models.Notes
+    position_field = 'another_order'
+    extra = 0
+    fields = ['note', 'another_field', 'another_order']
+
+
+@admin.register(models.AnotherSortableBook)
+class AnotherSortableBookAdmin(SortableAdminMixin, admin.ModelAdmin):
+    list_per_page = 8
+    position_field = 'my_order'
+    list_display = ('title', 'my_order',)
+    inlines = (
+        AnotherChapterInline,
+        AnotherNotesInline,
+        # ChapterExtraZeroInline,
+        # NotesExtraZeroInline,
+        # AnotherInline,
+        # AnotherOneInline,
+    )

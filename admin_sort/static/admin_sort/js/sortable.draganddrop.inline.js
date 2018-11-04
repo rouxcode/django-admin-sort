@@ -1,4 +1,4 @@
-var SortableInline = ( function( $ ) {
+var SortableDraganddropInline = ( function($ ) {
     'use strict';
 
     /*
@@ -14,7 +14,7 @@ var SortableInline = ( function( $ ) {
     $doc.ready( init );
 
     function init() {
-        $inlines = $( '.admin-sort-inline' );
+        $inlines = $( '.admin-sort-draganddrop-inline' );
         $inlines.each( init_inline );
     };
 

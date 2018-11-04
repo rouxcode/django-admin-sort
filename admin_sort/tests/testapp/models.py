@@ -35,16 +35,33 @@ class SortableBook(models.Model):
         return self.title
 
 
+class AnotherSortableBook(models.Model):
+    """
+    the other sortable change list: dropdowns sorting, using DropdownSortableAdminMixin
+    """
+    title = models.CharField('Title', null=True, blank=True, max_length=255)
+    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
+    author = models.ForeignKey(Author, null=True, on_delete=models.SET_NULL)
+
+    class Meta(object):
+        ordering = ('my_order',)
+
+    def __unicode__(self):
+        return self.title
+
+
 class Chapter(models.Model):
     """
     various SortableInlineMixon modes
     """
     title = models.CharField('Title', null=True, blank=True, max_length=255)
     book = models.ForeignKey(SortableBook, null=True, on_delete=models.SET_NULL)
+    another_book = models.ForeignKey(AnotherSortableBook, null=True, on_delete=models.SET_NULL)
     my_order = models.PositiveIntegerField(blank=False, null=True)
+    another_order = models.PositiveIntegerField(blank=False, null=True)
 
     class Meta(object):
-        ordering = ('my_order',)
+        ordering = ('my_order', 'another_order', )
 
     def __unicode__(self):
         return 'Chapter: {0}'.format(self.title)
@@ -55,13 +72,15 @@ class Notes(models.Model):
     various SortableInlineMixon modes
     """
     book = models.ForeignKey(SortableBook, null=True, on_delete=models.SET_NULL)
+    another_book = models.ForeignKey(AnotherSortableBook, null=True, on_delete=models.SET_NULL)
     note = models.CharField('Note', null=True, blank=True, max_length=255)
     another_field = models.CharField('Note2', null=True, blank=True, max_length=255)
     one_more = models.CharField('Note3 (simulating tabular inlines)', null=True, blank=True, max_length=255)
     my_order = models.PositiveIntegerField(blank=False, null=True)
+    another_order = models.PositiveIntegerField(blank=False, null=True)
 
     class Meta(object):
-        ordering = ('my_order',)
+        ordering = ('my_order', 'another_order', )
 
     def __unicode__(self):
         return 'Note: {0}'.format(self.note)

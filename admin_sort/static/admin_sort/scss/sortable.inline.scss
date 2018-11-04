@@ -13,7 +13,7 @@
     right: auto;
 }
 
-.admin-sort-stacked .admin-sort-row  {
+.admin-sort-draganddrop-inline.admin-sort-stacked .admin-sort-row  {
     position: relative;
     box-sizing: border-box;
     padding-left: 20px;
@@ -47,7 +47,7 @@
 }
 
 /* the drag */
-.admin-sort-tabular {
+.admin-sort-draganddrop-inline.admin-sort-tabular {
     .original {
         position: relative;
     }

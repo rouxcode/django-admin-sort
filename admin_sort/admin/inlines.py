@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
 
-class SortableInlineAdminMixin(object):
+class SortableInlineMixinBase(object):
     # formset = CustomInlineFormSet
 
     _field = None
@@ -32,22 +32,7 @@ class SortableInlineAdminMixin(object):
                 ' admin.TabularInline or admin.StackedInline'
             ).format(self.__module__, self.__class__)
             raise ImproperlyConfigured(msg)
-        super(SortableInlineAdminMixin, self).__init__(*args, **kwargs)
-
-    @property
-    def media(self):
-        css = {
-            'all': ['admin_sort/css/sortable.inline.css'],
-        }
-        if 'djangocms_admin_style' in settings.INSTALLED_APPS:
-            css['all'].append('admin_sort/css/sortable.inline.cms.css')
-        js = (
-            'admin_sort/js/sortable.js',
-            'admin_sort/js/sortable.inline.js',
-        )
-        original_media = super(SortableInlineAdminMixin, self).media
-        # return original_media
-        return original_media + forms.widgets.Media(css=css, js=js)
+        super(SortableInlineMixinBase, self).__init__(*args, **kwargs)
 
     @property
     def template(self):
@@ -56,7 +41,7 @@ class SortableInlineAdminMixin(object):
     @property
     def html_data_fields(self):
         data_fields = getattr(
-            super(SortableInlineAdminMixin, self),
+            super(SortableInlineMixinBase, self),
             'html_data_fields',
             ''
         )
@@ -66,13 +51,12 @@ class SortableInlineAdminMixin(object):
         data_fields_out = ''
         for key, value in my_data_fields.items():
             data_fields_out += ' data-{}="{}"'.format(key, value)
-        print(data_fields_out)
         return mark_safe('{} {}'.format(data_fields, data_fields_out))
 
     @property
     def css_classes(self):
         css_classes = getattr(
-            super(SortableInlineAdminMixin, self),
+            super(SortableInlineMixinBase, self),
             'css_classes',
             ''
         )
@@ -86,8 +70,35 @@ class SortableInlineAdminMixin(object):
         return '{} {}'.format(css_classes, my_css_classes)
 
 
+class DragAndDropSortableInlineMixin(SortableInlineMixinBase):
+
+    @property
+    def media(self):
+        css = {
+            'all': ['admin_sort/css/sortable.inline.css'],
+        }
+        if 'djangocms_admin_style' in settings.INSTALLED_APPS:
+            css['all'].append('admin_sort/css/sortable.inline.cms.css')
+        js = (
+            'admin_sort/js/sortable.js',
+            'admin_sort/js/sortable.draganddrop.inline.js',
+        )
+        original_media = super(DragAndDropSortableInlineMixin, self).media
+        # return original_media
+        return original_media + forms.widgets.Media(css=css, js=js)
+
+    @property
+    def css_classes(self):
+        css_classes = getattr(
+            super(DragAndDropSortableInlineMixin, self),
+            'css_classes',
+            ''
+        )
+        my_css_classes = 'admin-sort-draganddrop-inline'
+        return '{} {}'.format(css_classes, my_css_classes)
+
     def get_formset(self, request, obj=None, **kwargs):
-        formset = super(SortableInlineAdminMixin, self).get_formset(
+        formset = super(DragAndDropSortableInlineMixin, self).get_formset(
             request,
             obj,
             **kwargs
@@ -97,5 +108,53 @@ class SortableInlineAdminMixin(object):
         # hide it
         formset.form.base_fields[self._field].widget = forms.HiddenInput(
             attrs={'class': 'admin-sort-position'}
+        )
+        return formset
+
+
+class SortableInlineAdminMixin(DragAndDropSortableInlineMixin):
+    # deprecated
+    pass
+
+
+class DropdownSortableInlineMixin(SortableInlineMixinBase):
+
+    @property
+    def media(self):
+        js = [
+            'admin_sort/js/sortable.dropdown.inline.js',
+        ]
+        original_media = super(DropdownSortableInlineMixin, self).media
+        # return original_media
+        return original_media + forms.widgets.Media(js=js)
+
+    @property
+    def css_classes(self):
+        css_classes = getattr(
+            super(DropdownSortableInlineMixin, self),
+            'css_classes',
+            ''
+        )
+        my_css_classes = 'admin-sort-dropdown-inline'
+        return '{} {}'.format(css_classes, my_css_classes)
+
+    def get_formset(self, request, obj=None, **kwargs):
+        formset = super(DropdownSortableInlineMixin, self).get_formset(
+            request,
+            obj,
+            **kwargs
+        )
+        # needed for extra > 0
+        formset.form.base_fields[self._field].required = False
+        # prepare widget
+        import pprint
+        pprint.pprint(self.__dict__)
+        pprint.pprint(self.opts.__dict__)
+        # TODO: getting count of existing inlines, this is done in js otherwise!
+        # count = self.model.objects....count()
+        # choices = [(no, no, ) for no in range(1, count)]
+        formset.form.base_fields[self._field].widget = forms.Select(
+            attrs={'class': 'admin-sort-position'},
+            # choices=choices
         )
         return formset
