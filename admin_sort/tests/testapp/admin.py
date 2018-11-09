@@ -64,14 +64,15 @@ class AuthorAdmin(admin.ModelAdmin):
 class AnotherChapterInline(DropdownSortableInlineMixin, admin.StackedInline):
     model = models.Chapter
     position_field = 'another_order'
-    fields = ['title', 'another_order']
+    fields = ['title', 'another_order', 'my_order', ]
+    # fields = ['title', 'another_order', ]
     extra = 0
 
 
 class AnotherNotesInline(DropdownSortableInlineMixin, admin.TabularInline):
     model = models.Notes
     position_field = 'another_order'
-    extra = 0
+    extra = 4
     fields = ['note', 'another_field', 'another_order']
 
 

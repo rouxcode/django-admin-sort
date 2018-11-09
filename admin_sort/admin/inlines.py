@@ -113,7 +113,7 @@ class DragAndDropSortableInlineMixin(SortableInlineMixinBase):
 
 
 class SortableInlineAdminMixin(DragAndDropSortableInlineMixin):
-    # deprecated
+    # deprecated!
     pass
 
 
@@ -146,10 +146,12 @@ class DropdownSortableInlineMixin(SortableInlineMixinBase):
         )
         # needed for extra > 0
         formset.form.base_fields[self._field].required = False
-        # prepare widget
-        import pprint
-        pprint.pprint(self.__dict__)
-        pprint.pprint(self.opts.__dict__)
+        # prepare widget ARF!
+        # import pprint
+        # pprint.pprint(self.__dict__)
+        # pprint.pprint(self.opts.__dict__)
+        # pprint.pprint(formset.__dict__)
+        # pprint.pprint(formset.form)
         # TODO: getting count of existing inlines, this is done in js otherwise!
         # count = self.model.objects....count()
         # choices = [(no, no, ) for no in range(1, count)]
