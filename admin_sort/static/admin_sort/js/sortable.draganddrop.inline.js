@@ -9,7 +9,7 @@ var SortableDraganddropInline = ( function($ ) {
     var $doc = $( document );
 
     var drag_class = 'admin-sort-drag';
-    var row_class = 'admin-sort-row';
+    var sortable_row_class = 'admin-sort-row';
 
     $doc.ready( init );
 
@@ -26,46 +26,63 @@ var SortableDraganddropInline = ( function($ ) {
         inl.$add.on( 'click', set_positions );
 
         if( inl.$.hasClass( 'admin-sort-tabular' ) ) {
+            inl.set_class = 'fieldset.module tbody';
+            inl.row_class = '.form-row';
             init_tabular();
         } else {
+            inl.set_class = 'fieldset.module';
+            inl.row_class = '.inline-related';
             init_stacked();
         }
 
-        function init_stacked() {
-            inl.$set = $( 'fieldset.module', inl.$ );
-            inl.$rows = $( '.inline-related', inl.$set );
-            inl.$rows.addClass( row_class );
-            inl.$rows.data( { field: inl.$.data( 'field' ) } );
+        inl.$set = $( inl.set_class, inl.$ );
+        inl.$rows = $( inl.row_class, inl.$set );
+        inl.$rows.each( init_row );
+
+        function get_sortable_rows() {
+            if (inl.$.hasClass('has-extra')) {
+                return inl.$rows.filter('.has_original');
+            } else {
+                return inl.$rows;  // .filter(':visible');
+            }
+        }
+
+        function generic_init_inline() {
+            inl.$set = $( inl.set_class, inl.$ );
+            inl.$rows = $( inl.row_class, inl.$set );
             inl.$rows.each( init_row );
-            inl.$rows.append( '<div class="' + drag_class + '" />' );
+            if (inl.$.hasClass('has-extra')) {
+                inl.$rows.filter('.has_original').addClass( sortable_row_class );
+            } else {
+                inl.$rows.addClass( sortable_row_class );
+            }
+        }
+
+        function init_stacked() {
+            generic_init_inline();
+            get_sortable_rows().append( '<div class="' + drag_class + '" />' );
             init_sortable( inl );
         };
 
         function init_tabular() {
-            inl.$set = $( 'fieldset.module tbody', inl.$ );
-            inl.$rows = $( '.form-row', inl.$set );
-            inl.$rows.addClass( row_class );
-            inl.$rows.data( { field: inl.$.data( 'field' ) } );
-            inl.$rows.each( init_row );
-            inl.$rows.find('.original').append( '<div class="' + drag_class + '" />' );
+            generic_init_inline();
+            get_sortable_rows().find('.original').append( '<div class="' + drag_class + '" />' );
             init_sortable( inl );
         };
 
         function init_row( i ) {
             this.$ = $( this );
-            // this.$col = $( '.' + inl._field, this.$ );
-            // this.$position = $( 'input',  this.$col );
             this.$position = $( '.admin-sort-position',  this.$ );
-            // only increment for existing
-            if (this.$.hasClass('has_original')) {
-                this.$position.val( i + 1 );
+            var $sortable_rows = get_sortable_rows();
+            if (i < $sortable_rows.length) {
+                this.$position.val(i + 1);
             }
             return this;
         };
 
         function init_sortable() {
             inl._sortable = new Sortable( inl.$set[0], {
-                draggable: '.' + row_class,
+                draggable: '.' + sortable_row_class,
                 handle: '.' + drag_class,
                 onUpdate: set_positions,
                 ghostClass: 'admin-sort-ghost',
@@ -74,7 +91,7 @@ var SortableDraganddropInline = ( function($ ) {
         };
 
         function set_positions( e ) {
-            inl.$rows = $( '.' + row_class, inl.$ );
+            inl.$rows = $( inl.row_class, inl.$ );
             inl.$rows.each( init_row );
         };
 

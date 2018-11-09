@@ -7,6 +7,7 @@ from . import models
 
 class ChapterInline(SortableInlineAdminMixin, admin.StackedInline):
     model = models.Chapter
+    fields = ['title', 'my_order', ]
     position_field = 'my_order'
     extra = 1
 
@@ -20,15 +21,16 @@ class NotesInline(SortableInlineAdminMixin, admin.TabularInline):
 
 class ChapterExtraZeroInline(SortableInlineAdminMixin, admin.StackedInline):
     model = models.ChapterExtraZero
+    fields = ['title', 'my_order', ]
     position_field = 'my_order'
     extra = 0
 
 
 class NotesExtraZeroInline(SortableInlineAdminMixin, admin.TabularInline):
     model = models.NotesExtraZero
+    fields = ['another_field', 'my_order']
     position_field = 'my_order'
     extra = 0
-    fields = ['another_field', 'my_order']
 
 
 class AnotherInline(admin.StackedInline):
