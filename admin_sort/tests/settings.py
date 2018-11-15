@@ -15,6 +15,8 @@ DATABASES = {
 
 SITE_ID = 1
 
+HEADLESS_TESTING = True
+
 ROOT_URLCONF = 'admin_sort.tests.testapp.urls'
 
 SECRET_KEY = 'secret'

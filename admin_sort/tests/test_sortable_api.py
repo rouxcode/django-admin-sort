@@ -10,7 +10,7 @@ from django.test.client import Client
 from .testapp.models import SortableBook
 
 
-FIXTURES = ['data.json']
+FIXTURES = ['data.json', ]
 
 
 class SortableBookTestCase(TestCase):
@@ -43,6 +43,9 @@ class SortableBookTestCase(TestCase):
             self.assertEqual(obj.my_order, val, 'Inconsistent order value on SortableBook')
 
     def assertResponseCheck(self, in_data, raw_out_data):
+        """
+        TODO: what do we want to check the response for?
+        """
         return
         out_data = json.loads(raw_out_data)
         startorder = in_data['startorder']
