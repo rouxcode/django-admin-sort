@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 from time import sleep
 
 from django.conf import settings
@@ -56,19 +57,37 @@ class SortableFrontendTests(SeleniumTestCase):
         """
         as of 2018-11-15, this does not work, because selenium and html5 dndrop api
         https://github.com/RubaXa/Sortable/issues/563
+        --
+        selenium infos
+        https://stackoverflow.com/questions/29381233/how-to-simulate-html5-drag-and-drop-in-selenium-webdriver/29381532#29381532
+        https://gist.github.com/druska/624501b7209a74040175 # native
+        https://github.com/html-dnd/html-dnd  # native, but yarn/npm
+        https://gist.github.com/rcorreia/2362544  # jquery
         """
         return
         first_pk = SortableBook.objects.get(my_order=1).pk
         second_pk = SortableBook.objects.get(my_order=2).pk
         self.login()
         self.open(reverse('admin:testapp_sortablebook_changelist'))
-        dragged = self.webdriver.wait_for_css(".row1 .admin-sort-drag")
-        target = self.webdriver.find_css(".row2")
-        action_chains = ActionChains(self.webdriver)
+        sleep(2)
+
+        # action achains, still not working!
+        # dragged = self.webdriver.wait_for_css(".row1 .admin-sort-drag")
+        # target = self.webdriver.find_css(".row2")
+        # action_chains = ActionChains(self.webdriver)
         # action_chains.drag_and_drop(dragged[0], dragged[1]).perform()
         # action_chains.drag_and_drop_by_offset(dragged[0], 0, 20).perform()
-        sleep(2)
-        action_chains.click_and_hold(dragged[0]).move_to_element(target[0]).release().perform()
+        # action_chains.click_and_hold(dragged[0]).move_to_element(target[0]).perform()
+        # action_chains.click_and_hold(dragged[0]).move_by_offset(3, 3).release().perform()
+
+        # try with helper
+        # doesnt work. probably needs more work, on events, targets, etc...
+        # wait for selenium, yap?!
+        with open(os.path.join(settings.APP_ROOT, 'tests', 'utils', 'drag_and_drop_helper.js')) as f:
+            js = f.read()
+        source = "var source = document.querySelector('.row1');"
+        target = "var target = document.querySelector('.row1:nth-child(3)');"
+        self.webdriver.execute_script(js + source + target + ' simulateDragDrop(source, target);')
         sleep(2)
         self.assertEqual(SortableBook.objects.get(pk=first_pk).my_order, 2)
         self.assertEqual(SortableBook.objects.get(pk=second_pk).my_order, 1)
