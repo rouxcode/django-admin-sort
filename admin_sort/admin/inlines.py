@@ -80,6 +80,7 @@ class DragAndDropSortableInlineMixin(SortableInlineMixinBase):
         if 'djangocms_admin_style' in settings.INSTALLED_APPS:
             css['all'].append('admin_sort/css/sortable.inline.cms.css')
         js = (
+            'admin/js/jquery.init.js',
             'admin_sort/js/sortable.js',
             'admin_sort/js/sortable.draganddrop.inline.js',
         )
@@ -122,6 +123,7 @@ class DropdownSortableInlineMixin(SortableInlineMixinBase):
     @property
     def media(self):
         js = [
+            'admin/js/jquery.init.js',
             'admin_sort/js/sortable.dropdown.inline.js',
         ]
         original_media = super(DropdownSortableInlineMixin, self).media
