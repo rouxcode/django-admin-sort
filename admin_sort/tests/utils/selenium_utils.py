@@ -53,8 +53,8 @@ class CustomWebDriver(webdriver.Firefox):
 
     def wait_for_css(self, css_selector, timeout=4):
         """ Shortcut for WebDriverWait"""
-        return WebDriverWait(self, timeout).until(lambda driver : driver.find_css(css_selector))
+        return WebDriverWait(self, timeout).until(lambda driver: driver.find_css(css_selector))
 
     def wait_for_iframe(self, iframe_selector, timeout=4):
         """ Shortcut for WebDriverWait"""
-        return WebDriverWait(self, timeout).until(lambda driver : driver.frame_to_be_available_and_switch_to_it())
+        return WebDriverWait(self, timeout).until(lambda driver: driver.frame_to_be_available_and_switch_to_it())

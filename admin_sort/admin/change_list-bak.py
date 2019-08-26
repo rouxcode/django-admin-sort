@@ -100,9 +100,7 @@ class SortableAdminMixin(object):
         return list_display
 
     def get_list_display_links(self, request, list_display):
-        if (self.list_display_links
-                or self.list_display_links is None
-                or not list_display):
+        if (self.list_display_links or self.list_display_links is None or not list_display):
             return self.list_display_links
         else:
             # Use only the second item in list_display as link

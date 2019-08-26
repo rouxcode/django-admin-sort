@@ -4,13 +4,11 @@ from time import sleep
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.select import Select
 
 from .utils.selenium_utils import SeleniumTestCase, CustomWebDriver
-from .testapp.models import AnotherSortableBook, SortableBook, Chapter
+from .testapp.models import SortableBook, Chapter
 
 # compat
 import django
@@ -26,7 +24,7 @@ class SortableFrontendTests(SeleniumTestCase):
     password = 'admin'
 
     def setUp(self):
-        superuser = User.objects.create_superuser(self.username, 'admin@free.fr', self.password)
+        User.objects.create_superuser(self.username, 'admin@free.fr', self.password)
         # Instantiating the WebDriver will load your browser
         options = Options()
         if settings.HEADLESS_TESTING:
@@ -90,7 +88,6 @@ class SortableFrontendTests(SeleniumTestCase):
         sleep(2)
         self.assertEqual(SortableBook.objects.get(pk=first_pk).my_order, 2)
         self.assertEqual(SortableBook.objects.get(pk=second_pk).my_order, 1)
-
 
     def test_basic_inline_dndrop_sort(self):
         pass

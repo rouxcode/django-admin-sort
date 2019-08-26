@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import transaction
-from django.db.models import F, Max
+from django.db.models import F
 
 
 def set_position_for_new_obj(obj, position_field, insert_position='last'):
@@ -68,7 +68,7 @@ def position_object(obj, position_field, new_position, commit=True):
         update_end_position = obj_start_position
     update_qs_filter_kwargs = {
         '%s__gte' % position_field: update_start_position,
-         '%s__lte' % position_field: update_end_position
+        '%s__lte' % position_field: update_end_position
     }
     update_qs = base_qs.filter(**update_qs_filter_kwargs)
     update_qs = update_qs.exclude(pk=obj.pk)

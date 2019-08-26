@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
 
-import django
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.test import TestCase
@@ -25,11 +24,15 @@ class SortableBookTestCase(TestCase):
         self.createAdminUser()
 
     def createAdminUser(self):
-        self.user = User.objects.create_user('admin', 'admin@example.com', self.admin_password)
+        self.user = User.objects.create_user(
+            'admin', 'admin@example.com', self.admin_password
+        )
         self.user.is_staff = True
         self.user.is_superuser = True
         self.user.save()
-        logged_in = self.client.login(username=self.user.username, password=self.admin_password)
+        logged_in = self.client.login(
+            username=self.user.username, password=self.admin_password
+        )
         self.assertTrue(logged_in, 'User is not logged in')
 
     def assertUniqueOrderValues(self):
@@ -40,7 +43,9 @@ class SortableBookTestCase(TestCase):
         val = 0
         for obj in SortableBook.objects.order_by('my_order'):
             val += 1
-            self.assertEqual(obj.my_order, val, 'Inconsistent order value on SortableBook')
+            self.assertEqual(
+                obj.my_order, val, 'Inconsistent order value on SortableBook'
+            )
 
     def assertResponseCheck(self, in_data, raw_out_data):
         """
@@ -58,8 +63,10 @@ class SortableBookTestCase(TestCase):
             self.assertEqual(len(out_data), 0)
 
     def testFilledBookShelf(self):
-        self.assertEqual(SortableBook.objects.count(), 20,
-                         'Check fixtures/data.json: Book shelf shall have 20 items')
+        self.assertEqual(
+            SortableBook.objects.count(),
+            20,
+            'Check fixtures/data.json: Book shelf shall have 20 items')
         self.assertUniqueOrderValues()
 
     def test_move_down_right(self):

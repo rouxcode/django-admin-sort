@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 from admin_sort.admin import SortableAdminMixin, SortableInlineAdminMixin
 from admin_sort.admin.inlines import DropdownSortableInlineMixin

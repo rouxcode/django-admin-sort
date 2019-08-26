@@ -1,4 +1,7 @@
-from admin_sort.utils.model_sorting import set_position_for_new_obj, position_object
+from admin_sort.utils.model_sorting import (
+    set_position_for_new_obj,
+    position_object,
+)
 
 
 class SortableModelMixin(object):
@@ -25,7 +28,8 @@ class SortableModelMixin(object):
                 )
         else:
             db_obj = self.__class__.objects.get(pk=self.pk)
-            setattr(self, self.position_field, getattr(db_obj, self.position_field))
+            value = getattr(db_obj, self.position_field)
+            setattr(self, self.position_field, value)
             position_object(
                 self,
                 self.position_field,
@@ -33,4 +37,3 @@ class SortableModelMixin(object):
                 commit=False,
             )
         super(SortableModelMixin, self).save(*args, **kwargs)
-
