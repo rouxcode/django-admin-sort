@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.admin',
+    'django.contrib.messages',
     'django.contrib.staticfiles',
     'admin_sort',
     'admin_sort.tests.testapp',

@@ -46,7 +46,6 @@ class SortableFrontendTests(SeleniumTestCase):
             val += 1
             self.assertEqual(obj.my_order, val, 'Inconsistent order value on %s' % queryset)
 
-
     def test_app_index_get(self):
         # if this fails, everything is probably broken.
         self.login()
