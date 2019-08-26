@@ -1,6 +1,7 @@
+dist: bionic
 sudo: false
-cache: pip
 language: python
+cache: pip
 python:
   - "2.7"
   - "3.5"
