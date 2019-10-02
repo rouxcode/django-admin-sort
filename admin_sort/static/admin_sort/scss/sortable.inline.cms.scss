@@ -1,0 +1,60 @@
+.djangocms-admin-style {
+
+
+    .admin-sort-stacked {
+
+        .module {
+
+            h2 {
+                margin: 0 0;
+                padding-top: 10px;
+                line-height: 1.25;
+                border-top: 1px solid #ddd;
+            }
+        }
+
+        .add-row {
+            // border-top: 1px solid #ddd;
+        }
+    }
+
+    .admin-sort-row {
+        margin-bottom: 0;
+        padding-left: 35px;
+        padding-right: 20px;
+        border-bottom: 1px solid #eee;
+
+        h3,
+        fieldset {
+            border: 0;
+        }
+
+        h3 {
+            padding-top: 10px;
+        }
+
+        .form-row {
+            padding: 0 0 15px;
+        }
+
+        &:before {
+            border-bottom: 0;
+            border-top: 0;
+        }
+
+
+        &.admin-sort-ghost {
+            background-color: #c4dce8;
+
+            h3,
+            fieldset {
+                border: 0;
+                background-color: transparent;
+            }
+        }
+
+        .inline-deletelink {
+            background-image: url(../../admin/img/inline-delete.svg) !important;
+        }
+    }
+}

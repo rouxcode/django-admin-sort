@@ -1,0 +1,27 @@
+{% extends "admin/change_list.html" %}
+
+{% load i18n admin_urls admin_list %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script type="text/javascript">
+        SortableList.options({
+            csrftoken: '{{ csrf_token }}',
+            current_page: {{ cl.page_num | add:'1' }},
+            total_pages: {{ cl.paginator.num_pages }},
+            update_url: '{{ update_url }}',
+            reorder_url: '{{ reorder_url }}',
+            messages: {
+                sorting: '{% trans "Repositioning selected item" %}',
+                reordering: '{% trans "Cleaning position of all items" %}'
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block object-tools-items %}
+    <li>
+        <a href="#" id="admin-sort-reorder-link" class="admin-sort-reorder-link">{% trans "Clean Sorting" %}</a>
+    </li>
+    {{ block.super }}
+{% endblock %}

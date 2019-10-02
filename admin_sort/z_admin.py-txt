@@ -4,7 +4,7 @@ from types import MethodType
 from django import VERSION, forms
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf.urls import url
 from django.core.exceptions import ImproperlyConfigured
 from django.core.paginator import EmptyPage

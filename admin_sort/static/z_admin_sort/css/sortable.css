@@ -1,0 +1,288 @@
+/* Page Move */
+#changelist-form-step,
+#changelist-form-page {
+    display: none;
+    margin-left: 0.5em;
+}
+
+#changelist-form-step.active,
+#changelist-form-page.active {
+    display: inline-block;
+    vertical-align: top;
+    width: 50px;
+    line-height: 18px;
+    padding: 0 0 0 4px;
+}
+
+
+.change-list #changelist .actions label {
+    vertical-align: top;
+}
+
+
+/* sortable change list */
+#result_list thead th:nth-child(2) {
+    width: 120px;
+}
+
+#result_list tbody td.field-_reorder {
+    position: relative;
+    padding: 0 16px;
+}
+
+#result_list div.admin-sort-drag {
+    position: absolute;
+    top: 50%;
+    width: 70%;
+    height: 20px;
+    display: inline-block;
+    vertical-align: top;
+    background: linear-gradient(
+      to bottom,
+      #ccc,
+      #ccc 50%,
+      #fff 50%,
+      #fff
+    );
+    background-size: 100% 5px;
+    cursor: move;
+    transform: translateY(-50%);
+}
+
+#result_list .sortable-ghost {
+    background: rgba(121, 174, 200, 1) none repeat scroll 0% 0%;
+}
+
+#result_list .sortable-ghost td,
+#result_list .sortable-ghost th {
+    opacity: 0;
+}
+#result_list .sortable-fallback {
+    display: table;
+    opacity: 1 !important;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+#result_list .sortable-fallback .action-checkbox {
+    width: 1.5em;
+}
+#result_list .sortable-fallback td:nth-child(2) {
+    width: 120px;
+    box-sizing: border-box;
+}
+
+
+/* sortable inlines */
+.sortable .is_hidden {
+    display: none;
+}
+/* make room for drag element */
+.sortable-stacked .inline-related.is_sortable {
+    box-sizing: border-box;
+    padding-left: 30px;
+    background-color: white;
+}
+/* ghost background */
+.sortable-stacked .inline-related.is_sortable.inline-ghost {
+    background-color: rgba(121, 174, 200, 1)
+}
+/* dont know? make some elements in ghost invisible*/
+.sortable-stacked .inline-related.is_sortable.inline-ghost h3,
+.sortable-stacked .inline-related.is_sortable.inline-ghost .drag,
+.sortable-stacked .inline-related.is_sortable.inline-ghost fieldset {
+    opacity: 0;
+}
+/* distinction/margin between extra items, that are not sortable (yet) */
+.sortable-stacked .inline-related.first-empty:not(.is_sortable) {
+    margin-top: 3em;
+}
+
+.sortable-stacked .drag {
+    position: absolute;
+    left: 0;
+    top: 0px;
+    bottom: 1px;
+    display: block;
+    box-sizing: border-box;
+    /*border: 5px solid #fff;*/
+    width: 30px;
+    box-sizing: border-box;
+    /*border-top: 3px solid #fff;*/
+    border-bottom: 4px solid #fff;
+    background: linear-gradient(
+      to bottom,
+      #ccc,
+      #ccc 50%,
+      #fff 50%,
+      #fff
+    );
+    background-size: 100% 5px;
+    cursor: move;
+}
+/* line on the right of drag, not needed? */
+/*.sortable-stacked .drag::before {*/
+    /*content: '';*/
+    /*position: absolute;*/
+    /*right: 0px;*/
+    /*top: 0px;*/
+    /*bottom: 0px;*/
+    /*width: 1px;*/
+    /*background-color: #eee;*/
+/*}*/
+/* horizontal line at top of drag */
+.sortable-stacked .drag::after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    /*bottom: -5px;*/
+    top: -1px;
+    width: 30px;
+    height: 1px;
+    background-color: #eee;
+}
+.sortable-stacked .is_sortable:first-of-type .drag::after {
+    display: none;
+}
+
+
+/* tabular inline */
+
+/* adapt padding? totally agreeeee. BUT: let django or some other tools handle this?? */
+/* TODO: decide if this is needed, its oppiniated? */
+.sortable-tabular .tabular tr.is_sortable td {
+    padding: 1em 10px !important;
+}
+/* ghost color */
+.sortable-tabular .tabular tr.is_sortable.inline-ghost {
+    background-color: rgba(121, 174, 200, 1)
+}
+/* hide some elements when ghost? */
+.sortable-tabular .tabular tr.is_sortable.inline-ghost td,
+.sortable-tabular .tabular tr.is_sortable.inline-ghost th {
+    opacity: 0;
+}
+/* table things. aiks */
+.sortable-tabular .tabular tr.is_sortable.inline-fallback {
+    display: table;
+    opacity: 1 !important;
+    background-color: white;
+}
+/* distinction/margin between extra items, that are not sortable (yet) */
+.sortable-tabular .tabular tr.first-empty {
+    border-top: 3em solid white;
+}
+/* define drag width with header cell min-width */
+.sortable-tabular .tabular tr th.drag-label {
+    box-sizing: border-box;
+    min-width: 30px;
+    width: 30px;
+}
+/* the drag */
+.sortable-tabular .is_sortable .original,
+.sortable-tabular .tabular tr.is_sortable.inline-fallback .original {
+    position: relative;
+    cursor: move;
+    padding: 0 !important;
+    width: 30px;
+    /*border-top: 3px solid #fff;*/
+    background: linear-gradient(
+      to bottom,
+      #ccc,
+      #ccc 50%,
+      #fff 50%,
+      #fff
+    ) !important;
+    background-size: 100% 5px !important;
+    border-bottom: 1px solid #eee;
+}
+/* the white separator */
+.sortable-tabular .is_sortable .original::after,
+.sortable-tabular .tabular tr.is_sortable.inline-fallback .original::after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 3px;
+    background-color: #fff;
+}
+/* dont show label of original element */
+.sortable-tabular .is_sortable .original p {
+    display: none
+}
+
+
+
+/* styles when djangocms-admin-style is installed */
+/* we attack with the .djangocms-admin-style that is on body! */
+
+/* changelist corrections */
+
+/* dontknowyet */
+.djangocms-admin-style #changelist-form-step.active,
+.djangocms-admin-style #changelist-form-page.active {
+    width: 70px !important;
+    padding: 0 0 0 10px !important;
+    margin-right: 0.5em;
+    margin-top: 3px;
+    line-height: 38px;
+}
+
+.djangocms-admin-style .change-list #changelist .actions .button {
+    margin-top: 3px;
+    line-height: 18px;
+}
+
+.djangocms-admin-style #result_list tbody td.field-_reorder {
+    position: relative;
+    padding: 0 68px 0 8px !important;
+}
+
+.djangocms-admin-style #result_list tbody td.field-_reorder div.admin-sort-drag  {
+    position: relative;
+    top: auto;
+    width: 100%;
+    transform: translateY(0);
+}
+
+.djangocms-admin-style #result_list .sortable-ghost {
+    background: rgba(0, 168, 230, 1) none repeat scroll 0% 0% !important;
+}
+.djangocms-admin-style #result_list .sortable-fallback {
+    border: 1px solid #ddd;
+    border-collapse: collapse !important;
+}
+/* adapt drag */
+.djangocms-admin-style .change-list #changelist #result_list tbody div.admin-sort-drag  {
+    max-width: 100%;
+    height: 75%;
+    margin: 0;
+}
+
+
+/* stacked inline corrections */
+
+/* below drag room optimization */
+.djangocms-admin-style .sortable-stacked .drag {
+    border-bottom: 0px solid #fff;
+}
+/* make mooooore room for drag element, admin style removes padding on inline elements */
+.djangocms-admin-style .sortable-stacked .inline-related.is_sortable {
+    padding-left: 40px;
+}
+/* reposition line below drag, admin-style adds bottom margin on inline */
+.djangocms-admin-style .sortable-stacked .drag::after {
+    bottom: -9px;
+}
+/* adapt color */
+.djangocms-admin-style .sortable-stacked .inline-related.is_sortable.inline-ghost {
+    background: rgba(0, 168, 230, 1) none repeat scroll 0% 0% !important;
+}
+
+
+/* tabular inline corrections */
+
+/* adapt color */
+.djangocms-admin-style .sortable-tabular .tabular tr.is_sortable.inline-ghost {
+    background: rgba(0, 168, 230, 1) none repeat scroll 0% 0% !important;
+}

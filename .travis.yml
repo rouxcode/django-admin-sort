@@ -1,19 +1,31 @@
+dist: xenial  # has py35!
+sudo: false
 language: python
+cache: pip
 python:
-  - 2.7
-  - 3.4
+  - "2.7"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+install: pip install tox-travis
+script: tox
 
-env:
-  - DJANGO="django<1.7"
-  - DJANGO="django<1.8"
-  - DJANGO="django<1.9"
-  - DJANGO="django<1.10"
-  - DJANGO="django<1.11"
-  - DJANGO="django<1.12"
 
-install:
-  - pip install -q $DJANGO
-  - python setup.py -q install
+# for selenium/geckodriver
+addons:
+  firefox: "63.0"
 
-script:
-  - ./manage.py test --settings=admin_sort.tests.settings
+before_install:
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
+  - mkdir geckodriver
+  - tar -xzf geckodriver-v0.23.0-linux64.tar.gz -C geckodriver
+  - export PATH=$PATH:$PWD/geckodriver
+
+services:
+  - xvfb
+
+## https://docs.travis-ci.com/user/gui-and-headless-browsers/
+#before_script:
+#  - "export DISPLAY=:99.0"
+#  - "sh -e /etc/init.d/xvfb start"
+#  - sleep 3 # give xvfb some time to start

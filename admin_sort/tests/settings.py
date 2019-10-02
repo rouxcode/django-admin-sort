@@ -15,6 +15,8 @@ DATABASES = {
 
 SITE_ID = 1
 
+HEADLESS_TESTING = True
+
 ROOT_URLCONF = 'admin_sort.tests.testapp.urls'
 
 SECRET_KEY = 'secret'
@@ -41,12 +43,11 @@ STATIC_ROOT = '/home/static/'
 STATIC_URL = '/static/'
 
 if django.VERSION[:2] < (1, 8):
-# List of callables that know how to import templates from various sources.
+    # List of callables that know how to import templates from various sources.
     TEMPLATE_LOADERS = (
         'django.template.loaders.filesystem.Loader',
         'django.template.loaders.app_directories.Loader',
     )
-
     TEMPLATE_DIRS = (
         # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
         # Always use forward slashes, even on Windows.
@@ -74,12 +75,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.admin',
+    'django.contrib.messages',
     'django.contrib.staticfiles',
     'admin_sort',
     'admin_sort.tests.testapp',
 ]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',

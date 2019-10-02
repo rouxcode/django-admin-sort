@@ -1,0 +1,66 @@
+
+/* general visual apperance of the drag */
+.admin-sort-drag {
+    background-image: url(../imgs/drag.svg);
+    background-repeat: repeat;
+    background-size: 5px 5px;
+    cursor: move;
+    position: absolute;
+    width: 10px;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    right: auto;
+}
+
+.admin-sort-draganddrop-inline.admin-sort-stacked .admin-sort-row  {
+    position: relative;
+    box-sizing: border-box;
+    padding-left: 20px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: auto;
+        bottom: 0;
+        display: block;
+        width: 20px;
+        border: 1px solid #eee;
+    }
+
+    .admin-sort-drag {
+        display: inline-block;
+        box-sizing: border-box;
+        height: auto;
+    }
+
+    &.admin-sort-ghost {
+        background-color: #c4dce8;
+
+        h3,
+        fieldset {
+            background-color: transparent;
+        }
+    }
+}
+
+/* the drag */
+.admin-sort-draganddrop-inline.admin-sort-tabular {
+    .original {
+        position: relative;
+    }
+    .admin-sort-drag {
+        height: calc(100% - 13px);
+    }
+}
+
+/* optics for label */
+.inline-group .tabular tr.admin-sort-row td.original {
+    width: 17px;
+    p {
+        white-space: nowrap;
+        left: 18px
+    }
+}

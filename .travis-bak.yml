@@ -1,0 +1,36 @@
+language: python
+cache: pip
+
+addons:
+  firefox: "63.0"
+
+python:
+  - 2.7
+  - 3.5
+  - 3.6
+  - 3.7
+
+env:
+  - DJANGO="django<1.12"
+  - DJANGO="django<2.1"
+  - DJANGO="django<2.2"
+
+before_install:
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
+  - mkdir geckodriver
+  - tar -xzf geckodriver-v0.23.0-linux64.tar.gz -C geckodriver
+  - export PATH=$PATH:$PWD/geckodriver
+
+install:
+  - pip install -q $DJANGO
+  - pip install -r test_requirements.txt
+  - pip install .
+
+# https://docs.travis-ci.com/user/gui-and-headless-browsers/
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
+
+script:
+  - ./manage.py test --settings=admin_sort.tests.settings
