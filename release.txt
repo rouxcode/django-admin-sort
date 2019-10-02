@@ -12,3 +12,5 @@ git push upstream --all; git push upstream --tags
 python setup.py sdist && python setup.py bdist_wheel --universal
 python setup.py register -r pypitest && twine upload dist/* -r pypitest
 python setup.py register -r pypi && twine upload dist/* -r pypi
+
+set x.x.xDEV release in __init__.py
