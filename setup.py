@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from setuptools import setup, find_packages
-from admin_sort import __version__
 
-try:
-    from pypandoc import convert
-except ImportError:
-    def convert(filename, fmt):
-        with open(filename) as fd:
-            return fd.read()
+import os
+from setuptools import setup, find_packages
+
+from admin_sort import __version__
 
 
 DESCRIPTION = 'Sortable changelist, tabular and stacked inlines, ' \
@@ -26,13 +22,18 @@ CLASSIFIERS = [
 ]
 
 
+def read(fname):
+    # read the contents of a text file
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+
 setup(
     name='django-admin-sort',
     version=__version__,
     author='Alaric Mägerle',
     author_email='info@rouxcode.ch',
     description=DESCRIPTION,
-    long_description=convert('README.md', 'rst'),
+    long_description=read('PYPI.rst'),
     url='https://github.com/rouxcode/django-admin-sort',
     license='MIT',
     keywords=['django'],
