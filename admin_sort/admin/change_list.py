@@ -1,8 +1,5 @@
-from __future__ import unicode_literals
-
 from django import forms
 from django.conf import settings
-from django.conf.urls import url
 from django.core.exceptions import ImproperlyConfigured
 from django.db import transaction
 from django.forms import widgets
@@ -12,11 +9,15 @@ from django.http import (
     HttpResponseNotAllowed,
     JsonResponse,
 )
-from django.urls import reverse
+from django.urls import path, reverse
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
-from admin_sort.utils.model_sorting import position_object, set_position_for_new_obj
+from admin_sort.utils.model_sorting import (
+    position_object,
+    set_position_for_new_obj,
+)
+
 
 POSITION_CHOICES = (
     ('', _('Current Position')),
@@ -63,9 +64,10 @@ class SortableAdminMixin(object):
         self._field = getattr(self, 'position_field', None)
         self._insert_position = getattr(self, 'insert_position', 'last')
         if not self._field:
-            msg = _('You have to define a position_field on your {} for SortableAdminMixin to work.').format(
-                self.__class__.__name__
-            )
+            msg = _(
+                'You have to define a position_field on your {} for'
+                ' SortableAdminMixin to work.'
+            ).format(self.__class__.__name__)
             raise ImproperlyConfigured(msg)
         if '-{}'.format(self._field) in model._meta.ordering:
             msg = _(
@@ -100,7 +102,9 @@ class SortableAdminMixin(object):
         return list_display
 
     def get_list_display_links(self, request, list_display):
-        if (self.list_display_links or self.list_display_links is None or not list_display):
+        if (self.list_display_links
+                or self.list_display_links is None
+                or not list_display):
             return self.list_display_links
         else:
             # Use only the second item in list_display as link
@@ -114,13 +118,13 @@ class SortableAdminMixin(object):
     def get_urls(self):
         info = [self.model._meta.app_label, self.model._meta.model_name]
         urls = [
-            url(
-                r'^update/$',
+            path(
+                'update/',
                 self.admin_site.admin_view(self.update_view),
                 name='{}_{}_update'.format(*info)
             ),
-            url(
-                r'^reorder/$',
+            path(
+                'reorder/',
                 self.admin_site.admin_view(self.reorder_view),
                 name='{}_{}_reorder'.format(*info)
             ),

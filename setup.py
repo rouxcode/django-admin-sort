@@ -39,7 +39,9 @@ setup(
     keywords=['django'],
     platforms=['OS Independent'],
     classifiers=CLASSIFIERS,
-    install_requires=[],
+    install_requires=[
+         'django>=2.2',
+    ],
     packages=find_packages(exclude=['example', 'docs']),
     include_package_data=True,
     zip_safe=False,
