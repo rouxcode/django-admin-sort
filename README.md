@@ -13,16 +13,17 @@ django-admin-sort's focus is on admin sorting, as the name suggests. Nevertheles
 ## Installation
 
 The latest stable release can be found on PyPI.
-
-	pip install django-admin-sort
+```bash
+pip install django-admin-sort
+```
 
 Add ``'admin_sort'`` to the list of ``INSTALLED_APPS`` in your project's ``settings.py`` file.
-
-	INSTALLED_APPS = (
-	    ..,
-	    'admin_sort',
-	)
-
+```python
+INSTALLED_APPS = (
+	..,
+	'admin_sort',
+)
+```
 
 ## Using Admin Sort
 
@@ -40,19 +41,29 @@ use the `admin_sort.models.SortableModelMixin`, a convinience mixin to make your
 ### Integrate your models
 
 Each database model which shall be sortable, requires a position value in its model description.
+```python
+class SortableBook(models.Model):
+    title = models.CharField(
+        'Title',
+        null=True,
+        blank=True,
+        max_length=255,
+    )
+    my_order = models.PositiveIntegerField(
+        default=0, 
+        blank=False, 
+        null=False,
+    )
 
-	class SortableBook(models.Model):
-	    title = models.CharField('Title', null=True, blank=True, max_length=255)
-	    my_order = models.PositiveIntegerField(default=0, blank=False, null=False)
-
-	    class Meta(object):
-	        ordering = ('my_order', 'title', )
+    class Meta(object):
+        ordering = ('my_order', 'title', )
+```
 
 Here the ordering field is named ``my_order``, but you may choose any other name. One constraint:
 
 * ``my_order``'s default value must be 0. The JavaScript which performs the sorting is 1-indexed,
-	so this will not interfere with the order of your items, even if you're already using 0-indexed
-	ordering fields.
+    so this will not interfere with the order of your items, even if you're already using 0-indexed
+    ordering fields.
 
 The field used to store the ordering position may be any kind of numeric model field offered by
 Django. Use one of these models fields:
@@ -68,32 +79,35 @@ Django. Use one of these models fields:
 In ``admin.py``, add a mixin class to augment the functionality for sorting (be sure to put the
 mixin class before model.ModelAdmin):
 
-	from django.contrib import admin
-	from admin_sort.admin import SortableAdminMixin
-	from models import MyModel
+```python
+from django.contrib import admin
+from admin_sort.admin import SortableAdminMixin
+from models import MyModel
 
-	class MyModelAdmin(SortableAdminMixin, admin.ModelAdmin):
-	    position_field = 'my_order'  # required
-	    insert_position = 'first|last'  # optional, last is default
-	    
-	admin.site.register(MyModel, MyModelAdmin)
+class MyModelAdmin(SortableAdminMixin, admin.ModelAdmin):
+	position_field = 'my_order'  # required
+	insert_position = 'first|last'  # optional, last is default
+	
+admin.site.register(MyModel, MyModelAdmin)
+```
 
 The list view of the model admin interface now adds a column with a sensitive area.
 By clicking on that area, the user can move that row up or down.
 
 
 ### Sortable stacked or tabular inline
+```python
+from django.contrib import admin
+from admin_sort.admin import SortableInlineAdminMixin
+from models import MySubModel, MyModel
 
-	from django.contrib import admin
-	from admin_sort.admin import SortableInlineAdminMixin
-	from models import MySubModel, MyModel
+class MySubModelInline(SortableInlineAdminMixin, admin.TabularInline):  # or admin.StackedInline
+	model = MySubModel
 
-	class MySubModelInline(SortableInlineAdminMixin, admin.TabularInline):  # or admin.StackedInline
-	    model = MySubModel
-
-	class MyModelAdmin(admin.ModelAdmin):
-	    inlines = (MySubModelInline,)
-	admin.site.register(MyModel, MyModelAdmin)
+class MyModelAdmin(admin.ModelAdmin):
+	inlines = (MySubModelInline,)
+admin.site.register(MyModel, MyModelAdmin)
+```
 
 The interface for a sortable stacked inline view is similar. If you click on an stacked
 inline's field title, this whole inline form can be moved up and down.
@@ -123,14 +137,14 @@ To get a quick first impression of this plugin, clone this repositoty
 from GitHub and run an example webserver:
 
 .. code:: bash
-
-	git clone https://github.com/rouxcode/django-admin-sort.git
-	cd django-admin-sort/example/
-	./manage.py syncdb
-	./manage.py createsuperuser
-	./manage.py loaddata testapp/fixtures/data.json
-	./manage.py runserver
-
+```bash
+git clone https://github.com/rouxcode/django-admin-sort.git
+cd django-admin-sort/example/
+./manage.py syncdb
+./manage.py createsuperuser
+./manage.py loaddata testapp/fixtures/data.json
+./manage.py runserver
+```
 Point a browser onto http://localhost:8000/admin/, log in and go to *Sortable books*. There you can
 test the behavior of this Django app.
 
