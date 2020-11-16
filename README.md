@@ -20,8 +20,8 @@ pip install django-admin-sort
 Add ``'admin_sort'`` to the list of ``INSTALLED_APPS`` in your project's ``settings.py`` file.
 ```python
 INSTALLED_APPS = (
-	..,
-	'admin_sort',
+    ..,
+    'admin_sort',
 )
 ```
 
@@ -85,9 +85,9 @@ from admin_sort.admin import SortableAdminMixin
 from models import MyModel
 
 class MyModelAdmin(SortableAdminMixin, admin.ModelAdmin):
-	position_field = 'my_order'  # required
-	insert_position = 'first|last'  # optional, last is default
-	
+    position_field = 'my_order'  # required
+    insert_position = 'first|last'  # optional, last is default
+    
 admin.site.register(MyModel, MyModelAdmin)
 ```
 
@@ -102,10 +102,10 @@ from admin_sort.admin import SortableInlineAdminMixin
 from models import MySubModel, MyModel
 
 class MySubModelInline(SortableInlineAdminMixin, admin.TabularInline):  # or admin.StackedInline
-	model = MySubModel
+    model = MySubModel
 
 class MyModelAdmin(admin.ModelAdmin):
-	inlines = (MySubModelInline,)
+    inlines = (MySubModelInline,)
 admin.site.register(MyModel, MyModelAdmin)
 ```
 
