@@ -3,16 +3,16 @@ const minify = require('gulp-babel-minify');
 const sass = require('gulp-sass');
 
 
-const js_src = 'admin_sort/frontend/js/**/*.js';
+const js_src = 'frontend/js/**/*.js';
 const js_dest = 'admin_sort/static/admin_sort/js';
 const js_conf = {
-    mangle: {
-        keepClassName: true
+    "parserOptions": {
+        "sourceType": "module",
     }
 };
 
 
-const scss_src = 'admin_sort/frontend/scss/**/*.scss';
+const scss_src = 'frontend/scss/**/*.scss';
 const scss_dest = 'admin_sort/static/admin_sort/css';
 const scss_conf = {
     errLogToConsole: true,
