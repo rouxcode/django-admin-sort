@@ -1,6 +1,6 @@
 const gulp = require('gulp');
-const minify = require('gulp-babel-minify');
 const sass = require('gulp-sass');
+const babel = require('gulp-babel');
 
 
 const js_src = 'frontend/js/**/*.js';
@@ -21,7 +21,7 @@ const scss_conf = {
 
 exports.js = function () {
     return gulp.src(js_src)
-        .pipe(minify(js_conf))
+        .pipe(babel({ presets: ['@babel/preset-env'] }))
         .pipe(gulp.dest(js_dest));
 };
 

@@ -14,7 +14,7 @@ const SortableList = (function () {
         }
     };
 
-    function iniut_widget(w) {
+    function init_widget(w) {
 
     };
 
