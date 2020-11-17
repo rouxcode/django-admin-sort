@@ -152,7 +152,7 @@ class DropdownSortableInlineMixin(SortableInlineMixinBase):
         # pprint.pprint(self.opts.__dict__)
         # pprint.pprint(formset.__dict__)
         # pprint.pprint(formset.form)
-        # TODO: getting count of existing inlines, this is done in js otherwise!
+        # TODO: getting count of existing inlines, this is done in js otherwise
         # count = self.model.objects....count()
         # choices = [(no, no, ) for no in range(1, count)]
         formset.form.base_fields[self._field].widget = forms.Select(
