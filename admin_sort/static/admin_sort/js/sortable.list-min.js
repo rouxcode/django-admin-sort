@@ -1,0 +1,1 @@
+"use strict";var _sortablejs=_interopRequireDefault(require("sortablejs"));function _interopRequireDefault(e){return e&&e.__esModule?e:{default:e}}var SortableList=void 0;
