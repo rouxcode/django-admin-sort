@@ -16,19 +16,18 @@ const scss_conf = {
     outputStyle: 'compressed'
 };
 
-exports.sortable = function () {
+
+exports.js_sortable = function () {
     // there has to be a proper ways to do this !!!!!
     return gulp.src('node_modules/sortablejs/dist/sortable.umd.js')
         .pipe(rename('sortable.js'))
         .pipe(gulp.dest(js_dest));
 }
-
 exports.js_compile = function () {
     return gulp.src(js_src)
         .pipe(minify(js_conf))
         .pipe(gulp.dest(js_dest));
 };
-
 exports.js_copy = function () {
     return gulp.src(js_src)
         .pipe(gulp.dest(js_dest));
@@ -41,6 +40,7 @@ exports.scss = function () {
         .pipe(gulp.dest(scss_dest));
 };
 
+
 exports.watch = function () {
 
     // build js
@@ -49,6 +49,7 @@ exports.watch = function () {
     // build css
     gulp.watch(scss_src, exports.scss);
 };
+
 
 exports.default = function (cb) {
     cb();
