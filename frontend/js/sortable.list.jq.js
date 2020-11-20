@@ -163,11 +163,11 @@ var SortableList = (function ($) {
 
     function set_options(options) {
         // TODO check if option has value & do proper init or error handling
-        csrftoken = options.csrf;
-        current_page = options.pages.current;
-        total_pages = options.pages.total;
-        update_url = options.urls.update;
-        reorder_url = options.urls.reorder;
+        csrftoken = options.csrftoken;
+        current_page = options.current_page;
+        total_pages = options.total_pages;
+        update_url = options.update_url;
+        reorder_url = options.reorder_url;
         messages = options.messages;
     };
 

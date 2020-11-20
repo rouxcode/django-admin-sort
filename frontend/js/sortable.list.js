@@ -64,11 +64,13 @@ const SortableList = (function () {
         let i, row;
         for (i = 0; i < widget._rows.length; ++i) {
             row = widget._rows[i];
-            row._drag = row.querySelector(selectors.handle);
 
+            // set needed attrs
             row._key = i;
+            row._drag = row.querySelector(selectors.handle);
             row._pk = row._drag.dataset.pk;
 
+            // add the draggable class (build it from the selector)
             row.classList.add(selectors.draggable.substr(1));
         }
     };

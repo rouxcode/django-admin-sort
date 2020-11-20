@@ -18,12 +18,13 @@ const scss_conf = {
 
 
 exports.js_sortable = function () {
-    // there has to be a proper ways to do this !!!!!
+    // there has to be a proper way to do this !!!!!
     return gulp.src('node_modules/sortablejs/dist/sortable.umd.js')
         .pipe(rename('sortable.js'))
         .pipe(gulp.dest(js_dest));
 }
 exports.js_compile = function () {
+    exports.js_sortable();
     return gulp.src(js_src)
         .pipe(minify(js_conf))
         .pipe(gulp.dest(js_dest));
