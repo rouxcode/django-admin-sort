@@ -4,7 +4,6 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import transaction
 from django.forms import widgets
 from django.http import (
-    HttpResponseBadRequest,
     HttpResponseForbidden,
     HttpResponseNotAllowed,
     JsonResponse,
@@ -156,14 +155,14 @@ class SortableAdminMixin(object):
         obj.save()
 
     def reorder_view(self, request):
-        error_response = self.check_ajax_request(request)
+        error_response = self.check_request(request)
         if error_response:
             return error_response
         data = self._reorder_all()
         return JsonResponse(data)
 
     def update_view(self, request):
-        error_response = self.check_ajax_request(request)
+        error_response = self.check_request(request)
         if error_response:
             return error_response
         data = {}
@@ -186,11 +185,7 @@ class SortableAdminMixin(object):
             self._reorder_all()
         return JsonResponse(data)
 
-    def check_ajax_request(self, request):
-        if not request.is_ajax():
-            return HttpResponseBadRequest(
-                'Not an XMLHttpRequest'
-            )
+    def check_request(self, request):
         if request.method != 'POST':
             return HttpResponseNotAllowed(
                 'Must be a POST request'
