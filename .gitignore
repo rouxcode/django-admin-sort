@@ -16,4 +16,4 @@ dist
 htmlcov
 .idea
 .tox
-.vscode
+/.vscode
