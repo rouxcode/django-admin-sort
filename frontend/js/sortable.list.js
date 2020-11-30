@@ -25,7 +25,7 @@ const SortableList = (function () {
         widget = document.querySelector('.results');
 
         // exit if widget is undefined
-        if (!widget) { console.log('nolist'); return; }
+        if (!widget) { /*console.log('nolist');*/ return; }
 
         widget._list = widget.querySelector('tbody');
         widget._rows = widget._list.querySelectorAll('.row1, .row2');

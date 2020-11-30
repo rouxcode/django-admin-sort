@@ -23,7 +23,7 @@ const SortableListDrag = (function () {
     };
 
     function init_widget(widget) {
-
+        console.log(widget)
     };
 
 
