@@ -1,5 +1,4 @@
 from django import forms
-from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.safestring import mark_safe
@@ -73,13 +72,10 @@ class DragAndDropSortableInlineMixin(SortableInlineMixinBase):
     @property
     def media(self):
         css = {
-            'all': ['admin_sort/css/sortable.inline.css'],
+            'all': ['admin_sort/sort.css'],
         }
-        if 'djangocms_admin_style' in settings.INSTALLED_APPS:
-            css['all'].append('admin_sort/css/sortable.inline.cms.css')
         js = (
-            'admin_sort/js/sortable.js',
-            'admin_sort/js/sortable.inline.dragndrop.js',
+            'admin_sort/sort.js',
         )
         original_media = super(DragAndDropSortableInlineMixin, self).media
         # return original_media
@@ -118,16 +114,6 @@ class SortableInlineAdminMixin(DragAndDropSortableInlineMixin):
 class DropdownSortableInlineMixin(SortableInlineMixinBase):
 
     @property
-    def media(self):
-        js = [
-            'admin/js/jquery.init.js',
-            'admin_sort/js/sortable.dropdown.inline.js',
-        ]
-        original_media = super(DropdownSortableInlineMixin, self).media
-        # return original_media
-        return original_media + forms.widgets.Media(js=js)
-
-    @property
     def css_classes(self):
         css_classes = getattr(
             super(DropdownSortableInlineMixin, self),
@@ -146,11 +132,6 @@ class DropdownSortableInlineMixin(SortableInlineMixinBase):
         # needed for extra > 0
         formset.form.base_fields[self._field].required = False
         # prepare widget ARF!
-        # import pprint
-        # pprint.pprint(self.__dict__)
-        # pprint.pprint(self.opts.__dict__)
-        # pprint.pprint(formset.__dict__)
-        # pprint.pprint(formset.form)
         # TODO: getting count of existing inlines, this is done in js otherwise
         # count = self.model.objects....count()
         # choices = [(no, no, ) for no in range(1, count)]

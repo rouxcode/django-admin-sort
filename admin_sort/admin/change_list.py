@@ -47,14 +47,11 @@ class SortableAdminMixin(object):
     def media(self):
         css = {
             'all': [
-                'admin_sort/css/sortable.css',
+                'admin_sort/sort.css',
             ]
         }
-        if 'djangocms_admin_style' in settings.INSTALLED_APPS:
-            css['all'].append('admin_sort/css/sortable.cms.css')
         js = [
-            'admin_sort/js/sortable.js',
-            'admin_sort/js/sortable.list.js',
+            'admin_sort/sort.js',
         ]
         original_media = super(SortableAdminMixin, self).media
         return original_media + widgets.Media(css=css, js=js)

@@ -5,7 +5,7 @@
 {% block extrahead %}
     {{ block.super }}
     <script type="text/javascript">
-        SortableList.options({
+        const admin_sort_options = {
             csrf: '{{ csrf_token }}',
             messages: {
                 sorting: '{% trans "Repositioning selected item" %}',
@@ -19,7 +19,7 @@
                 reorder: '{{ reorder_url }}',
                 update: '{{ update_url }}'
             }
-        });
+        };
     </script>
 {% endblock %}
 

@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'admin_sort',
     'admin_sort.tests.testapp',
+    'admin_sort.tests.devapp',
 ]
 
 MIDDLEWARE = (

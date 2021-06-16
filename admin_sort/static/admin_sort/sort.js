@@ -1,0 +1,1 @@
+(()=>{"use strict";class e{constructor(e){console.log("heterepleti"),console.log(e)}}var t;t=function(){const t=document.querySelectorAll("body.change-list .results");console.log(t),t.length>0&&function(t,o){for(let o=0;o<t.length;++o)n=t[o],new e(n);var n}(t)},"loading"!=document.readyState?t():document.addEventListener("DOMContentLoaded",t)})();
