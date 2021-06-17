@@ -5,7 +5,7 @@ import sys
 import django
 
 DEBUG = True
-
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

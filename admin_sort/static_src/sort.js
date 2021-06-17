@@ -16,9 +16,10 @@ import SortList from './sort/list.js'
 
     function init() {
         const change_lists = document.querySelectorAll(selectors.list)
-        console.log(change_lists)
         if (change_lists.length > 0) {
-            for_each(change_lists, (i, el) => { new SortList(el) })
+            for_each(change_lists, (i, element) => {
+                new SortList(element, admin_sort_options)
+            })
         }
     }
 

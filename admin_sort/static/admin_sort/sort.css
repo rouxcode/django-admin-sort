@@ -1,1 +1,7 @@
-
+.admin-sort-drag {
+  display: block;
+  width: 40px;
+  height: 40px;
+  background-color: pink;
+  cursor: move;
+}
