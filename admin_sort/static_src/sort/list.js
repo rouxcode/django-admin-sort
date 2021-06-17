@@ -1,4 +1,4 @@
-import Sortable, { Swap } from 'sortablejs'
+import Sortable from 'sortablejs'
 
 
 export default class SortList {

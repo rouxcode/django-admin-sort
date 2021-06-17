@@ -5,3 +5,11 @@
   background-color: pink;
   cursor: move;
 }
+
+tr.admin-sort-chosen {
+  background-color: rgba(121, 174, 200, 0.25);
+}
+
+.sortable-drag {
+  opacity: 0.1;
+}
