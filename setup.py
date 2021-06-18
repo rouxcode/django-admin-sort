@@ -5,8 +5,10 @@ from setuptools import setup, find_packages
 from admin_sort import __version__
 
 
-DESCRIPTION = 'Sortable changelist, tabular and stacked inlines, ' \
-              'drag-and-drop and dropdowns'
+DESCRIPTION = (
+    'Sortable changelist, tabular and stacked inlines, '
+    'drag-and-drop and dropdowns'
+)
 
 CLASSIFIERS = [
     'Environment :: Web Environment',
@@ -38,7 +40,7 @@ setup(
     platforms=['OS Independent'],
     classifiers=CLASSIFIERS,
     install_requires=[
-         'django>=2.2',
+         'django>=3.2',
     ],
     packages=find_packages(exclude=['example', 'docs']),
     include_package_data=True,

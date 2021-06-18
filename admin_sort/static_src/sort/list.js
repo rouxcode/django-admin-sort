@@ -24,18 +24,18 @@ export default class SortList {
 
         // check widget
         if (!widget) {
-            throw 'SortList no valid html element provided';
+            throw 'SortList no valid html element provided'
         }
         // check options
         if (!options) {
-            throw 'SortList no valid options provided';
+            throw 'SortList no valid options provided'
         }
 
         // add the widget element to the instance
         this.widget = widget
 
         // add the instance to the element
-        this.widget._sort = this
+        this.widget._admin_sort_list = this
 
         // save options
         this.set_options(options)
@@ -57,18 +57,18 @@ export default class SortList {
             row._drag = row.querySelector(this.selectors.handle)
             row._pk = row._drag.dataset.pk
             // add the draggable class
-            row.classList.add(this.css_classes.draggable);
+            row.classList.add(this.css_classes.draggable)
         })
 
         // link widget to list directly
-        this.list._widget = widget;
+        this.list._widget = widget
 
         // add css class for styling purposes
-        this.widget.classList.add('sortable-list');
+        this.widget.classList.add('sortable-list')
 
         // set reorder link
         this.clean = document.querySelector(this.selectors.clean)
-        this.clean.addEventListener('click', this.request_clean.bind(this));
+        this.clean.addEventListener('click', this.request_clean.bind(this))
 
         // init sortable list
         this.sortable = Sortable.create(this.list, {
@@ -77,7 +77,7 @@ export default class SortList {
             ghostClass: this.css_classes.ghostClass,
             chosenClass: this.css_classes.chosenClass,
             onUpdate: this.request_order.bind(this),
-        });
+        })
     }
 
     // order 
@@ -87,26 +87,26 @@ export default class SortList {
         if (e.oldIndex === e.newIndex) { return }
 
         // show message
-        this.show_message(this.messages.sorting);
+        this.show_message(this.messages.sorting)
 
-        const row = e.item;
-        const key = e.newIndex;
+        const row = e.item
+        const key = e.newIndex
 
         // prepare data 
-        const data = new FormData();
-        data.append('csrfmiddlewaretoken', this.csrf);
-        data.append('obj', row._pk);
+        const data = new FormData()
+        data.append('csrfmiddlewaretoken', this.csrf)
+        data.append('obj', row._pk)
 
         // select the list in the actual state, so sorting is right
-        const list = this.widget.querySelectorAll(this.selectors.draggable);
+        const list = this.widget.querySelectorAll(this.selectors.draggable)
 
         // set the target pk and the position relative to it
         if (key === 0) {
-            data.append('position', 'left');
-            data.append('target', list[1]._pk);
+            data.append('position', 'left')
+            data.append('target', list[1]._pk)
         } else {
-            data.append('position', 'right');
-            data.append('target', list[key - 1]._pk);
+            data.append('position', 'right')
+            data.append('target', list[key - 1]._pk)
         }
 
         fetch(this.urls.update, { method: 'POST', body: data })
@@ -118,14 +118,15 @@ export default class SortList {
                 }
             })
             .then(data => {
-                this.hide_message();
+                this.hide_message()
             })
             .catch(error => {
                 console.error('admin_sort: ' + error)
             })
-    };
+    }
 
-    // Clean sorting  ----------------------------------------------------------------
+
+    // Clean sorting  ---------------------------------------------------------
 
     async request_clean(e) {
 
@@ -134,10 +135,10 @@ export default class SortList {
 
         // build form data
         const data = new FormData()
-        data.append('csrfmiddlewaretoken', this.csrf);
+        data.append('csrfmiddlewaretoken', this.csrf)
 
         // show message
-        this.show_message(this.messages.reordering);
+        this.show_message(this.messages.reordering)
 
         // make the ajax request
         fetch(this.urls.update, { method: 'POST', body: data })

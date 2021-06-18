@@ -2,18 +2,18 @@ from django import forms
 from django.contrib import admin
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
 
 
 class SortableInlineMixinBase(object):
     # formset = CustomInlineFormSet
 
     _field = None
+    template = 'admin/admin_sort/edit_inline/inline.html'
 
     def __init__(self, *args, **kwargs):
         self._field = getattr(self, 'position_field', None)
         if not self._field:
-            msg = _('You have to define a position field on {}').format(
+            msg = ('You have to define a position field on {}').format(
                 self.__class__.__name__
             )
             raise ImproperlyConfigured(msg)
@@ -25,81 +25,52 @@ class SortableInlineMixinBase(object):
             self.is_tabular = True
         else:
             msg = (
-                'Class {0}.{1} must also derive from'
-                ' admin.TabularInline or admin.StackedInline'
+                'Class {}.{} must also derive from '
+                'admin.TabularInline or admin.StackedInline'
             ).format(self.__module__, self.__class__)
             raise ImproperlyConfigured(msg)
-        super(SortableInlineMixinBase, self).__init__(*args, **kwargs)
-
-    @property
-    def template(self):
-        return 'admin/admin_sort/edit_inline/inline.html'
+        super().__init__(*args, **kwargs)
 
     @property
     def html_data_fields(self):
-        data_fields = getattr(
-            super(SortableInlineMixinBase, self),
-            'html_data_fields',
-            ''
+        data_fields = getattr(super(), 'html_data_fields', '').split(' ')
+        data_fields.append(
+            'admin-sort-position-field="field-{}"'.format(self._field)
         )
-        my_data_fields = {
-            'admin-sort-position-field': 'field-%s' % self._field
-        }
-        data_fields_out = ''
-        for key, value in my_data_fields.items():
-            data_fields_out += ' data-{}="{}"'.format(key, value)
-        return mark_safe('{} {}'.format(data_fields, data_fields_out))
+        return mark_safe(' '.join(data_fields))
 
     @property
     def css_classes(self):
-        css_classes = getattr(
-            super(SortableInlineMixinBase, self),
-            'css_classes',
-            ''
-        )
-        my_css_classes = 'admin-sort-inline'
+        css_classes = getattr(super(), 'css_classes', '').split(' ')
+        css_classes.append('admin-sort-inline')
         if self.is_tabular:
-            my_css_classes += ' admin-sort-tabular'
+            css_classes.append('admin-sort-tabular')
         else:
-            my_css_classes += ' admin-sort-stacked'
+            css_classes.append('admin-sort-stacked')
         if self.extra > 0:
-            my_css_classes += ' has-extra admin-sort-has-extra'
-        return '{} {}'.format(css_classes, my_css_classes)
+            css_classes.append('admin-sort-has-extra')
+        return ' '.join(css_classes)
 
 
 class DragAndDropSortableInlineMixin(SortableInlineMixinBase):
 
     @property
     def media(self):
-        css = {
-            'all': ['admin_sort/sort.css'],
-        }
-        js = (
-            'admin_sort/sort.js',
-        )
-        original_media = super(DragAndDropSortableInlineMixin, self).media
-        # return original_media
-        return original_media + forms.widgets.Media(css=css, js=js)
+        css = {'all': ['admin_sort/sort.css']}
+        js = ['admin_sort/sort.js']
+        return super().media + forms.widgets.Media(css=css, js=js)
 
     @property
     def css_classes(self):
-        css_classes = getattr(
-            super(DragAndDropSortableInlineMixin, self),
-            'css_classes',
-            ''
-        )
-        my_css_classes = 'admin-sort-draganddrop-inline'
-        return '{} {}'.format(css_classes, my_css_classes)
+        css_classes = getattr(super(), 'css_classes', '')
+        css_classes += ' admin-sort-inline-drag'
+        return '{}'.format(css_classes)
 
     def get_formset(self, request, obj=None, **kwargs):
-        formset = super(DragAndDropSortableInlineMixin, self).get_formset(
-            request,
-            obj,
-            **kwargs
-        )
-        # needed for extra > 0
+        formset = super().get_formset(request, obj, **kwargs)
+        # needed for django.InlineAdmin.extra > 0
         formset.form.base_fields[self._field].required = False
-        # hide it
+        # hide the position field
         formset.form.base_fields[self._field].widget = forms.HiddenInput(
             attrs={'class': 'admin-sort-position'}
         )
@@ -107,7 +78,7 @@ class DragAndDropSortableInlineMixin(SortableInlineMixinBase):
 
 
 class SortableInlineAdminMixin(DragAndDropSortableInlineMixin):
-    # deprecated!
+    # deprecated! or make a deattr decision perhaps ?
     pass
 
 
@@ -115,20 +86,12 @@ class DropdownSortableInlineMixin(SortableInlineMixinBase):
 
     @property
     def css_classes(self):
-        css_classes = getattr(
-            super(DropdownSortableInlineMixin, self),
-            'css_classes',
-            ''
-        )
-        my_css_classes = 'admin-sort-dropdown-inline'
-        return '{} {}'.format(css_classes, my_css_classes)
+        css_classes = getattr(super(), 'css_classes', '').split(' ')
+        css_classes.append('admin-sort-inline-select')
+        return ' '.join(css_classes)
 
     def get_formset(self, request, obj=None, **kwargs):
-        formset = super(DropdownSortableInlineMixin, self).get_formset(
-            request,
-            obj,
-            **kwargs
-        )
+        formset = super().get_formset(request, obj, **kwargs)
         # needed for extra > 0
         formset.form.base_fields[self._field].required = False
         # prepare widget ARF!

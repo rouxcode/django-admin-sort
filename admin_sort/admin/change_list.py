@@ -53,7 +53,7 @@ class SortableAdminMixin(object):
         js = [
             'admin_sort/sort.js',
         ]
-        original_media = super(SortableAdminMixin, self).media
+        original_media = super().media
         return original_media + widgets.Media(css=css, js=js)
 
     def __init__(self, model, admin_site):
@@ -78,7 +78,7 @@ class SortableAdminMixin(object):
             raise ImproperlyConfigured(msg)
         # Force ordering by position, for this admin!
         self.ordering = [self._field]
-        super(SortableAdminMixin, self).__init__(model, admin_site)
+        super().__init__(model, admin_site)
 
     def get_exclude(self, request, obj=None):
         exclude = self.exclude or []
@@ -88,9 +88,7 @@ class SortableAdminMixin(object):
 
     def get_list_display(self, request):
         list_display = ['_col_move_node'] + [
-            d for d in super(SortableAdminMixin, self).get_list_display(
-                request
-            )
+            d for d in super().get_list_display(request)
         ]
         # Be sure the position_field is not in list_display
         if self._field in list_display:
@@ -108,7 +106,7 @@ class SortableAdminMixin(object):
             return list(list_display)[1:2]
 
     def get_queryset(self, request):
-        qs = super(SortableAdminMixin, self).get_queryset(request)
+        qs = super().get_queryset(request)
         return qs
 
     def get_urls(self):
@@ -125,7 +123,7 @@ class SortableAdminMixin(object):
                 name='{}_{}_reorder'.format(*info)
             ),
         ]
-        urls += super(SortableAdminMixin, self).get_urls()
+        urls += super().get_urls()
         return urls
 
     def changelist_view(self, request, node_id=None, extra_context=None):
@@ -134,7 +132,7 @@ class SortableAdminMixin(object):
             'update_url': self.get_update_url(),
             'reorder_url': self.get_reorder_url(),
         })
-        return super(SortableAdminMixin, self).changelist_view(
+        return super().changelist_view(
             request,
             extra_context,
         )
