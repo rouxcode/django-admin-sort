@@ -33,9 +33,6 @@ class SortableInlineMixinBase(object):
     def html_data_fields(self):
         data_fields = getattr(super(), 'html_data_fields', '').split(' ')
         data_fields.append(
-            'data-admin-sort-position-field="field-{}"'.format(self._field)
-        )
-        data_fields.append(
             'data-admin-sort-type="{}"'.format(self.inline_type)
         )
         return mark_safe(' '.join(data_fields))

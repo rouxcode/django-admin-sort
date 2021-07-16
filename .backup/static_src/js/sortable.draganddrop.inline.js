@@ -1,10 +1,6 @@
 var SortableDraganddropInline = (function ($) {
     'use strict';
 
-    /*
-    TODO implement Inline extra even if imho this is crap
-    */
-
     var $inlines;
     var $doc = $(document);
 
