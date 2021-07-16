@@ -1,6 +1,6 @@
 <div class="{{ inline_admin_formset.opts.css_classes }}" {{ inline_admin_formset.opts.html_data_fields }}>
     {% block django_inline %}
-        {% if inline_admin_formset.opts.is_tabular %}
+        {% if inline_admin_formset.opts.inline_type == 'tabular' %}
             {% include 'admin/edit_inline/tabular.html' %}
         {% else %}
             {% include 'admin/edit_inline/stacked.html' %}

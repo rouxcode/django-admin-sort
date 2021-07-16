@@ -2,7 +2,7 @@
 import './scss/sort.scss'
 
 // import the different modules
-import SortList from './sort/list.js'
+import SortList from './sort/list.drag.js'
 import SortInlineDrag from './sort/inline.drag.js'
 
 
@@ -16,21 +16,19 @@ import SortInlineDrag from './sort/inline.drag.js'
     ready(init);
 
     function init() {
+
         // django admin change lists drag and drop ----------------------------
         const lists = document.querySelectorAll(selectors.list)
+        // TODO find a better way to pass options
+        const options = window.admin_sort_change_list_options
         if (lists.length > 0) {
-            lists.forEach((element) => {
-                new SortList(element, admin_sort_change_list_options)
-            })
+            lists.forEach(el => { new SortList(el, options) })
         }
 
         // django admin inlines drag and drop ---------------------------------
         const inlines_drag = document.querySelectorAll(selectors.inline_drag)
         if (inlines_drag.length > 0) {
-            console.log('pfuiiiii')
-            inlines_drag.forEach((element) => {
-                new SortInlineDrag(element)
-            })
+            inlines_drag.forEach(el => { new SortInlineDrag(el) })
         }
 
         // django admin change lists select dropdown --------------------------
@@ -45,12 +43,6 @@ import SortInlineDrag from './sort/inline.drag.js'
             callback()
         } else {
             document.addEventListener('DOMContentLoaded', callback)
-        }
-    }
-
-    function for_each(array, func) {
-        for (let i = 0; i < array.length; ++i) {
-            func(i, array[i])
         }
     }
 })()

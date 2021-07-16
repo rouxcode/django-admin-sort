@@ -18,11 +18,9 @@ class SortableInlineMixinBase(object):
             )
             raise ImproperlyConfigured(msg)
         if isinstance(self, admin.StackedInline):
-            self.is_stacked = True
-            self.is_tabular = False
+            self.inline_type = 'stacked'
         elif isinstance(self, admin.TabularInline):
-            self.is_stacked = False
-            self.is_tabular = True
+            self.inline_type = 'tabular'
         else:
             msg = (
                 'Class {}.{} must also derive from '
@@ -35,7 +33,10 @@ class SortableInlineMixinBase(object):
     def html_data_fields(self):
         data_fields = getattr(super(), 'html_data_fields', '').split(' ')
         data_fields.append(
-            'admin-sort-position-field="field-{}"'.format(self._field)
+            'data-admin-sort-position-field="field-{}"'.format(self._field)
+        )
+        data_fields.append(
+            'data-admin-sort-type="{}"'.format(self.inline_type)
         )
         return mark_safe(' '.join(data_fields))
 
@@ -43,10 +44,8 @@ class SortableInlineMixinBase(object):
     def css_classes(self):
         css_classes = getattr(super(), 'css_classes', '').split(' ')
         css_classes.append('admin-sort-inline')
-        if self.is_tabular:
-            css_classes.append('admin-sort-tabular')
-        else:
-            css_classes.append('admin-sort-stacked')
+        css_classes.append('admin-sort-{}'.format(self.inline_type))
+
         if self.extra > 0:
             css_classes.append('admin-sort-has-extra')
         return ' '.join(css_classes)

@@ -11,7 +11,7 @@
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='8' height='8' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='%23aaa' d='M0 0h4v4H0V0z'/%3e%3c/svg%3e");
   background-position: left top;
   background-repeat: repeat;
-  background-size: auto;
+  background-size: 8px 8px;
 }
 
 tr.admin-sort-chosen {
@@ -21,10 +21,11 @@ tr.admin-sort-chosen a {
   color: var(--primary-fg);
 }
 
+/*
 .sortable-drag {
-  opacity: 0.001;
+    opacity: 0.001;
 }
-
+*/
 /*
 .admin-sort-ghost {
     //display: none;

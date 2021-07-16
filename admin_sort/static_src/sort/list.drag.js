@@ -27,6 +27,7 @@ export default class SortList {
             throw 'SortList no valid html element provided'
         }
         // check options
+        // TODO create real optin check and merge
         if (!options) {
             throw 'SortList no valid options provided'
         }
