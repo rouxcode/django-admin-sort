@@ -29,7 +29,7 @@ class SortableFrontendTests(SeleniumTestCase):
         options = Options()
         if settings.HEADLESS_TESTING:
             options.add_argument("--headless")
-        self.webdriver = CustomWebDriver(firefox_options=options, )
+        self.webdriver = CustomWebDriver(options=options, )
 
     def tearDown(self):
         self.webdriver.quit()
