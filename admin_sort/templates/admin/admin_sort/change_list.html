@@ -5,17 +5,21 @@
 {% block extrahead %}
     {{ block.super }}
     <script type="text/javascript">
-        SortableList.options({
-            csrftoken: '{{ csrf_token }}',
-            current_page: {{ cl.page_num | add:'1' }},
-            total_pages: {{ cl.paginator.num_pages }},
-            update_url: '{{ update_url }}',
-            reorder_url: '{{ reorder_url }}',
+        window.admin_sort_change_list_options = {
+            csrf: '{{ csrf_token }}',
             messages: {
                 sorting: '{% trans "Repositioning selected item" %}',
                 reordering: '{% trans "Cleaning position of all items" %}'
+            },
+            pages: {
+                current: {{ cl.page_num | add:'1' }},
+                total: {{ cl.paginator.num_pages }}
+            },
+            urls: {
+                reorder: '{{ reorder_url }}',
+                update: '{{ update_url }}'
             }
-        });
+        };
     </script>
 {% endblock %}
 
@@ -25,3 +29,4 @@
     </li>
     {{ block.super }}
 {% endblock %}
+

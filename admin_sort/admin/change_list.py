@@ -1,22 +1,22 @@
-from __future__ import unicode_literals
-
 from django import forms
 from django.conf import settings
-from django.conf.urls import url
 from django.core.exceptions import ImproperlyConfigured
 from django.db import transaction
 from django.forms import widgets
 from django.http import (
-    HttpResponseBadRequest,
     HttpResponseForbidden,
     HttpResponseNotAllowed,
     JsonResponse,
 )
-from django.urls import reverse
+from django.urls import path, reverse
 from django.utils.html import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
-from admin_sort.utils.model_sorting import position_object, set_position_for_new_obj
+from admin_sort.utils.model_sorting import (
+    position_object,
+    set_position_for_new_obj,
+)
+
 
 POSITION_CHOICES = (
     ('', _('Current Position')),
@@ -47,25 +47,23 @@ class SortableAdminMixin(object):
     def media(self):
         css = {
             'all': [
-                'admin_sort/css/sortable.css',
+                'admin_sort/sort.css',
             ]
         }
-        if 'djangocms_admin_style' in settings.INSTALLED_APPS:
-            css['all'].append('admin_sort/css/sortable.cms.css')
         js = [
-            'admin_sort/js/sortable.js',
-            'admin_sort/js/sortable.list.js',
+            'admin_sort/sort.js',
         ]
-        original_media = super(SortableAdminMixin, self).media
+        original_media = super().media
         return original_media + widgets.Media(css=css, js=js)
 
     def __init__(self, model, admin_site):
         self._field = getattr(self, 'position_field', None)
         self._insert_position = getattr(self, 'insert_position', 'last')
         if not self._field:
-            msg = _('You have to define a position_field on your {} for SortableAdminMixin to work.').format(
-                self.__class__.__name__
-            )
+            msg = _(
+                'You have to define a position_field on your {} for'
+                ' SortableAdminMixin to work.'
+            ).format(self.__class__.__name__)
             raise ImproperlyConfigured(msg)
         if '-{}'.format(self._field) in model._meta.ordering:
             msg = _(
@@ -80,7 +78,7 @@ class SortableAdminMixin(object):
             raise ImproperlyConfigured(msg)
         # Force ordering by position, for this admin!
         self.ordering = [self._field]
-        super(SortableAdminMixin, self).__init__(model, admin_site)
+        super().__init__(model, admin_site)
 
     def get_exclude(self, request, obj=None):
         exclude = self.exclude or []
@@ -90,9 +88,7 @@ class SortableAdminMixin(object):
 
     def get_list_display(self, request):
         list_display = ['_col_move_node'] + [
-            d for d in super(SortableAdminMixin, self).get_list_display(
-                request
-            )
+            d for d in super().get_list_display(request)
         ]
         # Be sure the position_field is not in list_display
         if self._field in list_display:
@@ -100,7 +96,9 @@ class SortableAdminMixin(object):
         return list_display
 
     def get_list_display_links(self, request, list_display):
-        if (self.list_display_links or self.list_display_links is None or not list_display):
+        if (self.list_display_links
+                or self.list_display_links is None
+                or not list_display):
             return self.list_display_links
         else:
             # Use only the second item in list_display as link
@@ -108,24 +106,24 @@ class SortableAdminMixin(object):
             return list(list_display)[1:2]
 
     def get_queryset(self, request):
-        qs = super(SortableAdminMixin, self).get_queryset(request)
+        qs = super().get_queryset(request)
         return qs
 
     def get_urls(self):
         info = [self.model._meta.app_label, self.model._meta.model_name]
         urls = [
-            url(
-                r'^update/$',
+            path(
+                'update/',
                 self.admin_site.admin_view(self.update_view),
                 name='{}_{}_update'.format(*info)
             ),
-            url(
-                r'^reorder/$',
+            path(
+                'reorder/',
                 self.admin_site.admin_view(self.reorder_view),
                 name='{}_{}_reorder'.format(*info)
             ),
         ]
-        urls += super(SortableAdminMixin, self).get_urls()
+        urls += super().get_urls()
         return urls
 
     def changelist_view(self, request, node_id=None, extra_context=None):
@@ -134,7 +132,7 @@ class SortableAdminMixin(object):
             'update_url': self.get_update_url(),
             'reorder_url': self.get_reorder_url(),
         })
-        return super(SortableAdminMixin, self).changelist_view(
+        return super().changelist_view(
             request,
             extra_context,
         )
@@ -152,14 +150,14 @@ class SortableAdminMixin(object):
         obj.save()
 
     def reorder_view(self, request):
-        error_response = self.check_ajax_request(request)
+        error_response = self.check_request(request)
         if error_response:
             return error_response
         data = self._reorder_all()
         return JsonResponse(data)
 
     def update_view(self, request):
-        error_response = self.check_ajax_request(request)
+        error_response = self.check_request(request)
         if error_response:
             return error_response
         data = {}
@@ -182,11 +180,7 @@ class SortableAdminMixin(object):
             self._reorder_all()
         return JsonResponse(data)
 
-    def check_ajax_request(self, request):
-        if not request.is_ajax():
-            return HttpResponseBadRequest(
-                'Not an XMLHttpRequest'
-            )
+    def check_request(self, request):
         if request.method != 'POST':
             return HttpResponseNotAllowed(
                 'Must be a POST request'

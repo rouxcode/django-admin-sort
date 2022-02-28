@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import os
 from setuptools import setup, find_packages
 
 from admin_sort import __version__
 
 
-DESCRIPTION = 'Sortable changelist, tabular and stacked inlines, ' \
-              'drag-and-drop and dropdowns'
+DESCRIPTION = (
+    'Sortable changelist, tabular and stacked inlines, '
+    'drag-and-drop and dropdowns'
+)
 
 CLASSIFIERS = [
     'Environment :: Web Environment',
@@ -39,7 +39,9 @@ setup(
     keywords=['django'],
     platforms=['OS Independent'],
     classifiers=CLASSIFIERS,
-    install_requires=[],
+    install_requires=[
+         'django>=3.2',
+    ],
     packages=find_packages(exclude=['example', 'docs']),
     include_package_data=True,
     zip_safe=False,

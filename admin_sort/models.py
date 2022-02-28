@@ -36,4 +36,4 @@ class SortableModelMixin(object):
                 position,
                 commit=False,
             )
-        super(SortableModelMixin, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)

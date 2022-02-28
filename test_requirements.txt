@@ -1,3 +1,4 @@
 tox
+django
 djangocms-admin-style
 selenium
