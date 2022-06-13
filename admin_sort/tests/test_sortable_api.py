@@ -8,7 +8,6 @@ from django.test.client import Client
 
 from .testapp.models import SortableBook
 
-
 FIXTURES = ['data.json', ]
 
 
@@ -157,6 +156,7 @@ class SortableBookTestCase(TestCase):
     """
     obsolete??!
     """
+
     def est_reverseMoveUp(self):
         self.assertEqual(SortableBook.objects.get(pk=12).my_order, 12)
         in_data = {'startorder': 12, 'endorder': 16}
@@ -185,6 +185,7 @@ class SortableBookTestCase(TestCase):
         self.assertResponseSequenceLength(in_data, response.content.decode('utf-8'))
         self.assertUniqueOrderValues()
         self.assertEqual(SortableBook.objects.get(pk=14).my_order, 14)
+
     """
     end obsolete
     """
@@ -213,7 +214,8 @@ class SortableBookTestCase(TestCase):
         seventeen_pk = SortableBook.objects.get(my_order=17).pk
         eighteen_pk = SortableBook.objects.get(my_order=18).pk
         nineteen_pk = SortableBook.objects.get(my_order=19).pk
-        post_data = {'action': ['move_to_back_page'], 'step': 1, '_selected_action': [seventeen_pk, eighteen_pk, nineteen_pk]}
+        post_data = {'action': ['move_to_back_page'], 'step': 1,
+                     '_selected_action': [seventeen_pk, eighteen_pk, nineteen_pk]}
         self.client.post(self.bulk_update_url + '?p=1', post_data)
         self.assertEqual(SortableBook.objects.get(pk=seventeen_pk).my_order, 1)
         self.assertEqual(SortableBook.objects.get(pk=eighteen_pk).my_order, 2)
@@ -222,7 +224,11 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveForwardFromLastPage(self):
         one_pk = SortableBook.objects.get(my_order=19).pk
         two_pk = SortableBook.objects.get(my_order=20).pk
-        post_data = {'action': ['move_to_forward_page'], 'step': 1, '_selected_action': [one_pk, two_pk]}
+        post_data = {
+            'action': ['move_to_forward_page'],
+            'step': 1,
+            '_selected_action': [one_pk, two_pk]
+        }
         self.client.post(self.bulk_update_url + '?p=2', post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 19)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 20)
@@ -230,7 +236,11 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveNextPage(self):
         one_pk = SortableBook.objects.get(my_order=17).pk
         two_pk = SortableBook.objects.get(my_order=18).pk
-        post_data = {'action': ['move_to_forward_page'], 'step': 1, '_selected_action': [one_pk, two_pk]}
+        post_data = {
+            'action': ['move_to_forward_page'],
+            'step': 1,
+            '_selected_action': [one_pk, two_pk],
+        }
         self.client.post(self.bulk_update_url + '?p=1', post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 17)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 18)
@@ -238,7 +248,10 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveLastPage(self):
         one_pk = SortableBook.objects.get(my_order=1).pk
         two_pk = SortableBook.objects.get(my_order=6).pk
-        post_data = {'action': ['move_to_last_page'], '_selected_action': [one_pk, two_pk]}
+        post_data = {
+            'action': ['move_to_last_page'],
+            '_selected_action': [one_pk, two_pk],
+        }
         self.client.post(self.bulk_update_url, post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 17)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 18)
@@ -246,7 +259,10 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveFirstPage(self):
         one_pk = SortableBook.objects.get(my_order=17).pk
         two_pk = SortableBook.objects.get(my_order=20).pk
-        post_data = {'action': ['move_to_first_page'], '_selected_action': [one_pk, two_pk]}
+        post_data = {
+            'action': ['move_to_first_page'],
+            '_selected_action': [one_pk, two_pk],
+        }
         self.client.post(self.bulk_update_url + '?p=2', post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 1)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 2)
@@ -254,7 +270,11 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveBackTwoPages(self):
         one_pk = SortableBook.objects.get(my_order=17).pk
         two_pk = SortableBook.objects.get(my_order=20).pk
-        post_data = {'action': ['move_to_back_page'], 'step': 2, '_selected_action': [17, 20]}
+        post_data = {
+            'action': ['move_to_back_page'],
+            'step': 2,
+            '_selected_action': [17, 20],
+        }
         self.client.post(self.bulk_update_url + '?p=2', post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 1)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 2)
@@ -262,7 +282,8 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveForwardTwoPages(self):
         one_pk = SortableBook.objects.get(my_order=1).pk
         two_pk = SortableBook.objects.get(my_order=6).pk
-        post_data = {'action': ['move_to_forward_page'], 'step': 2, '_selected_action': [one_pk, two_pk]}
+        post_data = {'action': ['move_to_forward_page'], 'step': 2,
+                     '_selected_action': [one_pk, two_pk]}
         self.client.post(self.bulk_update_url, post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 17)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 18)
@@ -270,7 +291,8 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveForwardTwoPagesFromLastPage(self):
         one_pk = SortableBook.objects.get(my_order=19).pk
         two_pk = SortableBook.objects.get(my_order=20).pk
-        post_data = {'action': ['move_to_forward_page'], 'step': 2, '_selected_action': [one_pk, two_pk]}
+        post_data = {'action': ['move_to_forward_page'], 'step': 2,
+                     '_selected_action': [one_pk, two_pk]}
         self.client.post(self.bulk_update_url + '?p=2', post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 19)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 20)
@@ -278,7 +300,8 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveToSpecificPage(self):
         one_pk = SortableBook.objects.get(my_order=1).pk
         two_pk = SortableBook.objects.get(my_order=6).pk
-        post_data = {'action': ['move_to_exact_page'], 'page': 3, '_selected_action': [one_pk, two_pk]}
+        post_data = {'action': ['move_to_exact_page'], 'page': 3,
+                     '_selected_action': [one_pk, two_pk]}
         self.client.post(self.bulk_update_url, post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 17)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 18)
@@ -286,7 +309,8 @@ class SortableBookTestCase(TestCase):
     def est_bulkMoveToSpecificInvalidPage(self):
         one_pk = SortableBook.objects.get(my_order=1).pk
         two_pk = SortableBook.objects.get(my_order=6).pk
-        post_data = {'action': ['move_to_exact_page'], 'page': 10, '_selected_action': [one_pk, two_pk]}
+        post_data = {'action': ['move_to_exact_page'], 'page': 10,
+                     '_selected_action': [one_pk, two_pk]}
         self.client.post(self.bulk_update_url, post_data)
         self.assertEqual(SortableBook.objects.get(pk=one_pk).my_order, 1)
         self.assertEqual(SortableBook.objects.get(pk=two_pk).my_order, 6)
