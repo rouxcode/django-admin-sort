@@ -10,7 +10,7 @@ from django.http import (
 )
 from django.urls import path, reverse
 from django.utils.html import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from admin_sort.utils.model_sorting import (
     position_object,
