@@ -41,8 +41,9 @@ export default class SortInlineDropDown {
 
         // if we use the django extra rows add has_original to the row selector
         if (this.has_extra) {
-            this.selectors.row += '.has_original'
+            this.selectors.row += '.has_original';
         }
+        this.selectors.row += ':not(.empty-form)';
 
         // get the list
         this.wrap = this.widget.querySelector(':scope ' + this.selectors.wrap)
@@ -58,20 +59,15 @@ export default class SortInlineDropDown {
     }
 
     mutated(mutations) {
-        const css_class = this.selectors.row.substr(1)
-        mutations.forEach(mutation => {
-            const nodes = mutation.addedNodes
-            if (nodes.length > 0 && nodes[0].classList.contains(css_class)) {
-                this.set_rows()
-            }
-        })
+        this.set_rows()
     }
 
     set_rows() {
         this.rows = this.wrap.querySelectorAll(':scope ' + this.selectors.row)
+        console.log(this.rows)
+        console.log(this.selectors.row)
         var sortable_rows_count = this.rows.length
         this.rows.forEach((row, i) => {
-
             // position dropdown
             row._pos = row.querySelector(':scope ' + this.selectors.position)
             row._pos.innerHTML = '';
@@ -85,9 +81,11 @@ export default class SortInlineDropDown {
                 }
                 // set current value
                 row._pos.value = i + 1;
+                // and previous, for the change handler
+                row._pos.previous_value = i + 1;
                 // add listener if not yet added
                 if (!row._has_listener) {
-                    row._pos.addEventListener('change', this.on_dropdown_change)
+                    row._pos.addEventListener('change', this.on_dropdown_change.bind(this));
                     row._has_listener = true;
                 }
             }
@@ -96,12 +94,15 @@ export default class SortInlineDropDown {
 
     on_dropdown_change(event) {
         // set values
-
-        // reorder!
-        var wrap = event.currentTarget.closest(this.selectors.wrap);
-        [...list.children]
-            .sort((a,b)=>a._pos.value>b._pos.value? 1 : -1)
-            .forEach(node=>wrap.appendChild(node));
-
+        var query = this.selectors.position;
+        console.log(query)
+        console.log(event.currentTarget)
+        var before_after = Array.from(this.rows).filter(elem => elem.querySelector(query).value == event.currentTarget.value && elem != event.currentTarget.closest(this.selectors.row));
+        if (event.currentTarget.value < event.currentTarget.previous_value) {
+            this.wrap.insertBefore(event.currentTarget.closest(this.selectors.row), before_after[0]);
+        } else {
+            before_after[0].after(event.currentTarget.closest(this.selectors.row));
+        }
+        this.set_rows();
     }
 }
