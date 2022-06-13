@@ -36,7 +36,7 @@ setup(
     long_description=read('README.md'),
     long_description_content_type="text/markdown",
     url='https://github.com/rouxcode/django-admin-sort',
-    license='MIT',
+    license='The MIT License',
     keywords=['django'],
     platforms=['OS Independent'],
     classifiers=CLASSIFIERS,
