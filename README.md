@@ -1,6 +1,9 @@
 # django-admin-sort
 
-[![Django Admin Sort Build Status](https://travis-ci.org/rouxcode/django-admin-sort.svg "Django Admin Sort Build Status")](https://travis-ci.org/rouxcode/django-admin-sort)
+[![CI](https://img.shields.io/github/workflow/status/rouxcode/django-admin-sort/CI.svg?style=flat-square&logo=github "CI")](https://github.com/rouxcode/django-admin-sort/actions/workflows/ci.yml)
+[![Version](https://img.shields.io/pypi/v/django-admin-sort.svg?style=flat-square "Version")](https://pypi.python.org/pypi/django-admin-sort/)
+[![Licence](https://img.shields.io/github/license/rouxcode/django-admin-sort.svg?style=flat-square "Licence")](https://pypi.python.org/pypi/django-admin-sort/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/django-admin-sort?style=flat-square "PyPi Downloads")](https://pypistats.org/packages/django-admin-sort)
 
 Sortable changelist, tabular and stacked inlines. Using existing order fields, flexible.
 
