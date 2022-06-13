@@ -44,6 +44,7 @@ export default class SortInlineDropDown {
             this.selectors.row += '.has_original';
         }
         this.selectors.row += ':not(.empty-form)';
+        this.selectors.row += ':not(.empty-form)';
 
         // get the list
         this.wrap = this.widget.querySelector(':scope ' + this.selectors.wrap)
@@ -64,8 +65,6 @@ export default class SortInlineDropDown {
 
     set_rows() {
         this.rows = this.wrap.querySelectorAll(':scope ' + this.selectors.row)
-        console.log(this.rows)
-        console.log(this.selectors.row)
         var sortable_rows_count = this.rows.length
         this.rows.forEach((row, i) => {
             // position dropdown
@@ -95,8 +94,6 @@ export default class SortInlineDropDown {
     on_dropdown_change(event) {
         // set values
         var query = this.selectors.position;
-        console.log(query)
-        console.log(event.currentTarget)
         var before_after = Array.from(this.rows).filter(elem => elem.querySelector(query).value == event.currentTarget.value && elem != event.currentTarget.closest(this.selectors.row));
         if (event.currentTarget.value < event.currentTarget.previous_value) {
             this.wrap.insertBefore(event.currentTarget.closest(this.selectors.row), before_after[0]);
