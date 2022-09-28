@@ -83,7 +83,7 @@ class DropdownSortableInlineMixin(SortableInlineMixinBase):
     @property
     def css_classes(self):
         css_classes = getattr(super(), 'css_classes', '').split(' ')
-        css_classes.append('admin-sort-inline-select')
+        css_classes.append(' admin-sort-inline-dropdown')
         return ' '.join(css_classes)
 
     def get_formset(self, request, obj=None, **kwargs):

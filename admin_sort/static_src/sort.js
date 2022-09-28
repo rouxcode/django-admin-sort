@@ -12,7 +12,7 @@ import SortInlineDropDown from "./sort/inline.dropdown"
     const selectors = {
         list: 'body.change-list .results',
         inline_drag: '.admin-sort-inline-drag',
-        inline_dropdown: '.admin-sort-inline-select',
+        inline_dropdown: '.admin-sort-inline-dropdown',
     }
 
     ready(init);
@@ -20,21 +20,21 @@ import SortInlineDropDown from "./sort/inline.dropdown"
     function init() {
 
         // django admin change lists drag and drop ----------------------------
-        const lists = document.querySelectorAll(selectors.list)
+        const lists = document.querySelectorAll(selectors.list);
         // TODO find a better way to pass options
-        const options = window.admin_sort_change_list_options
+        const options = window.admin_sort_change_list_options;
         if (lists.length > 0) {
             lists.forEach(el => { new SortList(el, options) })
         }
 
         // django admin inlines drag and drop ---------------------------------
-        // const inlines_drag = document.querySelectorAll(selectors.inline_drag)
-        // if (inlines_drag.length > 0) {
-        //     inlines_drag.forEach(el => { new SortInlineDrag(el) })
-        // }
+        const inlines_drag = document.querySelectorAll(selectors.inline_drag);
+        if (inlines_drag.length > 0) {
+            inlines_drag.forEach(el => { new SortInlineDrag(el) })
+        }
 
         // django admin change lists select dropdown --------------------------
-        const inlines_dropdown = document.querySelectorAll(selectors.inline_dropdown)
+        const inlines_dropdown = document.querySelectorAll(selectors.inline_dropdown);
         if (inlines_dropdown.length > 0) {
             inlines_dropdown.forEach(el => { new SortInlineDropDown(el) })
         }

@@ -1,5 +1,3 @@
-
-
 export default class SortInlineDropDown {
 
     has_extra
@@ -54,8 +52,10 @@ export default class SortInlineDropDown {
 
         // watch list for changes if django extra rows isn'tr used
         if (!this.has_extra) {
-            this.observer = new MutationObserver(m => { this.mutated(m) })
-            this.observer.observe(this.wrap, { childList: true })
+            this.observer = new MutationObserver(m => {
+                this.mutated(m)
+            })
+            this.observer.observe(this.wrap, {childList: true})
         }
     }
 
@@ -64,7 +64,7 @@ export default class SortInlineDropDown {
     }
 
     set_rows() {
-        this.rows = this.wrap.querySelectorAll(':scope ' + this.selectors.row)
+        this.rows = this.wrap.querySelectorAll(':scope ' + this.selectors.row);
         var sortable_rows_count = this.rows.length
         this.rows.forEach((row, i) => {
             // position dropdown
@@ -75,7 +75,7 @@ export default class SortInlineDropDown {
                 row._pos.append(new Option('-', ''));
             } else {
                 // set options
-                for (var j=0; j<sortable_rows_count; j++) {
+                for (var j = 0; j < sortable_rows_count; j++) {
                     row._pos.append(new Option(j + 1, j + 1));
                 }
                 // set current value

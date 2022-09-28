@@ -39,11 +39,11 @@
   cursor: move;
 }
 
-.admin-sort-stacked .inline-group > fieldset {
+.admin-sort-inline-drag.admin-sort-stacked .inline-group > fieldset {
   position: relative;
   padding-bottom: 34px;
 }
-.admin-sort-stacked .add-row {
+.admin-sort-inline-drag.admin-sort-stacked .add-row {
   position: absolute;
   box-sizing: border-box;
   width: 100%;
@@ -51,12 +51,12 @@
   bottom: 0;
   border: 1px solid var(--hairline-color);
 }
-.admin-sort-stacked .inline-related {
+.admin-sort-inline-drag.admin-sort-stacked .inline-related {
   padding-left: 20px;
   margin: 5px 0;
   border-right: 1px solid var(--hairline-color);
 }
-.admin-sort-stacked .inline-related:before {
+.admin-sort-inline-drag.admin-sort-stacked .inline-related:before {
   content: "";
   position: absolute;
   left: 0;
@@ -68,21 +68,21 @@
   border: 1px solid var(--hairline-color);
 }
 
-.admin-sort-tabular .tabular tbody .form-row {
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody .form-row {
   position: relative;
   padding-left: 20px;
 }
-.admin-sort-tabular .tabular tbody .form-row .original {
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody .form-row .original {
   position: static;
   width: 20px;
 }
-.admin-sort-tabular .tabular tbody .form-row .original p {
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody .form-row .original p {
   left: 20px;
 }
-.admin-sort-tabular .tabular tbody tr {
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody tr {
   box-sizing: border-box;
   border: 1px solid var(--hairline-color);
 }
-.admin-sort-tabular .tabular tbody tr.add-row td {
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody tr.add-row td {
   padding: 8px 10px;
 }
