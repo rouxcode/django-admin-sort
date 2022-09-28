@@ -1,0 +1,88 @@
+.field-_col_move_node {
+  box-sizing: content-box;
+  width: 20px;
+}
+
+.admin-sort-drag {
+  display: block;
+  width: 20px;
+  height: 20px;
+  cursor: move;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='8' height='8' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg'%3e%3cpath fill='%23aaa' d='M0 0h4v4H0V0z'/%3e%3c/svg%3e");
+  background-position: left top;
+  background-repeat: repeat;
+  background-size: 8px 8px;
+}
+
+.admin-sort-ghost:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+  background-color: var(--primary);
+}
+
+.admin-sort-inline .admin-sort-drag {
+  position: absolute;
+  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  right: auto;
+  width: 10px;
+  height: auto;
+  background-repeat: repeat;
+  background-size: 5px 5px;
+  cursor: move;
+}
+
+.admin-sort-inline-drag.admin-sort-stacked .inline-group > fieldset {
+  position: relative;
+  padding-bottom: 34px;
+}
+.admin-sort-inline-drag.admin-sort-stacked .add-row {
+  position: absolute;
+  box-sizing: border-box;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  border: 1px solid var(--hairline-color);
+}
+.admin-sort-inline-drag.admin-sort-stacked .inline-related {
+  padding-left: 20px;
+  margin: 5px 0;
+  border-right: 1px solid var(--hairline-color);
+}
+.admin-sort-inline-drag.admin-sort-stacked .inline-related:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: auto;
+  bottom: 0;
+  display: block;
+  width: 20px;
+  border: 1px solid var(--hairline-color);
+}
+
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody .form-row {
+  position: relative;
+  padding-left: 20px;
+}
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody .form-row .original {
+  position: static;
+  width: 20px;
+}
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody .form-row .original p {
+  left: 20px;
+}
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody tr {
+  box-sizing: border-box;
+  border: 1px solid var(--hairline-color);
+}
+.admin-sort-inline-drag.admin-sort-tabular .tabular tbody tr.add-row td {
+  padding: 8px 10px;
+}

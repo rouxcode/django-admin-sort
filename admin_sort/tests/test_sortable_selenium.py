@@ -29,7 +29,7 @@ class SortableFrontendTests(SeleniumTestCase):
         options = Options()
         if settings.HEADLESS_TESTING:
             options.add_argument("--headless")
-        self.webdriver = CustomWebDriver(firefox_options=options, )
+        self.webdriver = CustomWebDriver(options=options, )
 
     def tearDown(self):
         self.webdriver.quit()
@@ -80,7 +80,8 @@ class SortableFrontendTests(SeleniumTestCase):
         # try with helper
         # doesnt work. probably needs more work, on events, targets, etc...
         # wait for selenium, yap?!
-        with open(os.path.join(settings.APP_ROOT, 'tests', 'utils', 'drag_and_drop_helper.js')) as f:
+        js_file = os.path.join(settings.APP_ROOT, 'tests', 'utils', 'drag_and_drop_helper.js')
+        with open(js_file) as f:
             js = f.read()
         source = "var source = document.querySelector('.row1');"
         target = "var target = document.querySelector('.row1:nth-child(3)');"

@@ -1,0 +1,17 @@
+{
+    "sourceType": "module",
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "esmodules": false,
+                    "chrome": "80",
+                    "edge": "17",
+                    "safari": "12",
+                    "firefox": "70"
+                }
+            }
+        ]
+    ]
+}

@@ -5,7 +5,8 @@
 *.sqlite
 *.coverage
 *~
-/node_modules
+/backup
+node_modules
 .DS_Store
 .tmp*
 local_settings.py
@@ -15,3 +16,4 @@ dist
 htmlcov
 .idea
 .tox
+/.vscode

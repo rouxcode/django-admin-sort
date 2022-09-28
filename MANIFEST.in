@@ -1,4 +1,5 @@
 include README.md
+include PYPI.rst
 include CHANGELOG.txt
 recursive-include admin_sort *.py
 recursive-include admin_sort/locale *
