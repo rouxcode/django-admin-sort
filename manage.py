@@ -14,6 +14,5 @@ if __name__ == "__main__":
     try:
         execute_from_command_line(sys.argv)
     except Exception as exception:
-        print(exception.__repr__())
         traceback.print_exc()
         raise exception
