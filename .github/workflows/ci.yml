@@ -7,11 +7,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [3.7, 3.8, 3.9, "3.10"]
+        python: ["3.8", "3.9", "3.10", "3.11","3.11"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Python ${{ matrix.python }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python }}
       - name: Install Tox and any other packages
@@ -27,9 +27,9 @@ jobs:
       matrix:
         python: [3.9]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Python ${{ matrix.python }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python }}
       - name: Install flake8
@@ -37,7 +37,7 @@ jobs:
       - name: Run tox with coverage
         # Run tox using the version of Python in `PATH`
         # run: tox -e py${{ matrix.python }}-${{ matrix.django }}
-        run: tox -e py39-django32-coverage
+        run: tox -e py39-django42-coverage
 
 
   lint:
@@ -46,14 +46,12 @@ jobs:
       matrix:
         python: [3.9]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup Python ${{ matrix.python }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python }}
       - name: Install flake8
-        run: pip install flake8
+        run: pip install flake8 flake8-print
       - name: Run flake8
-        # Run tox using the version of Python in `PATH`
-        # run: tox -e py${{ matrix.python }}-${{ matrix.django }}
         run: flake8

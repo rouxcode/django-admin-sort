@@ -1,16 +1,25 @@
-# trigger release!
-# dont change any files besides CHANGELOG.txt and __init__.py during procedure.
 
+
+# you can manualy merge into main and tag, after you've prepared the release in develop
+
+# git flow
 git flow release start xxxx
 version bump in admin_sort/__init__.py
 last chance to update CHANGELOG!
 git commit -am'version bump / changelog'
 git flow release finish xxxx
+
+# triggers release
 git push --all; git push --tags
 # upstream: depends
 git push upstream --all; git push upstream --tags
+
+# DEV again
+set x.x.xDEV release in __init__.py
+
+
+# done in github actions now
 python setup.py sdist && python setup.py bdist_wheel --universal
 python setup.py register -r pypitest && twine upload dist/* -r pypitest
 python setup.py register -r pypi && twine upload dist/* -r pypi
 
-set x.x.xDEV release in __init__.py
