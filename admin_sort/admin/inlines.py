@@ -13,6 +13,12 @@ class SortableInlineMixinBase(object):
     _field = None
     template = "admin/admin_sort/edit_inline/inline.html"
 
+    @property
+    def media(self):
+        css = {'all': ['admin_sort/sort.css']}
+        js = ['admin_sort/sort.js']
+        return super().media + forms.widgets.Media(css=css, js=js)
+
     def __init__(self, *args, **kwargs):
         self._field = getattr(self, "position_field", None)
         if not self._field:
@@ -50,12 +56,6 @@ class SortableInlineMixinBase(object):
 
 
 class DragAndDropSortableInlineMixin(SortableInlineMixinBase):
-
-    @property
-    def media(self):
-        css = {"all": ["admin_sort/sort.css"]}
-        js = ["admin_sort/sort.js"]
-        return super().media + forms.widgets.Media(css=css, js=js)
 
     @property
     def css_classes(self):
